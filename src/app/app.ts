@@ -2,10 +2,11 @@ import { Component, signal, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Supabase } from './supabase';
 import { JsonPipe } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, JsonPipe],
+  imports: [RouterOutlet, JsonPipe, FormsModule],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
@@ -18,7 +19,11 @@ export class App {
     this.demoDB.getDemoData();
   }
 
-  addDemoData() {
-    this.demoDB.setDemoData({firstname:"Karl", name:"Arsch", email:"arsch@hotmail.com", phone:1746688412})
+  addDemoData(demoData: { firstname: string, name: string, email: string, phone: number }) {
+    this.demoDB.setDemoData(demoData);
+  }
+
+  updateDemoData(userId: number, demoData: { firstname: string, name: string, email: string, phone: number }) {
+    this.demoDB.updateDemoData(userId,  demoData);
   }
 }

@@ -2,7 +2,7 @@
 <h1>Test</h1>
 {{ demoDB.demoDaten() | json }}
 
-<button (click)="addDemoData({ firstname: 'Max', name: 'Mustermann', email: 'max.mustermann@example.com', phone: 123456789 })">Neue Testdaten hinzufügen</button>
+<!-- <button (click)="addDemoData({ firstname: 'Max', name: 'Mustermann', email: 'max.mustermann@example.com', phone: 123456789 })">Neue Testdaten hinzufügen</button> -->
 
 <form (ngSubmit)="addDemoData(demoData.value)" #demoData="ngForm">
   <input type="text" name="firstname" ngModel placeholder="Vorname" required>

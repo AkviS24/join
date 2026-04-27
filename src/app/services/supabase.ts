@@ -28,10 +28,10 @@ export class Supabase {
       .select()
   }
 
-  async getupdateDemoData(id: number, demoData: { firstname: string, name: string, email: string, phone: number }) {
+  async getupdateDemoData(id: number, firstname: string, name: string, email: string, phone: number ) {
     const { data, error } = await this.supabase
       .from('demoDB')
-      .update([demoData])
+      .update({ firstname, name, email, phone })
       .eq('id', id)
       .select()
   }

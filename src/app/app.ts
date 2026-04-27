@@ -1,6 +1,6 @@
 import { Component, signal, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { Supabase } from './supabase';
+import { Supabase } from './services/supabase';
 import { JsonPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -23,7 +23,7 @@ export class App {
     this.demoDB.setDemoData(demoData);
   }
 
-  updateDemoData(userId: number, demoData: { firstname: string, name: string, email: string, phone: number }) {
-    this.demoDB.getupdateDemoData(userId,  demoData);
+  updateDemoData(userId: number, firstname: string, name: string, email: string, phone: number ) {
+    this.demoDB.getupdateDemoData(userId,  firstname, name, email, phone );
   }
 }

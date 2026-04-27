@@ -1,0 +1,6 @@
+<h2>contact-test</h2>
+@for (user of demoDB.demoDaten(); track user) {
+<div>
+    <p class="user-badge" [style.backgroundColor]="nameColorService.getColor(user.id)">{{ nameColorService.getInitials(user.firstname, user.name) }}</p>
+</div>
+}

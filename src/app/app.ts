@@ -3,10 +3,11 @@ import { RouterOutlet } from '@angular/router';
 import { Supabase } from './services/supabase';
 import { JsonPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ContactTest } from "./components/contact-test/contact-test";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, JsonPipe, FormsModule],
+  imports: [RouterOutlet, JsonPipe, FormsModule, ContactTest],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

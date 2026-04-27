@@ -12,8 +12,8 @@ import { Supabase } from '../../services/supabase';
 export class ContactTest {
   demoDB = inject(Supabase);
   nameColorService = inject(NameColor);
-  ngOnInit() {
-    const kuerzel = this.nameColorService.getInitials('Mustermann', 'Max');
-    console.log('Mein Kürzel Test:', kuerzel);
+
+  showDetails(user: { id: number; created_at: string; firstname: string; name: string; email: string; phone: number; }){
+    
   }
 }

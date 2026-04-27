@@ -1,5 +1,6 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { Supabase } from './supabase';
 
 @Component({
   selector: 'app-root',
@@ -9,4 +10,6 @@ import { RouterOutlet } from '@angular/router';
 })
 export class App {
   protected readonly title = signal('join');
+
+  demoDB = inject(Supabase);
 }

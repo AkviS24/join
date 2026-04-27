@@ -24,6 +24,6 @@ export class App {
   }
 
   updateDemoData(userId: number, demoData: { firstname: string, name: string, email: string, phone: number }) {
-    this.demoDB.updateDemoData(userId,  demoData);
+    this.demoDB.getupdateDemoData(userId,  demoData);
   }
 }

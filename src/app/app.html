@@ -13,4 +13,14 @@
 </form>
 
 
+<form (ngSubmit)="updateDemoData(userId.valueAsNumber, demoData.value)" #demoData="ngForm">
+  <input type="number" #userId name="userId" placeholder="ID des zu aktualisierenden Benutzers" required>
+  <input type="text" name="firstname" ngModel placeholder="Vorname" required>
+  <input type="text" name="name" ngModel placeholder="Nachname" required>
+  <input type="email" name="email" ngModel placeholder="E-Mail" required>
+  <input type="number" name="phone" ngModel placeholder="Telefonnummer" required>
+  <button type="submit">Testdaten aktualisieren</button>
+</form>
+
+
 <router-outlet />

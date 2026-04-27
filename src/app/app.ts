@@ -17,4 +17,8 @@ export class App {
   ngOnInit() {
     this.demoDB.getDemoData();
   }
+
+  addDemoData() {
+    this.demoDB.setDemoData({firstname:"Karl", name:"Arsch", email:"arsch@hotmail.com", phone:1746688412})
+  }
 }

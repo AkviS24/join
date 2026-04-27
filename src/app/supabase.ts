@@ -21,7 +21,7 @@ export class Supabase {
 
   }
 
-  async insertDemoData(demoData: {firstname: string, name: string, email: string, phone: number}) {
+  async setDemoData(demoData: {firstname: string, name: string, email: string, phone: number}) {
     const { data, error} = await this.supabase
       .from('demoDB')
       .insert([demoData])

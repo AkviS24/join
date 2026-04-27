@@ -1,0 +1,88 @@
+@use '../../../styles/abstracts/variables' as *;
+@use '../../../styles/abstracts/mixins' as *;
+
+.user-avatar {
+  position: relative;
+}
+
+.user-avatar__button {
+  @include circle(56px);
+  @include flex-center;
+
+  border: 3px solid $color-dark;
+  background: $color-white;
+  color: $color-primary;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 125ms ease-in-out;
+
+  &:hover {
+    background-color: $color-bg;
+  }
+}
+
+.user-avatar__menu {
+  position: absolute;
+  top: 72px;
+  right: 0;
+  width: 180px;
+  padding: 12px 0;
+  background-color: $color-dark;
+  border-radius: 20px 0 20px 20px;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-8px);
+  transition: opacity 125ms ease-in-out, transform 125ms ease-in-out;
+  z-index: 20;
+}
+
+.user-avatar__menu--open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.user-avatar__menu a,
+.user-avatar__menu button {
+  padding: 14px 24px;
+  color: $color-white;
+  background: transparent;
+  border: none;
+  text-align: left;
+  font: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.user-avatar__menu a:hover,
+.user-avatar__menu button:hover {
+  background-color: rgba($color-primary, 0.16);
+}
+
+.user-avatar__mobile-link {
+  display: none;
+}
+
+@media (max-width: 600px) {
+  .user-avatar__button {
+    @include circle(48px);
+    font-size: 16px;
+  }
+
+  .user-avatar__mobile-link {
+    display: block;
+  }
+
+  .user-avatar__menu {
+    top: 64px;
+    right: -24px;
+    transform: translateX(100%);
+  }
+
+  .user-avatar__menu--open {
+    transform: translateX(0);
+  }
+}

@@ -1,6 +1,35 @@
 <h2>contact-test</h2>
-@for (user of demoDB.demoDaten(); track user) {
-<div>
-    <p class="user-badge" [style.backgroundColor]="nameColorService.getColor(user.id)">{{ nameColorService.getInitials(user.firstname, user.name) }}</p>
+
+<div class="contact-list">
+
+    @for (user of demoDB.demoDaten(); track user; let i = $index) {
+        @if (i === 0 || user.firstname[0].toUpperCase() !== demoDB.demoDaten()[i-1].firstname[0].toUpperCase()) {
+            <div class="letter-separator">
+                {{ user.firstname[0].toUpperCase() }}
+            </div>
+        }
+        <div class="contact-info">
+            <p class="user-badge" [style.backgroundColor]="nameColorService.getColor(user.id)">
+                {{ nameColorService.getInitials(user.firstname, user.name) }}
+            </p>
+            <div class="dis-flex">
+                <p>{{user.firstname}} {{user.name}}</p>
+                <p class="contact-info-email">{{user.email}}</p>
+            </div>
+        </div>
+    }
 </div>
-}
+
+
+<!-- 
+@for (user of demoDB.demoDaten(); track user) {
+@if(!part{{this.nameColorService.getInitials(user.firstname)}}){
+<div #part{{this.nameColorService.getInitials(user.firstname)}}>
+    <p class="user-badge" [style.backgroundColor]="nameColorService.getColor(user.id)">{{
+        nameColorService.getInitials(user.firstname, user.name) }}</p>
+    }
+    @else {
+    <p class="user-badge" [style.backgroundColor]="nameColorService.getColor(user.id)">{{
+        nameColorService.getInitials(user.firstname, user.name) }}</p>
+    }
+    } -->

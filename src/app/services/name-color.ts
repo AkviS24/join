@@ -25,14 +25,10 @@ export class NameColor {
   }
 
   getColor(uid: number): string {
-    console.log(uid);
-
     let colorNumber = uid % this.palette.length;
-
-    console.log(this.palette[colorNumber]);
 
     return this.palette[colorNumber];
   }
 
-  
+
 }

@@ -47,14 +47,13 @@
 
 .user-avatar__menu a,
 .user-avatar__menu button {
-  padding: 14px 24px;
+  padding: 14px 16px;
+  margin: 0 8px;
   color: $color-white;
   background: transparent;
   border: none;
   text-align: left;
   font: inherit;
-  text-decoration: none;
-  cursor: pointer;
 }
 
 .user-avatar__menu a:hover,

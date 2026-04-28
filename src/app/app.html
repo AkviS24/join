@@ -1,26 +1,29 @@
-<app-header></app-header>
-<h1>Test</h1>
-{{ demoDB.demoDaten() | json }}
+<app-navigation></app-navigation>
 
-<!-- <button (click)="addDemoData({ firstname: 'Max', name: 'Mustermann', email: 'max.mustermann@example.com', phone: 123456789 })">Neue Testdaten hinzufügen</button> -->
+<div class="app-layout">
+  <app-header></app-header>
 
-<form (ngSubmit)="addDemoData(demoData.value)" #demoData="ngForm">
-  <input type="text" name="firstname" ngModel placeholder="Vorname" required>
-  <input type="text" name="name" ngModel placeholder="Nachname" required>
-  <input type="email" name="email" ngModel placeholder="E-Mail" required>
-  <input type="number" name="phone" ngModel placeholder="Telefonnummer" required>
-  <button type="submit">Testdaten hinzufügen</button>
-</form>
+  <main class="app-content">
+    <h1>Test</h1>
+    {{ demoDB.demoDaten() | json }}
 
+    <form (ngSubmit)="addDemoData(demoData.value)" #demoData="ngForm">
+      <input type="text" name="firstname" ngModel placeholder="Vorname" required>
+      <input type="text" name="name" ngModel placeholder="Nachname" required>
+      <input type="email" name="email" ngModel placeholder="E-Mail" required>
+      <input type="number" name="phone" ngModel placeholder="Telefonnummer" required>
+      <button type="submit">Testdaten hinzufügen</button>
+    </form>
 
-<form (ngSubmit)="updateDemoData(userId.valueAsNumber, firstname.value, name.value, email.value, phone.valueAsNumber)" #demoData="ngForm">
-  <input type="number" #userId name="userId" placeholder="ID des zu aktualisierenden Benutzers" required>
-  <input type="text" #firstname name="firstname" ngModel placeholder="Vorname" required>
-  <input type="text" #name name="name" ngModel placeholder="Nachname" required>
-  <input type="email" #email name="email" ngModel placeholder="E-Mail" required>
-  <input type="number" #phone name="phone" ngModel placeholder="Telefonnummer" required>
-  <button type="submit">Testdaten aktualisieren</button>
-</form>
+    <form (ngSubmit)="updateDemoData(userId.valueAsNumber, firstname.value, name.value, email.value, phone.valueAsNumber)">
+      <input type="number" #userId placeholder="User ID" required>
+      <input type="text" #firstname placeholder="Vorname" required>
+      <input type="text" #name placeholder="Nachname" required>
+      <input type="email" #email placeholder="E-Mail" required>
+      <input type="number" #phone placeholder="Telefonnummer" required>
+      <button type="submit">Update</button>
+    </form>
 
-
-<router-outlet />
+    <router-outlet></router-outlet>
+  </main>
+</div>

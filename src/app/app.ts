@@ -4,10 +4,11 @@ import { Supabase } from './services/supabase';
 import { JsonPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Header } from './components/header/header';
+import { Navigation } from './components/navigation/navigation';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, JsonPipe, FormsModule, Header],
+  imports: [RouterOutlet, JsonPipe, FormsModule, Header, Navigation],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

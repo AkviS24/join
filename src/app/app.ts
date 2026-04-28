@@ -3,11 +3,11 @@ import { RouterOutlet } from '@angular/router';
 import { Supabase } from './services/supabase';
 import { JsonPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ContactTest } from "./components/contact-test/contact-test";
+import { Contacts } from "./components/contacts/contacts";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, JsonPipe, FormsModule, ContactTest],
+  imports: [RouterOutlet, JsonPipe, FormsModule, Contacts],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
@@ -24,7 +24,7 @@ export class App {
     this.demoDB.setDemoData(demoData);
   }
 
-  updateDemoData(userId: number, firstname: string, name: string, email: string, phone: number ) {
-    this.demoDB.getupdateDemoData(userId,  firstname, name, email, phone );
+  updateDemoData(userId: number, firstname: string, name: string, email: string, phone: number) {
+    this.demoDB.getupdateDemoData(userId, firstname, name, email, phone);
   }
 }

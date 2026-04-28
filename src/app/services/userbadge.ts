@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 
-export class NameColor {
+export class UserBadge {
 
   palette: string[] = [
     '#2E5BFF', '#D7263D', '#1B998B', '#F46036',
@@ -26,9 +26,7 @@ export class NameColor {
 
   getColor(uid: number): string {
     let colorNumber = uid % this.palette.length;
-
     return this.palette[colorNumber];
   }
-
 
 }

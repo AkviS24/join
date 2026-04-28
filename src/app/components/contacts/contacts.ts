@@ -4,7 +4,7 @@ import { Supabase } from '../../services/supabase';
 import { ContactsDetails } from "../contacts-details/contacts-details";
 
 @Component({
-  selector: 'app-contact-test',
+  selector: 'app-contacts',
   imports: [ContactsDetails],
   templateUrl: './contacts.html',
   styleUrl: './contacts.scss',

@@ -1,0 +1,22 @@
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin circle($size) {
+  width: $size;
+  height: $size;
+  border-radius: 50%;
+}
+
+@mixin icon-size($size) {
+  width: $size;
+  height: $size;
+}

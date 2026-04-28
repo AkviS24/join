@@ -1,0 +1,49 @@
+@use '../../../styles/abstracts/variables' as *;
+@use '../../../styles/abstracts/mixins' as *;
+
+.header {
+  height: 96px;
+  padding-inline: 116px 40px;
+  background: $color-white;
+  @include flex-between;
+  box-shadow: 0 4px 4px rgba($color-black, 0.08);
+}
+
+.header__logo {
+  display: none;
+  width: 64px;
+  height: auto;
+}
+
+.header__title {
+  font-size: 20px;
+  font-weight: 400;
+  color: $color-dark;
+}
+
+.header__actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.header__help {
+  @include icon-size(24px);
+  cursor: pointer;
+}
+
+@media (max-width: 600px) {
+  .header {
+    height: 80px;
+    padding: 0 24px;
+  }
+
+  .header__logo {
+    display: block;
+  }
+
+  .header__title,
+  .header__help {
+    display: none;
+  }
+}

@@ -9,7 +9,7 @@
   @include circle(56px);
   @include flex-center;
 
-  border: 3px solid $color-dark;
+  border: 2.5px solid $color-dark;
   background: $color-white;
   color: $color-primary;
   font-size: 18px;
@@ -18,14 +18,14 @@
   transition: background-color 125ms ease-in-out;
 
   &:hover {
-    background-color: $color-bg;
+    background-color: $color-gray;
   }
 }
 
 .user-avatar__menu {
   position: absolute;
-  top: 72px;
-  right: 0;
+  top: 78px;
+  right: -14px;
   width: 180px;
   padding: 12px 0;
   background-color: $color-dark;
@@ -76,8 +76,8 @@
   }
 
   .user-avatar__menu {
-    top: 64px;
-    right: -24px;
+    top: 50px;
+    right: -8px;
     transform: translateX(100%);
   }
 

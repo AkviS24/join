@@ -11,14 +11,13 @@
 
 .header__logo {
   display: none;
-  width: 64px;
+  width: 32px;
   height: auto;
 }
 
 .header__title {
   font-size: 20px;
-  font-weight: 400;
-  color: $color-dark;
+  color: $color-black;
 }
 
 .header__actions {
@@ -28,14 +27,19 @@
 }
 
 .header__help {
-  @include icon-size(24px);
+  @include icon-size(20px);
   cursor: pointer;
+  transition: transform 125ms ease-in-out;
+
+  &:hover {
+    transform: scale(1.15); 
+  }
 }
 
 @media (max-width: 600px) {
   .header {
     height: 80px;
-    padding: 0 24px;
+    padding: 0 16px;
   }
 
   .header__logo {

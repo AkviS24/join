@@ -5,10 +5,11 @@ import { JsonPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Contacts } from "./components/contacts/contacts";
 import { Header } from './components/header/header';
+import { Navigation } from './components/navigation/navigation';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, JsonPipe, FormsModule, Contacts, Header],
+  imports: [RouterOutlet, JsonPipe, FormsModule, Header, Navigation, Contacts],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

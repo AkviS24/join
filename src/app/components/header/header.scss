@@ -3,22 +3,24 @@
 
 .header {
   height: 96px;
+
   padding-inline: 116px 40px;
   background: $color-white;
   @include flex-between;
   box-shadow: 0 4px 4px rgba($color-black, 0.08);
+  position: relative;
+  z-index: 30;
 }
 
 .header__logo {
   display: none;
-  width: 64px;
+  width: 32px;
   height: auto;
 }
 
 .header__title {
   font-size: 20px;
-  font-weight: 400;
-  color: $color-dark;
+  color: $color-black;
 }
 
 .header__actions {
@@ -28,14 +30,21 @@
 }
 
 .header__help {
-  @include icon-size(24px);
+  @include icon-size(20px);
   cursor: pointer;
+  transition: transform 125ms ease-in-out;
+
+  &:hover {
+    transform: scale(1.15);
+  }
 }
 
 @media (max-width: 600px) {
   .header {
     height: 80px;
-    padding: 0 24px;
+    margin-left: 0;
+    width: 100%;
+    padding: 0 16px;
   }
 
   .header__logo {

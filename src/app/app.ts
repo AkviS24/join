@@ -9,8 +9,7 @@ import { Navigation } from './components/navigation/navigation';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, JsonPipe, FormsModule, Header, Navigation],
-  imports: [RouterOutlet, JsonPipe, FormsModule, Contacts, Header],
+  imports: [RouterOutlet, JsonPipe, FormsModule, Header, Navigation, Contacts],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

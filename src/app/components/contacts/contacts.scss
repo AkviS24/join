@@ -10,12 +10,19 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    min-width: 350px;
-    width: 350px;
+    min-width: 320px;
+    width: 320px;
     height: calc(100vh - $header-height);
     overflow-y: auto;
     padding: 16px;
     border: 1px solid $color-white;
+}
+
+.contact-button{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .letter-separator {
@@ -43,6 +50,7 @@
 .short-info {
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 
     >p {
         font-size: 20px;

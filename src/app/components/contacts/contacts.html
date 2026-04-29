@@ -1,7 +1,11 @@
 <section class="contacts">
 
     <div class="contact-list">
-        <button>Add new contact</button>
+        <div class="contact-button">
+            <button class="primary-button">Add new contact
+                <app-svg-db name="person-add"></app-svg-db>
+            </button>
+        </div>
 
         @for (user of demoDB.demoDaten(); track user; let i = $index) {
         @if (i === 0 || user.firstname[0].toUpperCase() !== demoDB.demoDaten()[i-1].firstname[0].toUpperCase()) {
@@ -10,7 +14,7 @@
         </div>
         }
         <div [class.selected-contact]="selectedUser == user" (click)="showDetails(user)" class="contact-info">
-            <p #{{user.id}} class="user-badge" [style.backgroundColor]="userBadgeService.getColor(user.id)">
+            <p class="user-badge" [style.backgroundColor]="userBadgeService.getColor(user.id)">
                 {{ userBadgeService.getInitials(user.firstname, user.name) }}
             </p>
             <div class="short-info">
@@ -20,6 +24,6 @@
         </div>
         }
     </div>
-<app-contacts-details [selectedUser]="selectedUser"></app-contacts-details>
-    
+    <app-contacts-details [selectedUser]="selectedUser"></app-contacts-details>
+
 </section>

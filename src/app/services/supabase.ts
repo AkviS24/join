@@ -16,6 +16,7 @@ export class Supabase {
     let { data: demoDB, error } = await this.supabase
       .from('demoDB')
       .select('*')
+      .order('firstname', { ascending: true });
     if (!demoDB) return
     this.demoDaten.set(demoDB)
 

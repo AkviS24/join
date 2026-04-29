@@ -1,24 +1,26 @@
+@use '../../../styles/abstracts/variables' as *;
+@use '../../../styles/abstracts/mixins' as *;
+
 :host {
     flex-grow: 1;
-    background-color: #F6F7F8;
+    background-color: $color-bg;
     overflow: hidden;
 }
 
 .contact-details {
     padding: 16px;
-    
 
     h3 {
-        font-size: 48px;
+        font-size: 60px;
         font-weight: 600;
     }
 
-    p {
+    .slogan {
         font-size: 28px;
     }
 
     .blue-dash {
-        color: #0F83EE;
+        color: $color-primary;
         font-size: 64px;
         font-weight: 600;
         padding: 0 16px;
@@ -62,7 +64,7 @@
 
     >p {
         &:hover {
-            color: #29ABE2;
+            color: $color-primary;
             cursor: pointer;
         }
     }
@@ -74,6 +76,7 @@
 }
 
 .details-contact-info {
+    font-size: 20px;
     padding: 16px;
 }
 
@@ -81,7 +84,6 @@
     padding: 16px;
 
     p {
-        font-size: 18px;
         font-weight: 600;
         padding: 4px;
     }

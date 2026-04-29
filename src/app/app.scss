@@ -8,13 +8,14 @@
 }
 
 .app-content {
-  padding-inline: 96px;
-  padding-top: 110px;
+  // padding-inline: 96px;
+  // padding-top: 110px;
   background: $color-bg;
   width: 100%;
   max-width: 100%;
-  min-height: 100vh;
+  // min-height: 100vh;
 }
+
 @media (max-width: 600px) {
   .app-layout {
     margin-left: 0;

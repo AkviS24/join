@@ -2,13 +2,13 @@
         <div class="contact-header">
             <h3>Contacts</h3>
             <p class="blue-dash">|</p>
-            <p>Better with a team</p>
+            <p class="slogan">Better with a team</p>
         </div>
         @if (selectedUser) {
         <div class="details-content">
             <div class="details-header">
-                <p class="user-badge" [style.backgroundColor]="nameColorService.getColor(selectedUser.id)">
-                    {{ nameColorService.getInitials(selectedUser.firstname, selectedUser.name) }}
+                <p class="user-badge" [style.backgroundColor]="userBadgeService.getColor(selectedUser.id)">
+                    {{ userBadgeService.getInitials(selectedUser.firstname, selectedUser.name) }}
                 </p>
                 <div class="dis-flex">
                     <h2>{{selectedUser.firstname}} {{selectedUser.name}}</h2>

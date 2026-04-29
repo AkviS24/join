@@ -10,10 +10,10 @@
         </div>
         }
         <div [class.selected-contact]="selectedUser == user" (click)="showDetails(user)" class="contact-info">
-            <p #{{user.id}} class="user-badge" [style.backgroundColor]="nameColorService.getColor(user.id)">
-                {{ nameColorService.getInitials(user.firstname, user.name) }}
+            <p #{{user.id}} class="user-badge" [style.backgroundColor]="userBadgeService.getColor(user.id)">
+                {{ userBadgeService.getInitials(user.firstname, user.name) }}
             </p>
-            <div class="dis-flex">
+            <div class="short-info">
                 <p>{{user.firstname}} {{user.name}}</p>
                 <p class="contact-info-email">{{user.email}}</p>
             </div>

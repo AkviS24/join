@@ -10,7 +10,7 @@ import { Supabase } from '../../services/supabase';
 })
 export class ContactsDetails {
   demoDB = inject(Supabase);
-  nameColorService = inject(UserBadge);
+  userBadgeService = inject(UserBadge);
   @Input() selectedUser: any = null;
 
 }

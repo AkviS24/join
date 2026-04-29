@@ -12,7 +12,7 @@ import { ContactsDetails } from "../contacts-details/contacts-details";
 
 export class Contacts {
   demoDB = inject(Supabase);
-  nameColorService = inject(UserBadge);
+  userBadgeService = inject(UserBadge);
   selectedUser: any = null;
 
   showDetails(user: { id: any}){

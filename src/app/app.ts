@@ -30,6 +30,7 @@ export class App {
     this.demoDB.setDemoData(demoData);
   }
 
+  // Database Funktion um einen neuen Kontakt anzulegen, wird in AddTask Komponente implementiert 
   addData(demoData: { name: string, email: string, password: string, phone: number}) {
     this.contacts.setData(demoData);
   }
@@ -38,10 +39,12 @@ export class App {
     this.demoDB.getupdateDemoData(userId, firstname, name, email, phone);
   }
 
+  // Database Funktion um einen Kontakt zu updaten, wird in Board Komponente implementiert
   updateData(userId: number, name: string, email: string, password: string, phone: number) {
     this.contacts.UpdateDatas(userId, name, email, password, phone);
   }
 
+  // Database Funktion um einen Kontakt zu löschen, wird in Board Komponente implementiert
   deleteContact(id: number) {
     this.contacts.deleteData(id);
   }

@@ -12,14 +12,12 @@ export class Database {
   demoDaten = signal<{ id: number, created_at: string, name: string, email: string, password: string, phone: number, isLoggedIn: boolean }[]>([]);
 
   async getData() {
-
     let { data: contacts, error } = await this.supabase
       .from('contacts')
       .select('*')
       .order('name', { ascending: true });
     if (!contacts) return
     this.demoDaten.set(contacts)
-
   }
 
   async setData(demoData: { name: string, email: string, password: string, phone: number }) {

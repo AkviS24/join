@@ -11,7 +11,7 @@ export class Database {
 
   demoDaten = signal<{ id: number, created_at: string, name: string, email: string, password: string, phone: number, isLoggedIn: boolean }[]>([]);
 
-  async getDemoData() {
+  async getData() {
 
     let { data: contacts, error } = await this.supabase
       .from('contacts')
@@ -22,14 +22,14 @@ export class Database {
 
   }
 
-  async setDemoData(demoData: { name: string, email: string, password: string, phone: number }) {
+  async setData(demoData: { name: string, email: string, password: string, phone: number }) {
     const { data, error } = await this.supabase
       .from('contacts')
       .insert([demoData])
       .select()
   }
 
-  async getupdateDemoData(id: number, name: string, email: string, password: string, phone: number) {
+  async getUpdateData(id: number, name: string, email: string, password: string, phone: number) {
     const { data, error } = await this.supabase
       .from('contacts')
       .update({ name, email, password, phone })

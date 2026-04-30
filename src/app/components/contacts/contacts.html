@@ -6,19 +6,18 @@
                 <app-svg-db name="person-add"></app-svg-db>
             </button>
         </div>
-
-        @for (user of demoDB.demoDaten(); track user; let i = $index) {
-        @if (i === 0 || user.firstname[0].toUpperCase() !== demoDB.demoDaten()[i-1].firstname[0].toUpperCase()) {
+        @for (user of supaDatabase.demoDaten(); track user; let i = $index) {
+        @if (i === 0 || user.name[0].toUpperCase() !== supaDatabase.demoDaten()[i-1].name[0].toUpperCase()) {
         <div class="letter-separator">
-            {{ user.firstname[0].toUpperCase() }}
+            {{ user.name[0].toUpperCase() }}
         </div>
         }
         <div [class.selected-contact]="selectedUser == user" (click)="showDetails(user)" class="contact-info">
             <p class="user-badge" [style.backgroundColor]="userBadgeService.getColor(user.id)">
-                {{ userBadgeService.getInitials(user.firstname, user.name) }}
+                {{ userBadgeService.getInitials(user.name) }}
             </p>
             <div class="short-info">
-                <p>{{user.firstname}} {{user.name}}</p>
+                <p>{{user.name}}</p>
                 <p class="contact-info-email">{{user.email}}</p>
             </div>
         </div>

@@ -26,7 +26,7 @@ export class App {
 
   // Supabase Funktionen nur zu Demozwecken und implementierung in andere Komponenten
 
-  addDemoData(demoData: { firstname: string, name: string, email: string, phone: number }) {
+  addDemoData(demoData: { name: string, email: string, phone: number }) {
     this.demoDB.setDemoData(demoData);
   }
 
@@ -35,8 +35,8 @@ export class App {
     this.contacts.setData(demoData);
   }
 
-  updateDemoData(userId: number, firstname: string, name: string, email: string, phone: number) {
-    this.demoDB.getupdateDemoData(userId, firstname, name, email, phone);
+  updateDemoData(userId: number, name: string, email: string, phone: number) {
+    this.demoDB.getupdateDemoData(userId, name, email, phone);
   }
 
   // Database Funktion um einen Kontakt zu updaten, wird in Board Komponente implementiert

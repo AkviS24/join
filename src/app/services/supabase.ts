@@ -9,30 +9,30 @@ export class Supabase {
   supabaseKey = 'sb_publishable_N4wmb3jqA8vxuofrj9kFPg_45-BAgZo';
   supabase = createClient(this.supabaseUrl, this.supabaseKey);
 
-  demoDaten = signal<{ id: number, created_at: string, firstname: string, name: string, email: string, phone: number }[]>([]);
+  demoDaten = signal<{ id: number, created_at: string, name: string, email: string, phone: number }[]>([]);
 
   async getDemoData() {
 
     let { data: demoDB, error } = await this.supabase
       .from('demoDB')
       .select('*')
-      .order('firstname', { ascending: true });
+      .order('name', { ascending: true });
     if (!demoDB) return
     this.demoDaten.set(demoDB)
 
   }
 
-  async setDemoData(demoData: { firstname: string, name: string, email: string, phone: number }) {
+  async setDemoData(demoData: { name: string, email: string, phone: number }) {
     const { data, error } = await this.supabase
       .from('demoDB')
       .insert([demoData])
       .select()
   }
 
-  async getupdateDemoData(id: number, firstname: string, name: string, email: string, phone: number) {
+  async getupdateDemoData(id: number, name: string, email: string, phone: number) {
     const { data, error } = await this.supabase
       .from('demoDB')
-      .update({ firstname, name, email, phone })
+      .update({ name, email, phone })
       .eq('id', id)
       .select()
   }

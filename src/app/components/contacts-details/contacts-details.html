@@ -1,36 +1,42 @@
 <div class="contact-details">
-        <div class="contact-header">
-            <h3>Contacts</h3>
-            <p class="blue-dash">|</p>
-            <p class="slogan">Better with a team</p>
-        </div>
-        @if (selectedUser) {
-        <div class="details-content">
-            <div class="details-header">
-                <p class="user-badge" [style.backgroundColor]="userBadgeService.getColor(selectedUser.id)">
-                    {{ userBadgeService.getInitials(selectedUser.firstname, selectedUser.name) }}
-                </p>
-                <div class="dis-flex">
-                    <h2>{{selectedUser.firstname}} {{selectedUser.name}}</h2>
-                    <div class="edit-and-delete">
+    <div class="contact-header">
+        <h3>Contacts</h3>
+        <p class="blue-dash">|</p>
+        <p class="slogan">Better with a team</p>
+    </div>
+    @if (selectedUser) {
+    <div class="details-content">
+        <div class="details-header">
+            <p class="user-badge" [style.backgroundColor]="userBadgeService.getColor(selectedUser.id)">
+                {{ userBadgeService.getInitials(selectedUser.name) }}
+            </p>
+            <div class="dis-flex">
+                <h2>{{selectedUser.name}}</h2>
+                <div class="edit-and-delete">
+                    <div class="dis-flex-row">
+                        <app-svg-db name="edit"></app-svg-db>
                         <p>Edit</p>
+                    </div>
+                    <div class="dis-flex-row">
+                        <app-svg-db name="delete"></app-svg-db>
                         <p>Delete</p>
                     </div>
                 </div>
             </div>
-            <p class="details-contact-info">Contact Information</p>
-            <div class="contact-info-sub">
-                <div class="dis-flex">
-                    <p>Email</p> <a href="mailto:{{selectedUser.email}}">{{selectedUser.email}}</a>
-                </div>
-                <div class="dis-flex">
-                    <p>Phone</p> <a href="tel:{{selectedUser.phone}}">{{selectedUser.phone}}</a>
-                </div>
+        </div>
+        <p class="details-contact-info">Contact Information</p>
+        <div class="contact-info-sub">
+            <div class="dis-flex">
+                <p>Email</p> <a href="mailto:{{selectedUser.email}}">{{selectedUser.email}}</a>
+            </div>
+            <div class="dis-flex">
+                <p>Phone</p> <a href="tel:{{selectedUser.phone}}">{{selectedUser.phone}}</a>
             </div>
         </div>
-        } @else {
-        <div class="no-selection">
-            <p>Select a contact to view details</p>
-        </div>
-        }
     </div>
+    } @else {
+    <div class="no-selection">
+        <p>Select a contact to view details</p>
+    </div>
+    }
+</div>

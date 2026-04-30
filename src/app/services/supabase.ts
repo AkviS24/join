@@ -9,7 +9,7 @@ export class Supabase {
   supabaseKey = 'sb_publishable_N4wmb3jqA8vxuofrj9kFPg_45-BAgZo';
   supabase = createClient(this.supabaseUrl, this.supabaseKey);
 
-  demoDaten = signal<{ id: number, created_at: string, name: string, email: string, phone: number }[]>([]);
+  demoDaten = signal<{ id: number, created_at: string, name: string, email: string, phone: number, loggedIn: boolean, password: string }[]>([]);
 
   async getDemoData() {
 
@@ -22,17 +22,17 @@ export class Supabase {
 
   }
 
-  async setDemoData(demoData: { name: string, email: string, phone: number }) {
+  async setDemoData(demoData: { name: string, email: string, phone: number, password: string }) {
     const { data, error } = await this.supabase
       .from('demoDB')
       .insert([demoData])
       .select()
   }
 
-  async getupdateDemoData(id: number, name: string, email: string, phone: number) {
+  async getupdateDemoData(id: number, name: string, email: string, phone: number, password: string) {
     const { data, error } = await this.supabase
       .from('demoDB')
-      .update({ name, email, phone })
+      .update({ name, email, phone, password })
       .eq('id', id)
       .select()
   }

@@ -21,28 +21,27 @@ export class App {
 
   ngOnInit() {
     this.demoDB.getDemoData();
-    this.contacts.getData();
   }
 
   // Supabase Funktionen nur zu Demozwecken und implementierung in andere Komponenten
 
-  addDemoData(demoData: { name: string, email: string, phone: number }) {
+  addDemoData(demoData: {name: string, email: string, phone: number, password: string}) {
     this.demoDB.setDemoData(demoData);
   }
 
-  // Database Funktion um einen neuen Kontakt anzulegen, wird in AddTask Komponente implementiert 
-  addData(demoData: { name: string, email: string, password: string, phone: number}) {
-    this.contacts.setData(demoData);
+  // // Database Funktion um einen neuen Kontakt anzulegen, wird in AddTask Komponente implementiert 
+  // addData(demoData: { name: string, email: string, password: string, phone: number}) {
+  //   this.contacts.setData(demoData);
+  // }
+
+  updateDemoData(id: number, name: string, email: string, phone: number, password: string) {
+    this.demoDB.getupdateDemoData(id, name, email, phone, password);
   }
 
-  updateDemoData(userId: number, name: string, email: string, phone: number) {
-    this.demoDB.getupdateDemoData(userId, name, email, phone);
-  }
-
-  // Database Funktion um einen Kontakt zu updaten, wird in Board Komponente implementiert
-  updateData(userId: number, name: string, email: string, password: string, phone: number) {
-    this.contacts.UpdateDatas(userId, name, email, password, phone);
-  }
+  // // Database Funktion um einen Kontakt zu updaten, wird in Board Komponente implementiert
+  // updateData(userId: number, name: string, email: string, password: string, phone: number) {
+  //   this.contacts.UpdateDatas(userId, name, email, password, phone);
+  // }
 
   // Database Funktion um einen Kontakt zu löschen, wird in Board Komponente implementiert
   deleteContact(id: number) {

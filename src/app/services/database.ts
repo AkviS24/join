@@ -22,17 +22,17 @@ export class Database {
 
   }
 
-  async setDemoData(demoData: { firstname: string, name: string, email: string, phone: number }) {
+  async setDemoData(demoData: { name: string, email: string, password: string, phone: number }) {
     const { data, error } = await this.supabase
       .from('contacts')
       .insert([demoData])
       .select()
   }
 
-  async getupdateDemoData(id: number, firstname: string, name: string, email: string, phone: number) {
+  async getupdateDemoData(id: number, name: string, email: string, password: string, phone: number) {
     const { data, error } = await this.supabase
       .from('contacts')
-      .update({ firstname, name, email, phone })
+      .update({ name, email, password, phone })
       .eq('id', id)
       .select()
   }

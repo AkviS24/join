@@ -24,6 +24,8 @@ export class App {
     this.contacts.getData();
   }
 
+  // Supabase Funktionen nur zu Demozwecken und implementierung in andere Komponenten
+
   addDemoData(demoData: { firstname: string, name: string, email: string, phone: number }) {
     this.demoDB.setDemoData(demoData);
   }

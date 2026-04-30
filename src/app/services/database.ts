@@ -29,11 +29,19 @@ export class Database {
       .select()
   }
 
-  async getUpdateData(id: number, name: string, email: string, password: string, phone: number) {
+  async UpdateDatas(id: number, name: string, email: string, password: string, phone: number) {
     const { data, error } = await this.supabase
       .from('contacts')
       .update({ name, email, password, phone })
-      .eq('id', id)
       .select()
+      .eq('id', id)
+  }
+
+  async deleteData(id: number) {
+    const {data, error} = await this.supabase
+      .from('contacts')
+      .delete()
+      .select()
+      .eq('id', id)
   }
 }

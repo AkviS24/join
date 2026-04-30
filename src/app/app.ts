@@ -37,6 +37,10 @@ export class App {
   }
 
   updateData(userId: number, name: string, email: string, password: string, phone: number) {
-    this.contacts.getUpdateData(userId, name, email, password, phone);
+    this.contacts.UpdateDatas(userId, name, email, password, phone);
+  }
+
+  deleteContact(id: number) {
+    this.contacts.deleteData(id);
   }
 }

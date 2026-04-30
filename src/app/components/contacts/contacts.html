@@ -1,29 +1,46 @@
 <section class="contacts">
-
-    <div class="contact-list">
-        <div class="contact-button">
-            <button class="primary-button">Add new contact
-                <app-svg-db name="person-add"></app-svg-db>
-            </button>
-        </div>
-
-        @for (user of demoDB.demoDaten(); track user; let i = $index) {
-        @if (i === 0 || user.firstname[0].toUpperCase() !== demoDB.demoDaten()[i-1].firstname[0].toUpperCase()) {
-        <div class="letter-separator">
-            {{ user.firstname[0].toUpperCase() }}
-        </div>
-        }
-        <div [class.selected-contact]="selectedUser == user" (click)="showDetails(user)" class="contact-info">
-            <p class="user-badge" [style.backgroundColor]="userBadgeService.getColor(user.id)">
-                {{ userBadgeService.getInitials(user.firstname, user.name) }}
-            </p>
-            <div class="short-info">
-                <p>{{user.firstname}} {{user.name}}</p>
-                <p class="contact-info-email">{{user.email}}</p>
-            </div>
-        </div>
-        }
+  <div class="contact-list">
+    <div class="contact-button">
+      <button class="primary-button" (click)="openAddContact()">
+        Add new contact
+        <app-svg-db name="person-add"></app-svg-db>
+      </button>
     </div>
-    <app-contacts-details [selectedUser]="selectedUser"></app-contacts-details>
 
+    @for (user of demoDB.demoDaten(); track user; let i = $index) {
+      @if (
+        i === 0 || user.name[0].toUpperCase() !== demoDB.demoDaten()[i - 1].name[0].toUpperCase()
+      ) {
+        <div class="letter-separator">
+          {{ user.name[0].toUpperCase() }}
+        </div>
+      }
+      <div
+        [class.selected-contact]="selectedUser == user"
+        (click)="showDetails(user)"
+        class="contact-info"
+      >
+        <p class="user-badge" [style.backgroundColor]="userBadgeService.getColor(user.id)">
+          {{ userBadgeService.getInitials(user.name) }}
+        </p>
+        <div class="short-info">
+          <p>{{ user.name }}</p>
+          <p class="contact-info-email">{{ user.email }}</p>
+        </div>
+      </div>
+    }
+  </div>
+  <app-contacts-details
+    [selectedUser]="selectedUser"
+    (editContact)="openEditContact()"
+    (deleteContact)="deleteContact()"
+  ></app-contacts-details>
+
+  @if (showAddContact) {
+    <app-contacts-add (closeEdit)="closeAddContact()"></app-contacts-add>
+  }
+
+  @if (showEditContact) {
+    <app-contacts-edit [user]="selectedUser" (closeEdit)="closeEditContact()"></app-contacts-edit>
+  }
 </section>

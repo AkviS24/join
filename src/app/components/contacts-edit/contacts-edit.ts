@@ -1,18 +1,34 @@
-import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { Supabase } from '../../services/supabase';
+import { UserBadge } from '../../services/userbadge';
 
 @Component({
   selector: 'app-contacts-edit',
-  imports: [],
+  imports: [FormsModule],
   templateUrl: './contacts-edit.html',
   styleUrl: './contacts-edit.scss',
 })
-export class ContactsEdit {
+export class ContactsEdit implements OnInit {
   @Input() user: any;
   @Output() closeEdit = new EventEmitter<void>();
 
   demoDB = inject(Supabase);
+  userBadgeService = inject(UserBadge);
   isDeleting: boolean = false;
+  isSaving: boolean = false;
+
+  contactName: string = '';
+  contactEmail: string = '';
+  contactPhone: string = '';
+
+  ngOnInit() {
+    if (this.user) {
+      this.contactName = this.user.name || '';
+      this.contactEmail = this.user.email || '';
+      this.contactPhone = this.user.phone || '';
+    }
+  }
 
   close() {
     this.closeEdit.emit();
@@ -22,10 +38,28 @@ export class ContactsEdit {
     if (!this.user?.id || this.isDeleting) return;
     this.isDeleting = true;
 
-    await this.demoDB.deleteDemoData(this.user.id);
-    await this.demoDB.getDemoData(); // Aktualisiert die lokale Kontaktliste
+    await this.demoDB.deleteData(this.user.id);
+    await this.demoDB.getDemoData();
 
     this.isDeleting = false;
     this.close();
+  }
+
+  async saveContact() {
+    if (!this.user?.id || this.isSaving) return;
+    this.isSaving = true;
+
+    const phoneNum = Number(String(this.contactPhone).replace(/\D/g, '')) || 0;
+
+    await this.demoDB.getupdateDemoData(
+      this.user.id,
+      this.contactName.trim(),
+      this.contactEmail.trim(),
+      phoneNum,
+    );
+    await this.demoDB.getDemoData(); // Liste sofort aktualisieren
+
+    this.isSaving = false;
+    this.close(); // Fenster schließen
   }
 }

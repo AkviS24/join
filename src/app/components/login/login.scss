@@ -11,7 +11,7 @@
 }
 
 .bg-blue {
-  background-color: var(--clr-main) !important;
+ 
   .privacyPolicy,
   .legalNotice,
   span {
@@ -176,14 +176,16 @@
 .loginButtons {
   border: none;
   border-radius: 8px;
-  padding: 10px 35px;
+  padding: 15px 15px;
   gap: 10px;
-  font-size: 23px;
+  font-size: 21px;
+  font-weight: bold;
   cursor: pointer;
 }
 
 .signUpButton {
   color: #fff;
+  font-size: 16px;
   background-color: #2a3647;
   gap: 10px;
 }
@@ -211,13 +213,16 @@
 .loginButtonGuest {
   color: #647188;
   background-color: #fff;
-  border: 1px solid #647188;
+  border: 2px solid #647188;
   white-space: nowrap;
+  font-family: 'Inter', sans-serif;
+  font-weight: bold;
+  font-size: 21px;
 }
 
 .loginButtonGuest:hover {
   background-color: #fff;
-  border: 1px solid #29abe2;
+  border: 2px solid #29abe2;
   color: #29abe2;
   box-shadow: 0px 4px 4px 0px #00000040;
 }
@@ -233,7 +238,7 @@
 
 .pp-inbox-link {
   text-decoration: none;
-  color: var(--clr-main);
+  color: #29abe2;
 }
 
 .pp-inbox-link:hover {

@@ -1,10 +1,13 @@
-<app-navigation></app-navigation>
+@if (hideMenuAndHeader) {
+  <router-outlet></router-outlet>
+} @else {
+  <app-navigation></app-navigation>
 
-<div class="app-layout">
-  <app-header></app-header>
+  <div class="app-layout">
+    <app-header></app-header>
 
-  <main class="app-content">
-    <!-- <h1>Test</h1>
+    <main class="app-content">
+      <!-- <h1>Test</h1>
     {{ demoDB.demoDaten() | json }}
 
     <form (ngSubmit)="addDemoData(demoData.value)" #demoData="ngForm">
@@ -24,6 +27,7 @@
       <button type="submit">Update</button>
     </form> -->
 
-    <router-outlet></router-outlet>
-  </main>
-</div>
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+}

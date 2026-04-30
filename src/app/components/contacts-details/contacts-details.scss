@@ -17,6 +17,7 @@
 
     .slogan {
         font-size: 28px;
+        text-align: center;
     }
 
     .blue-dash {
@@ -34,6 +35,7 @@
     >.user-badge {
         width: 120px;
         height: 120px;
+        flex-shrink: 0;
         margin-left: 0;
         font-size: 36px;
         border: white 4px solid;
@@ -62,15 +64,18 @@
 .edit-and-delete {
     display: flex;
 
-    >p {
+    .dis-flex-row {
         &:hover {
             color: $color-primary;
             cursor: pointer;
+            ::ng-deep app-svg-db{
+                fill: $color-primary;
+            }
         }
     }
 }
 
-.details-content{
+.details-content {
     padding: 16px;
     animation: slideInRight 0.3s ease-out forwards;
 }
@@ -94,9 +99,19 @@
     }
 }
 
-.no-selection{
+.no-selection {
     padding-left: 16px;
     padding-top: 16px;
+}
+
+.dis-flex {
+    display: flex;
+    flex-direction: column;
+}
+
+.dis-flex-row {
+    display: flex;
+    align-items: center;
 }
 
 @keyframes slideInRight {
@@ -104,6 +119,7 @@
         opacity: 0;
         transform: translateX(100%);
     }
+
     to {
         opacity: 1;
         transform: translateX(0);

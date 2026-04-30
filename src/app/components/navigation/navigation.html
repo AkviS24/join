@@ -33,7 +33,7 @@
     } @else {
       <a
         class="navigation__link"
-        routerLink="/"
+        routerLink="/login"
         routerLinkActive="navigation__link--active"
         [routerLinkActiveOptions]="{ exact: true }"
       >
@@ -43,12 +43,12 @@
     }
   </div>
 
-  @if (isLoggedIn) {
+ 
     <div class="navigation__legal">
       <a routerLink="/privacy-police" routerLinkActive="navigation__legal--active"
         >Privacy Policy</a
       >
       <a routerLink="/legal-notice" routerLinkActive="navigation__legal--active">Legal notice</a>
     </div>
-  }
+
 </nav>

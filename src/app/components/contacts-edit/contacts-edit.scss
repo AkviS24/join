@@ -192,6 +192,16 @@
   object-fit: contain;
 }
 
+.error-msg {
+  color: #ff3333;
+  font-size: 13px;
+  margin-top: -24px;
+  padding-left: 21px;
+  display: flex;
+  flex-direction: column;
+  min-height: 16px;
+}
+
 /* Button Styles */
 .form-actions {
   display: flex;

@@ -28,17 +28,17 @@ export class ContactsAdd implements OnInit {
   }
 
   get fullName(): string {
-    const firstName =
-      this.user?.firstname === 'null' || !this.user?.firstname ? '' : this.user.firstname;
-    const lastName = this.user?.name === 'null' || !this.user?.name ? '' : this.user.name;
-    return `${firstName} ${lastName}`.trim();
+    return this.user?.name === 'null' || !this.user?.name ? '' : this.user.name.trim();
   }
 
   get initials(): string {
-    const firstNameInitial =
-      this.user?.firstname === 'null' || !this.user?.firstname ? '' : this.user.firstname[0];
-    const lastNameInitial = this.user?.name === 'null' || !this.user?.name ? '' : this.user.name[0];
-    return `${firstNameInitial}${lastNameInitial}`.trim();
+    const nameStr = this.user?.name === 'null' || !this.user?.name ? '' : this.user.name.trim();
+    if (!nameStr) return '';
+    const parts = nameStr.split(' ').filter((n: string) => n.length > 0);
+    if (parts.length > 1) {
+      return `${parts[0][0]}${parts[parts.length - 1][0]}`.toUpperCase();
+    }
+    return nameStr.substring(0, 2).toUpperCase();
   }
 
   close() {
@@ -49,17 +49,14 @@ export class ContactsAdd implements OnInit {
     if (this.isLoading) return;
     this.isLoading = true;
 
-    // Teilt Vorname und Nachname am ersten Leerzeichen
-    const nameParts = this.contactName.trim().split(' ');
     const newContact = {
-      firstname: nameParts[0] || '',
-      name: nameParts.slice(1).join(' ') || '',
+      name: this.contactName.trim() || '',
       email: this.contactEmail,
-      phone: Number(this.contactPhone.replace(/\D/g, '')) || 0, 
+      phone: Number(this.contactPhone.replace(/\D/g, '')) || 0,
     };
 
     await this.demoDB.setDemoData(newContact);
-    await this.demoDB.getDemoData(); 
+    await this.demoDB.getDemoData();
     this.isLoading = false;
     this.close();
   }

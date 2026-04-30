@@ -136,6 +136,13 @@ export class Login implements OnInit {
     this.errorMessage = '';
     this.successMessage = '';
 
+    if (!this.isFormValid()) {
+      this.errorMessage =
+        this.getSignUpHint() ||
+        'Bitte fülle alle Felder korrekt aus und akzeptiere die Privacy Policy.';
+      return;
+    }
+
     if (this.password !== this.confirmPassword) {
       this.errorMessage = 'Die Passwörter stimmen nicht überein!';
       return;
@@ -154,10 +161,8 @@ export class Login implements OnInit {
       }
 
       // Speichere den neuen Benutzer zusätzlich in der demoDB-Tabelle
-      const nameParts = this.name.trim().split(' ');
       await this.supabaseService.setDemoData({
-        firstname: nameParts[0] || '',
-        name: nameParts.slice(1).join(' ') || '',
+        name: this.name.trim() || '',
         email: this.email,
         phone: 0,
       });
@@ -168,7 +173,8 @@ export class Login implements OnInit {
       setTimeout(async () => {
         await this.loginUser();
       }, 1500);
-    } catch (e) {
+    } catch (e: any) {
+      this.errorMessage = 'Ein unerwarteter Fehler ist aufgetreten: ' + (e.message || e);
       console.error('Registration error', e);
     }
   }
@@ -196,7 +202,11 @@ export class Login implements OnInit {
       });
 
       if (error) {
-        this.errorMessage = 'Benutzer oder Passwort falsch.';
+        if (error.message === 'Email not confirmed') {
+          this.errorMessage = 'Bitte bestätige zuerst deine E-Mail (Posteingang prüfen)!';
+        } else {
+          this.errorMessage = 'Login fehlgeschlagen: ' + error.message;
+        }
         return;
       }
 

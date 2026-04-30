@@ -16,7 +16,7 @@ export class Database {
     let { data: contacts, error } = await this.supabase
       .from('contacts')
       .select('*')
-      .order('firstname', { ascending: true });
+      .order('name', { ascending: true });
     if (!contacts) return
     this.demoDaten.set(contacts)
 

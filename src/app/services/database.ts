@@ -4,34 +4,34 @@ import { createClient } from '@supabase/supabase-js';
 @Injectable({
   providedIn: 'root',
 })
-export class Supabase {
+export class Database {
   supabaseUrl = 'https://ihqvvagcuemrsbalsksp.supabase.co';
   supabaseKey = 'sb_publishable_N4wmb3jqA8vxuofrj9kFPg_45-BAgZo';
   supabase = createClient(this.supabaseUrl, this.supabaseKey);
 
-  demoDaten = signal<{ id: number, created_at: string, firstname: string, name: string, email: string, phone: number }[]>([]);
+  demoDaten = signal<{ id: number, created_at: string, name: string, email: string, password: string, phone: number, isLoggedIn: boolean }[]>([]);
 
   async getDemoData() {
 
-    let { data: demoDB, error } = await this.supabase
-      .from('demoDB')
+    let { data: contacts, error } = await this.supabase
+      .from('contacts')
       .select('*')
       .order('firstname', { ascending: true });
-    if (!demoDB) return
-    this.demoDaten.set(demoDB)
+    if (!contacts) return
+    this.demoDaten.set(contacts)
 
   }
 
   async setDemoData(demoData: { firstname: string, name: string, email: string, phone: number }) {
     const { data, error } = await this.supabase
-      .from('demoDB')
+      .from('contacts')
       .insert([demoData])
       .select()
   }
 
   async getupdateDemoData(id: number, firstname: string, name: string, email: string, phone: number) {
     const { data, error } = await this.supabase
-      .from('demoDB')
+      .from('contacts')
       .update({ firstname, name, email, phone })
       .eq('id', id)
       .select()

@@ -1,0 +1,164 @@
+<div id="loginMainContainer" class="loginMainContainer" [class.bg-blue]="isSignUpMode">
+  @if (showOverlay) {
+    <div class="blue-overlay" id="blue-overlay">
+      <div class="joinLogoWhite logo-animation" id="logo" (animationend)="hideOverlay()">
+        <img src="/icons/img/logo.svg" alt="logo" />
+      </div>
+    </div>
+  }
+  <header class="loginHeader">
+    <div class="joinLogoBlue">
+      <img [src]="isSignUpMode ? '/icons/img/logo-m.svg' : '/icons/img/logo-m.svg'" alt="logo" />
+    </div>
+    <div class="signUpField" [class.fade-out]="isSignUpMode">
+      <span>Not a Join user?</span>
+      <button class="loginButtons signUpButton" (click)="toggleSignUpMode()">Sign up</button>
+    </div>
+  </header>
+  <div class="login-page">
+    <div class="login-box">
+      @if (isSignUpMode) {
+        <img
+          class="back-arrow"
+          src="/icons/img/icon-arrow_left.svg"
+          alt="Back to login"
+          (click)="backToLogin()"
+        />
+      }
+      <div class="h1LoginBox">
+        <h1 class="loginH1">{{ isSignUpMode ? 'Sign up' : 'Log in' }}</h1>
+        <div class="horizontalH1Underline"></div>
+      </div>
+      <form (ngSubmit)="isSignUpMode ? registerUser() : loginUser()">
+        @if (isSignUpMode) {
+          <div class="loginNameBox loginInputField">
+            <input
+              type="text"
+              id="sign_up_name"
+              name="name"
+              [(ngModel)]="name"
+              placeholder="Name"
+              type="text"
+              required
+            />
+            <div class="mailIcon"><img src="/icons/img/perso.svg" alt="user" /></div>
+          </div>
+        }
+        <div class="loginEmailBox loginInputField">
+          <input
+            type="email"
+            id="loginEmailInput"
+            name="email"
+            [(ngModel)]="email"
+            placeholder="Email"
+            required
+          />
+          <div class="mailIcon"><img src="/icons/img/mail.svg" alt="letter" /></div>
+        </div>
+
+        <div class="loginPasswordBox loginInputField">
+          <input
+            [type]="isPasswordVisible ? 'text' : 'password'"
+            id="loginPasswordInput"
+            name="password"
+            [(ngModel)]="password"
+            placeholder="Password"
+            required
+          />
+          <div class="mailIcon">
+            @if (password.length > 0) {
+              <img
+                [src]="
+                  isPasswordVisible ? '/icons/img/visibility.svg' : '/icons/img/visibility_off.svg'
+                "
+                alt="toggle password visibility"
+                (click)="togglePasswordVisibility()"
+                style="cursor: pointer"
+              />
+            } @else {
+              <img src="/icons/img/lock.svg" alt="lock" />
+            }
+          </div>
+        </div>
+
+        @if (isSignUpMode) {
+          <div class="loginConfirmPasswordBox loginInputField">
+            <input
+              [type]="isConfirmPasswordVisible ? 'text' : 'password'"
+              id="loginConfirmPasswordInput"
+              name="confirmPassword"
+              [(ngModel)]="confirmPassword"
+              placeholder="Confirm Password"
+              required
+            />
+            <div class="mailIcon">
+              @if (confirmPassword.length > 0) {
+                <img
+                  [src]="
+                    isConfirmPasswordVisible
+                      ? '/icons/img/visibility.svg'
+                      : '/icons/img/visibility_off.svg'
+                  "
+                  alt="toggle confirm password visibility"
+                  (click)="toggleConfirmPasswordVisibility()"
+                  style="cursor: pointer"
+                />
+              } @else {
+                <img src="/icons/img/lock.svg" alt="lock" />
+              }
+            </div>
+          </div>
+
+          <div class="accept-the-terms">
+            <input
+              class="checkbox"
+              type="checkbox"
+              name="acceptTerms"
+              [(ngModel)]="acceptTerms"
+              id="accept_terms"
+            />
+            <label for="accept_terms"
+              >I accept the
+              <a class="pp-inbox-link" routerLink="/privacy-police">Privacy Policy</a></label
+            >
+          </div>
+
+          <div class="signup-hint">
+            {{ getSignUpHint() }}
+          </div>
+        }
+
+        <div class="loginButtonsBox">
+          @if (isSignUpMode) {
+            <button class="loginButtons loginButtonUser" type="submit" [disabled]="!isFormValid()">
+              Sign up
+            </button>
+          } @else {
+            <button class="loginButtons loginButtonUser" type="submit">Log in</button>
+            <button class="loginButtons loginButtonGuest" type="button" (click)="guestLogin()">
+              Guest log in
+            </button>
+          }
+        </div>
+      </form>
+      <div class="message-placeholder">
+        @if (errorMessage) {
+          <span style="color: red">{{ errorMessage }}</span>
+        }
+        @if (successMessage) {
+          <span style="color: #20d86e">{{ successMessage }}</span>
+        }
+      </div>
+    </div>
+  </div>
+  <div class="signUpField-mobile" [class.fade-out]="isSignUpMode">
+    <span>Not a join user?</span>
+    <button class="loginButtons signUpButton signUpButton-mobile" (click)="toggleSignUpMode()">
+      Sign up
+    </button>
+  </div>
+  <div class="loginFooter">
+    <div class="privacyPolicy" routerLink="/privacy-police"><span>Privacy policy</span></div>
+    <div class="legalNotice" routerLink="/legal-notice"><span>Legal notice</span></div>
+  </div>
+</div>

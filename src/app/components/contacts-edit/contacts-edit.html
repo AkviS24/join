@@ -1,0 +1,55 @@
+<div class="overlay-container">
+  <div class="left-panel">
+    <img src="/icons/img/logo-w.svg" alt="Join Logo" class="logo" />
+    <div class="title-group">
+      <h1>Edit contact</h1>
+      <img src="/icons/img/underline.svg" alt="Underline" class="underline" />
+    </div>
+  </div>
+
+  <div class="right-panel">
+    <button class="close-btn" aria-label="Close" (click)="close()">
+      <img src="/icons/img/close.svg" alt="Close Icon" />
+    </button>
+
+    <div class="content-wrapper">
+      <div class="avatar-container">
+        <!--merged image-->
+        <img src="/icons/img/avatar.svg" alt="Avatar Background" class="avatar-bg" />
+        <span class="avatar-text">{{ user?.firstname?.[0] }}{{ user?.name?.[0] }}</span>
+      </div>
+
+      <form class="contact-form">
+        <div class="input-group active">
+          <input type="text" [value]="user?.firstname + ' ' + user?.name" placeholder="Name" />
+          <img src="/icons/img/person.svg" alt="Person Icon" class="input-icon" />
+        </div>
+
+        <div class="input-group">
+          <input type="email" [value]="user?.email" placeholder="Email" />
+          <img src="/icons/img/email.svg" alt="Mail Icon" class="input-icon" />
+        </div>
+
+        <div class="input-group">
+          <input type="tel" [value]="user?.phone" placeholder="Phone" />
+          <img src="/icons/img/phone.svg" alt="Phone Icon" class="input-icon" />
+        </div>
+
+        <div class="form-actions">
+          <button
+            type="button"
+            class="btn-delete"
+            (click)="deleteContact()"
+            [disabled]="isDeleting"
+          >
+            {{ isDeleting ? 'Deleting...' : 'Delete' }}
+          </button>
+          <button type="submit" class="btn-save">
+            Save
+            <img src="/icons/img/save.svg" alt="Check Icon" />
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

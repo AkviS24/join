@@ -2,45 +2,53 @@
   <img class="navigation__logo" src="images/join-sidebar.png" alt="Join Logo" />
 
   <div class="navigation__links">
-    <a
-      class="navigation__link"
-      routerLink="/summary"
-      routerLinkActive="navigation__link--active"
-    >
-      <img src="icons/summary.png" alt="" />
-      <span>Summary</span>
-    </a>
+    @if (isLoggedIn) {
+      <a class="navigation__link" routerLink="/summary" routerLinkActive="navigation__link--active">
+        <img src="icons/summary.png" alt="Summary" />
+        <span>Summary</span>
+      </a>
 
-    <a
-      class="navigation__link"
-      routerLink="/add-task"
-      routerLinkActive="navigation__link--active"
-    >
-      <img src="icons/task.png" alt="" />
-      <span>Add Task</span>
-    </a>
+      <a
+        class="navigation__link"
+        routerLink="/add-task"
+        routerLinkActive="navigation__link--active"
+      >
+        <img src="icons/task.png" alt="Add Task" />
+        <span>Add Task</span>
+      </a>
 
-    <a
-      class="navigation__link"
-      routerLink="/board"
-      routerLinkActive="navigation__link--active"
-    >
-      <img src="icons/board.png" alt="" />
-      <span>Board</span>
-    </a>
+      <a class="navigation__link" routerLink="/board" routerLinkActive="navigation__link--active">
+        <img src="icons/board.png" alt="Board" />
+        <span>Board</span>
+      </a>
 
-    <a
-      class="navigation__link"
-      routerLink="/contacts"
-      routerLinkActive="navigation__link--active"
-    >
-      <img src="icons/contacts.png" alt="" />
-      <span>Contacts</span>
-    </a>
+      <a
+        class="navigation__link"
+        routerLink="/contacts"
+        routerLinkActive="navigation__link--active"
+      >
+        <img src="icons/contacts.png" alt="Contacts" />
+        <span>Contacts</span>
+      </a>
+    } @else {
+      <a
+        class="navigation__link"
+        routerLink="/"
+        routerLinkActive="navigation__link--active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <img src="/icons/img/login.svg" alt="Login" />
+        <span>Log in</span>
+      </a>
+    }
   </div>
 
-  <div class="navigation__legal">
-    <a href="#">Privacy Policy</a>
-    <a href="#">Legal notice</a>
-  </div>
+  @if (isLoggedIn) {
+    <div class="navigation__legal">
+      <a routerLink="/privacy-police" routerLinkActive="navigation__legal--active"
+        >Privacy Policy</a
+      >
+      <a routerLink="/legal-notice" routerLinkActive="navigation__legal--active">Legal notice</a>
+    </div>
+  }
 </nav>

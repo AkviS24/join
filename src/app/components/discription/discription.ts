@@ -1,13 +1,12 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-discription',
-  imports: [],
+  imports: [RouterModule],
   templateUrl: './discription.html',
   styleUrl: './discription.scss',
 })
 export class Discription {
   constructor(private router: Router) {}
-
 }

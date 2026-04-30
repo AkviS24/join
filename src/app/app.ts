@@ -40,7 +40,7 @@ export class App {
     this.demoDB.setDemoData(demoData);
   }
 
-  // Database Funktion um einen neuen Kontakt anzulegen, wird in AddTask Komponente implementiert
+ 
   addData(demoData: { name: string; email: string; password: string; phone: number }) {
     this.contacts.setData(demoData);
   }

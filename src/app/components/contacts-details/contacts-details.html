@@ -4,20 +4,20 @@
     <p class="blue-dash">|</p>
     <p class="slogan">Better with a team</p>
   </div>
-  @if (selectedUser) {
+  @if (user) {
     <div class="details-content">
       <div class="details-header">
-        <p class="user-badge" [style.backgroundColor]="userBadgeService.getColor(selectedUser.id)">
-          {{ userBadgeService.getInitials(selectedUser.name) }}
+        <p class="user-badge" [style.backgroundColor]="userBadgeService.getColor(user.id)">
+          {{ userBadgeService.getInitials(user.name) }}
         </p>
         <div class="dis-flex">
-          <h2>{{ selectedUser.name }}</h2>
+          <h2>{{ user.name }}</h2>
           <div class="edit-and-delete">
-            <div class="dis-flex-row" (click)="this['editContact'].emit()">
+            <div class="dis-flex-row" (click)="onEditClick()">
               <app-svg-db name="edit"></app-svg-db>
               <p>Edit</p>
             </div>
-            <div class="dis-flex-row" (click)="this['deleteContact'].emit()">
+            <div class="dis-flex-row" (click)="onDeleteClick()">
               <app-svg-db name="delete"></app-svg-db>
               <p>Delete</p>
             </div>
@@ -28,11 +28,11 @@
       <div class="contact-info-sub">
         <div class="dis-flex">
           <p>Email</p>
-          <a href="mailto:{{ selectedUser.email }}">{{ selectedUser.email }}</a>
+          <a href="mailto:{{ user.email }}">{{ user.email }}</a>
         </div>
         <div class="dis-flex">
           <p>Phone</p>
-          <a href="tel:{{ selectedUser.phone }}">{{ selectedUser.phone }}</a>
+          <a href="tel:{{ user.phone }}">{{ user.phone }}</a>
         </div>
       </div>
     </div>

@@ -14,9 +14,8 @@ export class UserBadge {
     '#7B3F00', '#4A5859', '#916953', '#310D20'
   ];
 
-  getInitials(firstname: string, name: string): string {
-    let fullName = firstname + " " + name;
-    return fullName
+  getInitials(name: string): string {
+    return name
       .split(' ')
       .map(n => n[0])
       .join('')

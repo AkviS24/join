@@ -97,12 +97,12 @@ span {
     margin: 10px;
     border-left: none;
     padding-left: 18px;
-    max-height: 696px;
+    height: 100vh;
   }
 }
 
 @media (max-width: 376px) {
   .privacypolicy {
-    max-height: 488px;
+    height: 100vh;
   }
 }

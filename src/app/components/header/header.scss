@@ -38,6 +38,14 @@
     transform: scale(1.15);
   }
 }
+@media (max-width: 1020px) {
+  .header {
+    height: 80px;
+    margin-left: 0;
+    width: 100%;
+    padding: 0 16px;
+  }
+}
 
 @media (max-width: 600px) {
   .header {

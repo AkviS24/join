@@ -128,6 +128,15 @@
           </div>
         }
 
+        <div class="message-placeholder">
+          @if (errorMessage) {
+            <span style="color: red">{{ errorMessage }}</span>
+          }
+          @if (successMessage) {
+            <span style="color: #20d86e">{{ successMessage }}</span>
+          }
+        </div>
+
         <div class="loginButtonsBox">
           @if (isSignUpMode) {
             <button class="loginButtons loginButtonUser" type="submit">Sign up</button>
@@ -139,14 +148,6 @@
           }
         </div>
       </form>
-      <div class="message-placeholder">
-        @if (errorMessage) {
-          <span style="color: red">{{ errorMessage }}</span>
-        }
-        @if (successMessage) {
-          <span style="color: #20d86e">{{ successMessage }}</span>
-        }
-      </div>
     </div>
   </div>
   <div class="signUpField-mobile" [class.fade-out]="isSignUpMode">

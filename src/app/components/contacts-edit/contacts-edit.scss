@@ -14,16 +14,12 @@
 }
 
 @keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
+  0% { opacity: 0; }
+  100% { opacity: 1; }
 }
 
 .overlay-container {
-  width: 100%;
+  width: 90%;
   max-width: 1212px;
   height: 592px;
   background-color: #ffffff;
@@ -36,15 +32,10 @@
 }
 
 @keyframes slideInRight {
-  0% {
-    transform: translateX(100vw);
-  }
-  100% {
-    transform: translateX(0);
-  }
+  0% { transform: translateX(100vw); }
+  100% { transform: translateX(0); }
 }
 
-/* Left Panel Styles */
 .left-panel {
   width: 453px;
   background-color: #2a3647;
@@ -73,6 +64,13 @@
   font-weight: 700;
   margin: 0;
   line-height: 1.2;
+}
+
+.title-group h2 {
+  color: #ffffff;
+  font-size: 27px;
+  font-weight: 400;
+  margin: 0;
 }
 
 .underline {
@@ -116,43 +114,36 @@
   padding: 0 40px;
 }
 
-/* Avatar Styles */
 .avatar-container {
   position: relative;
   width: 120px;
   height: 120px;
   border-radius: 50%;
   border: 3px solid #ffffff;
-  box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  background-color: #ffc700; /* Fallback color */
-}
-
-.avatar-bg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
+  color: #ffffff;
 }
 
 .avatar-text {
   position: relative;
   z-index: 2;
-  color: #ffffff;
   font-size: 47px;
   font-weight: 500;
 }
 
-/* Form Styles */
+.default-avatar {
+  width: 64px;
+  height: 64px;
+}
+
 .contact-form {
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 15px;
   width: 100%;
   max-width: 422px;
 }
@@ -174,6 +165,7 @@
 
 .input-group input {
   flex: 1;
+  min-width: 0;
   border: none;
   outline: none;
   font-size: 20px;
@@ -189,6 +181,7 @@
 .input-icon {
   width: 24px;
   height: 24px;
+  flex-shrink: 0;
   object-fit: contain;
 }
 
@@ -202,7 +195,6 @@
   min-height: 16px;
 }
 
-/* Button Styles */
 .form-actions {
   display: flex;
   justify-content: flex-start;
@@ -248,11 +240,11 @@
 }
 
 /* Responsive Design */
-@media (max-width: 992px) {
+@media (max-width: 1200px) {
   .overlay-container {
     flex-direction: column;
     height: auto;
-    min-height: 80vh;
+    min-height: 70vh;
   }
 
   .left-panel {
@@ -269,6 +261,10 @@
 
   .title-group h1 {
     font-size: 48px;
+  }
+
+  .title-group h2 {
+    font-size: 20px;
   }
 
   .right-panel {
@@ -304,5 +300,11 @@
   .btn-save {
     font-size: 16px;
     padding: 12px 20px;
+  }
+}
+
+@media (max-width: 375px) {
+  .input-group {
+    padding: 10px 14px; 
   }
 }

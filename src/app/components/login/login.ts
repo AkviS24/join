@@ -39,19 +39,9 @@ export class Login implements OnInit {
     }
 
     this.route.queryParams.subscribe((params) => {
-      if (params['logout'] === 'success') {
-        this.successMessage = 'Erfolgreich abgemeldet.';
-
-        setTimeout(() => {
-          this.successMessage = '';
-        }, 3000);
-      } else if (params['logout'] === 'inactivity') {
-        this.errorMessage =
-          'Du wurdest aus Sicherheitsgründen wegen Inaktivität automatisch abgemeldet.';
-
-        setTimeout(() => {
-          this.errorMessage = '';
-        }, 5000);
+      const errorMessage = params['error'];
+      if (errorMessage) {
+        this.errorMessage = errorMessage;
       }
     });
   }
@@ -132,6 +122,16 @@ export class Login implements OnInit {
     return '';
   }
 
+  // --- Hilfsfunktionen für die Virtuelle Test-Datenbank ---
+  private getVirtualDB() {
+    const db = localStorage.getItem('virtual_users_db');
+    return db ? JSON.parse(db) : [];
+  }
+
+  private saveVirtualDB(db: any[]) {
+    localStorage.setItem('virtual_users_db', JSON.stringify(db));
+  }
+
   async registerUser(): Promise<void> {
     this.errorMessage = '';
     this.successMessage = '';
@@ -149,30 +149,21 @@ export class Login implements OnInit {
     }
 
     try {
-      const { data, error } = await this.supabaseService.supabase.auth.signUp({
-        email: this.email,
-        password: this.password,
-        options: { data: { name: this.name } },
-      });
-
-      if (error) {
-        this.errorMessage = error.message;
+      const virtualDB = this.getVirtualDB();
+      const userExists = virtualDB.find((u: any) => u.email === this.email);
+      if (userExists) {
+        this.errorMessage = 'Diese E-Mail ist bereits registriert.';
         return;
       }
 
-      // Speichere den neuen Benutzer zusätzlich in der demoDB-Tabelle
-      await this.supabaseService.setDemoData({
-        name: this.name.trim() || '',
-        email: this.email,
-        phone: 0,
-      });
-      // Aktualisiert die globale Kontaktliste (Signal) sofort
-      await this.supabaseService.getDemoData();
+      // In die lokale "virtuelle" Datenbank speichern
+      virtualDB.push({ email: this.email, password: this.password, name: this.name });
+      this.saveVirtualDB(virtualDB);
 
       this.successMessage = 'Erfolgreich registriert! Logge ein...';
       setTimeout(async () => {
         await this.loginUser();
-      }, 1500);
+      }, 2000);
     } catch (e: any) {
       this.errorMessage = 'Ein unerwarteter Fehler ist aufgetreten: ' + (e.message || e);
       console.error('Registration error', e);
@@ -196,40 +187,34 @@ export class Login implements OnInit {
     }
 
     try {
-      const { data, error } = await this.supabaseService.supabase.auth.signInWithPassword({
-        email: this.email,
-        password: this.password,
-      });
+      const virtualDB = this.getVirtualDB();
+      const user = virtualDB.find(
+        (u: any) => u.email === this.email && u.password === this.password,
+      );
 
-      if (error) {
-        if (error.message === 'Email not confirmed') {
-          this.errorMessage = 'Bitte bestätige zuerst deine E-Mail (Posteingang prüfen)!';
-        } else {
-          this.errorMessage = 'Login fehlgeschlagen: ' + error.message;
-        }
+      if (!user) {
+        this.errorMessage = 'Login fehlgeschlagen: Falsche E-Mail oder Passwort.';
         return;
       }
 
-      if (data.user) {
-        // "Remember me" - Logik ausführen
-        if (this.rememberMe) {
-          localStorage.setItem('rememberedEmail', this.email);
-        } else {
-          localStorage.removeItem('rememberedEmail');
-        }
-
-        // Den Namen aus den Metadaten laden, die wir beim Signup gespeichert haben
-        const userName = data.user.user_metadata?.['name'] || 'User';
-        const userInitial = userName
-          .split(' ')
-          .map((word: string) => word[0].toUpperCase())
-          .join('');
-
-        localStorage.setItem('userName', userName);
-        localStorage.setItem('userInitial', userInitial);
-
-        this.router.navigate(['/summary'], { queryParams: { name: userName } });
+      // "Remember me" - Logik ausführen
+      if (this.rememberMe) {
+        localStorage.setItem('rememberedEmail', this.email);
+      } else {
+        localStorage.removeItem('rememberedEmail');
       }
+
+      // Den Namen laden, die wir beim Signup in der virtuellen DB gespeichert haben
+      const userName = user.name || 'User';
+      const userInitial = userName
+        .split(' ')
+        .map((word: string) => word[0].toUpperCase())
+        .join('');
+
+      localStorage.setItem('userName', userName);
+      localStorage.setItem('userInitial', userInitial);
+
+      this.router.navigate(['/summary'], { queryParams: { name: userName } });
     } catch (e) {
       this.errorMessage = 'Es gab ein Problem beim Login.';
       console.error('Login error', e);

@@ -36,9 +36,6 @@
     (deleteRequest)="deleteContact()"
   ></app-contacts-details>
 
-  @if (showAddContact) {
-    <app-contacts-add (closeEdit)="closeAddContact()"></app-contacts-add>
-  }
 
   @if (showEditContact) {
     <app-contacts-edit [user]="selectedUser" (closeEdit)="closeEditContact()"></app-contacts-edit>

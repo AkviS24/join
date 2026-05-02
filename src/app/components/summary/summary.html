@@ -1,1 +1,81 @@
-<p>summary works!</p>
+<section id="dashboard-section">
+  <div class="dashboard-container">
+    <header class="dashboard-header">
+      <h1 class="brand-title">Join 360</h1>
+      <div class="header-divider"></div>
+      <h2 class="header-subtitle">Key Metrics at a Glance</h2>
+    </header>
+
+    <div class="dashboard-main">
+      <div class="metrics-grid">
+        <!-- Row 1 -->
+        <div class="metrics-row">
+          <div class="metric-card rect-card" routerLink="/board">
+            <div class="icon-wrapper">
+              <!--merged image-->
+              <img src="/icons/img/grey-circle.svg" alt="Background Circle" class="icon-base" />
+              <img src="/icons/img/penw.svg" alt="Edit Icon" class="icon-overlay" />
+            </div>
+            <div class="metric-info">
+              <span class="metric-value">{{ tasksToDo }}</span>
+              <span class="metric-label">To-do</span>
+            </div>
+          </div>
+          <div class="metric-card rect-card" routerLink="/board">
+            <div class="icon-wrapper">
+              <img src="/icons/img/grey-circle.svg" alt="Background Circle" class="icon-base" />
+              <img src="/icons/img/checkw.svg" alt="Done Icon" class="icon-base" />
+            </div>
+            <div class="metric-info">
+              <span class="metric-value">{{ tasksDone }}</span>
+              <span class="metric-label">Done</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 2 -->
+        <div class="metrics-row">
+          <div class="metric-card wide-card" routerLink="/board">
+            <div class="urgent-left">
+              <div class="icon-wrapper urgent-icon">
+                <!--merged image-->
+                <img src="/icons/img/red-circle.svg" alt="Background Circle" class="icon-base" />
+                <img src="/icons/img/defcon2.svg" alt="Urgent Icon" class="icon-overlay" />
+              </div>
+              <div class="metric-info">
+                <span class="metric-value">{{ tasksUrgent }}</span>
+                <span class="metric-label">Urgent</span>
+              </div>
+            </div>
+            <div class="card-divider"></div>
+            <div class="urgent-right">
+              <span class="deadline-date">{{ urgentDeadline || 'No Deadline' }}</span>
+              <span class="deadline-label">Upcoming Deadline</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 3 -->
+        <div class="metrics-row">
+          <div class="metric-card square-card" routerLink="/board">
+            <span class="metric-value">{{ tasksInBoard }}</span>
+            <span class="metric-label">Tasks in<br />Board</span>
+          </div>
+          <div class="metric-card square-card" routerLink="/board">
+            <span class="metric-value">{{ tasksInProgress }}</span>
+            <span class="metric-label">Tasks In<br />Progress</span>
+          </div>
+          <div class="metric-card square-card" routerLink="/board">
+            <span class="metric-value">{{ tasksAwaitingFeedback }}</span>
+            <span class="metric-label">Awaiting<br />Feedback</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="greeting-section">
+        <p class="greeting-text">{{ greetingText }}</p>
+        <p class="greeting-name">{{ userName }}</p>
+      </div>
+    </div>
+  </div>
+</section>

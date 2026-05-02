@@ -3,12 +3,11 @@ import { UserBadge } from '../../services/userbadge';
 import { Supabase } from '../../services/supabase';
 import { ContactsDetails } from '../contacts-details/contacts-details';
 import { SvgDb } from '../../shared/svg-db/svg-db';
-import { ContactsAdd } from '../contacts-add/contacts-add';
 import { ContactsEdit } from '../contacts-edit/contacts-edit';
 
 @Component({
   selector: 'app-contacts',
-  imports: [ContactsDetails, SvgDb, ContactsAdd, ContactsEdit],
+  imports: [ContactsDetails, SvgDb,  ContactsEdit],
   templateUrl: './contacts.html',
   styleUrl: './contacts.scss',
 })
@@ -24,7 +23,8 @@ export class Contacts {
   }
 
   openAddContact() {
-    this.showAddContact = true;
+    this.selectedUser = null;
+    this.showEditContact = true;
   }
 
   closeAddContact() {

@@ -1,0 +1,87 @@
+@if (task) {
+  <div class="modal-overlay" (click)="closeDetail()">
+    <section id="section-task-card" (click)="$event.stopPropagation()">
+      <div class="task-card">
+        <div class="task-header">
+          <div
+            class="badge-type"
+            [ngClass]="task.type === 'User Story' ? 'user-story' : 'technical-task'"
+          >
+            {{ task.type }}
+          </div>
+          <button class="btn-close" aria-label="Close" (click)="closeDetail()">
+            <img src="/icons/img/close.svg" alt="Close" />
+          </button>
+        </div>
+
+        <h1 class="task-title">{{ task.title }}</h1>
+        <p class="task-desc">{{ task.description }}</p>
+
+        <div class="meta-row">
+          <span class="meta-label">Due date:</span>
+          <span class="meta-value">{{ task.dueDate }}</span>
+        </div>
+
+        <div class="meta-row">
+          <span class="meta-label">Priority:</span>
+          <div class="priority-value">
+            <span class="prio-text">{{ task.priority | titlecase }}</span>
+            <img [src]="getPriorityIcon(task.priority)" [alt]="task.priority + ' Priority Icon'" />
+          </div>
+        </div>
+
+        @if (task.assignedTo && task.assignedTo.length > 0) {
+          <div class="task-section">
+            <h2 class="section-title">Assigned To:</h2>
+            <div class="assignee-list">
+              @for (assignee of task.assignedTo; track $index) {
+                <div class="assignee-item">
+                  <div class="assignee-info">
+                    <div class="avatar" [style.background-color]="getAvatarColor($index)">
+                      <span class="avatar-initials">{{ assignee }}</span>
+                    </div>
+                    <span class="assignee-name">
+                      {{ task.assignedToNames ? task.assignedToNames[$index] : assignee }}
+                    </span>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        }
+
+        @if (task.subtasks && task.subtasks.length > 0) {
+          <div class="task-section">
+            <h2 class="section-title">Subtasks</h2>
+            <div class="subtask-list">
+              @for (subtask of task.subtasks; track $index) {
+                <div class="subtask-item" (click)="toggleSubtask($index)">
+                  @if (subtask.completed) {
+                    <img src="/icons/img/cb1.svg" alt="Checked" class="checkbox-icon" />
+                  } @else {
+                    <img src="/icons/img/cb0.svg" alt="Unchecked" class="checkbox-icon" />
+                  }
+                  <span class="subtask-text" [ngClass]="{ completed: subtask.completed }">
+                    {{ subtask.subtaskText }}
+                  </span>
+                </div>
+              }
+            </div>
+          </div>
+        }
+
+        <div class="task-footer">
+          <button class="action-btn delete-btn" (click)="deleteTask()">
+            <img src="/icons/img/delete.svg" alt="Delete Icon" />
+            <span>Delete</span>
+          </button>
+          <div class="divider"></div>
+          <button class="action-btn edit-btn" (click)="editTask()">
+            <img src="/icons/img/pen.svg" alt="Edit Icon" />
+            <span>Edit</span>
+          </button>
+        </div>
+      </div>
+    </section>
+  </div>
+}

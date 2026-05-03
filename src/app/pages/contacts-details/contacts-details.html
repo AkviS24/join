@@ -1,0 +1,87 @@
+<div class="contact-details">
+  <div class="contact-header">
+    <h3>Contacts</h3>
+    <p class="blue-dash">|</p>
+    <p class="slogan">Better with a team</p>
+    <img
+      src="/icons/img/icon-arrow_left.svg"
+      alt="Back"
+      class="back-arrow-mobile"
+      (click)="onBackClick()"
+    />
+  </div>
+  @if (user) {
+    <div class="details-content">
+      <div class="details-header">
+        <p class="user-badge" [style.backgroundColor]="userBadgeService.getColor(user.id)">
+          {{ userBadgeService.getInitials(user.name) }}
+        </p>
+        <div class="dis-flex">
+          <h2>{{ user.name }}</h2>
+          <div class="edit-and-delete desktop-only">
+            <div
+              class="dis-flex-row"
+              (click)="onEditClick()"
+              (mouseenter)="isEditHovered = true"
+              (mouseleave)="isEditHovered = false"
+            >
+              <img
+                [src]="isEditHovered ? '/icons/img/penb.svg' : '/icons/img/pen.svg'"
+                alt="Edit"
+                class="action-icon"
+              />
+              <p>Edit</p>
+            </div>
+            <div
+              class="dis-flex-row"
+              (click)="onDeleteClick()"
+              (mouseenter)="isDeleteHovered = true"
+              (mouseleave)="isDeleteHovered = false"
+            >
+              <img
+                [src]="isDeleteHovered ? '/icons/img/deleteB.svg' : '/icons/img/delete.svg'"
+                alt="Delete"
+                class="action-icon"
+              />
+              <p>Delete</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="details-contact-info">Contact Information</p>
+      <div class="contact-info-sub">
+        <div class="dis-flex">
+          <p>Email</p>
+          <a href="mailto:{{ user.email }}">{{ user.email }}</a>
+        </div>
+        <div class="dis-flex">
+          <p>Phone</p>
+          <a href="tel:{{ user.phone }}" class="phone-link">{{ user.phone }}</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- MOBILE OPTIONS MENU -->
+    <div class="mobile-options-container">
+      <button class="options-fab" (click)="toggleOptionsMenu()">
+        <div class="css-dots"></div>
+      </button>
+      @if (showOptionsMenu) {
+        <div class="options-menu">
+          <div class="menu-item" (click)="onEditClick()">
+            <img src="/icons/img/pen.svg" alt="Edit" />
+            <p>Edit</p>
+          </div>
+          <div class="menu-item" (click)="onDeleteClick()">
+            <img src="/icons/img/delete.svg" alt="Delete" />
+            <p>Delete</p>
+          </div>
+        </div>
+      }
+    </div>
+  } @else {
+    <div class="no-selection">
+      <p>Select a contact to view details</p>
+    </div>
+  }
+</div>

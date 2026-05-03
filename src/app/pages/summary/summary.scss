@@ -1,0 +1,435 @@
+#dashboard-section {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 60px 60px 160px; /* Erhöhter Abstand links für das Seitenmenü */
+  box-sizing: border-box;
+}
+
+.dashboard-container {
+  max-width: 1025px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 56px;
+}
+
+.dashboard-header {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.brand-title {
+  font-size: 64px;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.1;
+  color: #000000;
+}
+
+.header-divider {
+  width: 3px;
+  height: 59px;
+  background-color: #29abe2;
+}
+
+.header-subtitle {
+  font-size: 24px;
+  font-weight: 400;
+  color: #2a3647;
+  margin: 0;
+}
+
+.dashboard-main {
+  display: flex;
+  align-items: center;
+  gap: 80px;
+}
+
+.metrics-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.metrics-row {
+  display: flex;
+  justify-content: space-between;
+  width: 560px;
+}
+
+.metric-card {
+  background-color: #ffffff;
+  border-radius: 30px;
+  box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition:
+    transform 0.1s ease-in-out,
+    box-shadow 0.1s ease-in-out;
+
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.rect-card {
+  width: 264px;
+  height: 168px;
+  justify-content: center;
+  gap: 18px;
+}
+
+.wide-card {
+  width: 560px;
+  height: 168px;
+  padding: 0 48px;
+  justify-content: space-between;
+}
+
+.square-card {
+  width: 168px;
+  height: 168px;
+  flex-direction: column;
+  justify-content: center;
+  gap: 13px;
+}
+
+.icon-wrapper {
+  position: relative;
+  width: 69px;
+  height: 69px;
+}
+
+.icon-wrapper.urgent-icon {
+  width: 60px;
+  height: 60px;
+}
+
+.icon-base,
+.icon-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 100%;
+}
+
+.metric-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.metric-value {
+  font-size: 64px;
+  font-weight: 700;
+  line-height: 1.1;
+  color: #000000;
+}
+
+.metric-label {
+  font-size: 20px;
+  color: #2a3647;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.urgent-left {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.card-divider {
+  width: 2px;
+  height: 102px;
+  background-color: #d1d1d1;
+}
+
+.urgent-right {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+}
+
+.deadline-date {
+  font-size: 20px;
+  font-weight: 700;
+  color: #2a3647;
+}
+
+.deadline-label {
+  font-size: 16px;
+  color: #2a3647;
+}
+
+.greeting-section {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.greeting-text {
+  font-size: 48px;
+  color: #2a3647;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.greeting-name {
+  font-size: 64px;
+  font-weight: 700;
+  color: #29abe2;
+  margin: 0;
+  line-height: 1.2;
+}
+@media (max-width: 1250px) {
+  #dashboard-section {
+    padding-left: 60px;
+  }
+
+  .dashboard-main {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 50px;
+  }
+  .dashboard-container {
+    align-items: center;
+  }
+  .dashboard-header {
+    width: 100%;
+    justify-content: center;
+  }
+  .greeting-section {
+    align-items: center;
+    text-align: center;
+    width: 100%;
+  }
+}
+
+@media (max-width: 950px) {
+  .dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .brand-title {
+    white-space: nowrap;
+  }
+  .header-divider {
+    width: 90px;
+    height: 3px;
+    order: 3;
+  }
+}
+
+@media (max-width: 850px) {
+  .dashboard-main {
+    gap: 32px;
+    align-items: center;
+  }
+  .metrics-grid {
+    gap: 20px;
+  }
+  .metrics-row {
+    width: 480px;
+    max-width: 100%;
+  }
+  .rect-card {
+    width: 230px;
+    height: 130px;
+  }
+  .wide-card {
+    width: 100%;
+    height: 130px;
+    padding: 0 32px;
+  }
+  .square-card {
+    width: 148px;
+    height: 130px;
+  }
+  .card-divider {
+    height: 80px;
+  }
+  .metric-value {
+    font-size: 46px;
+  }
+  .metric-label {
+    font-size: 16px;
+  }
+  .icon-wrapper {
+    width: 52px;
+    height: 52px;
+  }
+  .icon-wrapper.urgent-icon {
+    width: 46px;
+    height: 46px;
+  }
+  .brand-title {
+    font-size: 54px;
+  }
+  .header-subtitle {
+    font-size: 20px;
+  }
+  .greeting-text {
+    font-size: 40px;
+  }
+  .greeting-name {
+    font-size: 52px;
+  }
+}
+
+@media (max-width: 750px) {
+  .metrics-row {
+    width: 380px;
+  }
+  .rect-card {
+    width: 180px;
+    height: 110px;
+  }
+  .wide-card {
+    height: 110px;
+  }
+  .square-card {
+    width: 110px;
+    height: 110px;
+  }
+  .card-divider {
+    height: 60px;
+  }
+  .metric-value {
+    font-size: 38px;
+  }
+  .metric-label {
+    font-size: 14px;
+  }
+  .icon-wrapper {
+    width: 44px;
+    height: 44px;
+  }
+  .icon-wrapper.urgent-icon {
+    width: 40px;
+    height: 40px;
+  }
+  .brand-title {
+    font-size: 46px;
+  }
+  .header-subtitle {
+    font-size: 18px;
+  }
+  .greeting-text {
+    font-size: 34px;
+  }
+  .greeting-name {
+    font-size: 44px;
+  }
+}
+
+@media (max-width: 670px) {
+  #dashboard-section {
+    padding: 0px 16px;
+    height: 100vh;
+  }
+
+  .metrics-grid {
+    width: 100%;
+  }
+
+  .metrics-row {
+    width: 100%;
+    gap: 8px;
+  }
+
+  .rect-card {
+    width: calc(50% - 4px);
+    height: auto;
+    min-height: 100px;
+    padding: 8px;
+    gap: 8px;
+  }
+
+  .wide-card {
+    width: 100%;
+    height: auto;
+    min-height: 100px;
+    padding: 8px 16px;
+    gap: 12px;
+  }
+
+  .square-card {
+    max-width: 90px;
+    height: auto;
+    min-height: 90px;
+    padding: 8px 4px;
+    gap: 4px;
+  }
+
+  .card-divider {
+    width: 2px;
+    height: 50px;
+  }
+
+  .urgent-left {
+    gap: 8px;
+  }
+
+  .urgent-right {
+    gap: 4px;
+  }
+
+  .metric-value {
+    font-size: 28px;
+  }
+
+  .metric-label {
+    font-size: 11px;
+  }
+
+  .deadline-date {
+    font-size: 14px;
+  }
+
+  .deadline-label {
+    font-size: 12px;
+  }
+
+  .icon-wrapper,
+  .icon-wrapper.urgent-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .brand-title {
+    font-size: 40px;
+  }
+
+  .header-subtitle {
+    font-size: 16px;
+  }
+
+  .greeting-text {
+    font-size: 32px;
+  }
+
+  .greeting-name {
+    font-size: 40px;
+  }
+
+  .dashboard-header {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+    align-items: center;
+  }
+
+  .header-divider {
+    width: 60px;
+    height: 3px;
+  }
+}

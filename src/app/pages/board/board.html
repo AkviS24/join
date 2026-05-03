@@ -1,0 +1,352 @@
+<section id="section-board" class="board-section">
+  <div class="board-container">
+    <header class="board-header">
+      <div class="header-title-area">
+        <h1 class="board-title">Board</h1>
+      </div>
+      <div class="header-actions">
+        <div class="search-bar">
+          <input
+            type="text"
+            placeholder="Find Task"
+            class="search-input"
+            [(ngModel)]="searchTerm"
+          />
+          <div class="search-divider"></div>
+          <button class="search-button">
+            <img src="/icons/img/search.svg" alt="Search" />
+          </button>
+        </div>
+        <button class="add-task-btn" (click)="addTask('category-0')">
+          <span>Add task</span>
+          <img src="/icons/img/add+.svg" alt="Add" />
+        </button>
+      </div>
+    </header>
+
+    <div class="board-columns">
+      @for (category of categories; track category.id) {
+        <div class="board-column" (dragover)="onDragOver($event)" (drop)="onDrop(category.id)">
+          <div class="column-header">
+            <h2 class="column-title">{{ category.name }}</h2>
+            @if (category.id !== 'category-3') {
+              <button class="add-btn-small" (click)="addTask(category.id)">
+                <img src="/icons/img/add+.svg" alt="Add" />
+              </button>
+            }
+          </div>
+
+          <div class="column-cards">
+            @for (task of getFilteredTasks(category.id); track task.id) {
+              <div
+                class="task-card"
+                draggable="true"
+                (dragstart)="onDragStart(task.id)"
+                (click)="openCard(task)"
+              >
+                <div class="task-card-content">
+                  <div
+                    class="task-label"
+                    [ngClass]="task.type === 'User Story' ? 'user-story' : 'technical-task'"
+                  >
+                    {{ task.type }}
+                  </div>
+
+                  <div class="task-details">
+                    <h3 class="task-title">{{ task.title }}</h3>
+                    <p class="task-description">{{ task.description }}</p>
+                  </div>
+
+                  @if (task.subtasks && task.subtasks.length > 0) {
+                    <div class="task-progress">
+                      <div class="progress-bar-container">
+                        <div
+                          class="progress-bar-fill"
+                          [style.width.%]="getSubtaskProgress(task)"
+                          [style.background-color]="
+                            getSubtaskProgress(task) > 0 ? '#4589ff' : '#f4f4f4'
+                          "
+                        ></div>
+                      </div>
+                      <span class="progress-text">{{ getSubtaskText(task) }}</span>
+                    </div>
+                  }
+
+                  <div
+                    class="task-footer"
+                    [style.margin-top]="
+                      !task.subtasks || task.subtasks.length === 0 ? '20px' : '0px'
+                    "
+                  >
+                    <div class="task-assignees">
+                      <div style="position: relative; width: 80px; height: 32px">
+                        @for (assignee of task.assignedTo; track $index) {
+                          <div
+                            class="assignee-badge"
+                            [style.background-color]="
+                              $index === 0 ? '#ff7a00' : $index === 1 ? '#00e676' : '#651fff'
+                            "
+                            [style.left.px]="$index * 24"
+                            [style.z-index]="3 - $index"
+                          >
+                            {{ assignee }}
+                          </div>
+                        }
+                      </div>
+                    </div>
+                    <div class="task-priority">
+                      <img [src]="getPriorityIcon(task.priority)" alt="Priority" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            } @empty {
+              <div class="no-tasks-placeholder">No tasks {{ category.name }}</div>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
+  @if (isAddTaskModalOpen) {
+    <div class="modal-overlay" (click)="closeAddTaskModal()">
+      <section
+        id="add-task-modal"
+        [class.edit-mode]="editingTaskId !== null"
+        (click)="$event.stopPropagation()"
+      >
+        <div class="modal-container">
+          <button class="close-btn" aria-label="Close" (click)="closeAddTaskModal()">
+            <img src="/icons/img/cancle.svg" alt="Close" />
+          </button>
+
+          @if (!editingTaskId) {
+            <header class="modal-header">
+              <h2>Add Task</h2>
+            </header>
+          }
+
+          <div class="modal-body">
+            <div class="column left-column">
+              <div class="form-group">
+                <label>Title<span class="required">*</span></label>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Enter a title"
+                  [(ngModel)]="newTaskTitle"
+                  name="newTaskTitle"
+                />
+              </div>
+
+              <div class="form-group">
+                <label>Description</label>
+                <div class="textarea-wrapper">
+                  <textarea
+                    class="form-control"
+                    placeholder="Enter a Description"
+                    [(ngModel)]="newTaskDescription"
+                    name="newTaskDescription"
+                  ></textarea>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Due date<span class="required">*</span></label>
+                <div class="input-with-icon">
+                  <input
+                    type="date"
+                    class="form-control"
+                    [(ngModel)]="newTaskDueDate"
+                    name="newTaskDueDate"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="column right-column">
+              <div class="form-group">
+                <label>Priority</label>
+                <div class="priority-buttons">
+                  <button
+                    type="button"
+                    class="btn-priority urgent"
+                    [class.active]="selectedPriority === 'urgent'"
+                    (click)="selectPriority('urgent')"
+                  >
+                    Urgent <img src="/icons/img/high2.svg" alt="Urgent" />
+                  </button>
+                  <button
+                    type="button"
+                    class="btn-priority medium"
+                    [class.active]="selectedPriority === 'medium'"
+                    (click)="selectPriority('medium')"
+                  >
+                    Medium <img src="/icons/img/medium.svg" alt="Medium" />
+                  </button>
+                  <button
+                    type="button"
+                    class="btn-priority low"
+                    [class.active]="selectedPriority === 'low'"
+                    (click)="selectPriority('low')"
+                  >
+                    Low <img src="/icons/img/low2.svg" alt="Low" />
+                  </button>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Assigned to</label>
+                <div class="custom-select-wrapper" (click)="toggleDropdown()">
+                  <div class="form-control select-display">
+                    <span>Select contacts to assign</span>
+                    <img src="/icons/img/pic.svg" alt="Dropdown" [class.rotated]="dropdownOpen" />
+                  </div>
+
+                  @if (dropdownOpen) {
+                    <div class="dropdown-list">
+                      @for (contact of contacts; track contact.id) {
+                        <div
+                          class="dropdown-item"
+                          [class.selected]="isSelected(contact)"
+                          (click)="toggleContact(contact, $event)"
+                        >
+                          <div class="contact-info">
+                            <div class="avatar" [style.backgroundColor]="contact.color">
+                              {{ contact.initials }}
+                            </div>
+                            <span>{{ contact.name }}</span>
+                          </div>
+                          <img
+                            [src]="
+                              isSelected(contact) ? '/icons/img/cb1.svg' : '/icons/img/cb0.svg'
+                            "
+                            alt="Checkbox"
+                            class="custom-checkbox-icon"
+                          />
+                        </div>
+                      }
+                    </div>
+                  }
+                </div>
+
+                @if (selectedContacts.length > 0) {
+                  <div class="selected-avatars">
+                    @for (contact of selectedContacts; track contact.id) {
+                      <div class="avatar" [style.backgroundColor]="contact.color">
+                        {{ contact.initials }}
+                      </div>
+                    }
+                  </div>
+                }
+              </div>
+
+              <div class="form-group">
+                <label>Category<span class="required">*</span></label>
+                <div class="select-wrapper">
+                  <select class="form-control" [(ngModel)]="newTaskType" name="newTaskType">
+                    <option value="" disabled selected hidden>Select task category</option>
+                    <option value="Technical Task">Technical Task</option>
+                    <option value="User Story">User Story</option>
+                  </select>
+                  <img src="/icons/img/pic1.svg" class="select-arrow" alt="Dropdown" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Subtasks</label>
+                <div class="subtask-wrapper">
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Add new subtask"
+                    [(ngModel)]="newSubtaskText"
+                    name="newSubtaskText"
+                    (keyup.enter)="addSubtask()"
+                  />
+                  <div class="subtask-actions">
+                    <img
+                      src="/icons/img/close.svg"
+                      alt="Clear"
+                      class="action-icon"
+                      (click)="clearSubtaskInput()"
+                    />
+                    <div class="action-divider"></div>
+                    <img
+                      src="/icons/img/add+.svg"
+                      alt="Add"
+                      class="action-icon"
+                      (click)="addSubtask()"
+                    />
+                  </div>
+                </div>
+                @if (newSubtasks.length > 0) {
+                  <div class="new-subtasks-list">
+                    @for (subtask of newSubtasks; track $index) {
+                      <div class="new-subtask-item">
+                        <span>• {{ subtask.subtaskText }}</span>
+                        <div class="subtask-list-actions">
+                          <img
+                            src="/icons/img/pen.svg"
+                            alt="Edit"
+                            (click)="editNewSubtask($index)"
+                          />
+                          <div class="icon-divider-small"></div>
+                          <img
+                            src="/icons/img/delete.svg"
+                            alt="Delete"
+                            (click)="removeNewSubtask($index)"
+                          />
+                        </div>
+                      </div>
+                    }
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+
+          @if (errorMessage) {
+            <div style="color: #ff3333; font-size: 14px; text-align: center; padding-bottom: 16px">
+              {{ errorMessage }}
+            </div>
+          }
+
+          <footer class="modal-footer">
+            <div class="required-note"><span class="required">*</span>This field is required</div>
+            <div class="actions">
+              @if (!editingTaskId) {
+                <button type="button" class="btn-cancel" (click)="closeAddTaskModal()">
+                  Cancel <img src="/icons/img/cancle.svg" alt="Cancel" />
+                </button>
+              }
+              <button type="button" class="btn-create" (click)="saveTaskFromBoard()">
+                {{ editingTaskId ? 'Ok' : 'Create Task' }}
+                <img src="/icons/img/check.svg" alt="Create" />
+              </button>
+            </div>
+          </footer>
+        </div>
+      </section>
+    </div>
+  }
+
+  @if (isTaskDetailOpen && selectedTask) {
+    <app-task-detail
+      [task]="selectedTask"
+      (close)="closeTaskDetail()"
+      (delete)="deleteTask($event)"
+      (edit)="openEditTaskModal()"
+    >
+    </app-task-detail>
+  }
+
+  @if (showSuccessMessage) {
+    <div class="success-message">
+      <img src="/icons/img/tasksucces.svg" alt="Task successfully created" />
+    </div>
+  }
+</section>

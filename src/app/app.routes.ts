@@ -1,14 +1,12 @@
 import { Routes } from '@angular/router';
-import { Summary } from './components/summary/summary';
-import { AddTask } from './components/add-task/add-task';
-import { Board } from './components/board/board';
-import { Contacts } from './components/contacts/contacts';
-import { Login } from './components/login/login';
-import { PrivacyPolice } from './components/privacy-police/privacyPolice';
-import { LegalNotice } from './components/legal-notice/legalNotice';
-import { Discription } from './components/discription/discription';
-
-
+import { Summary } from './pages/summary/summary';
+import { AddTask } from './pages/add-task/add-task';
+import { Board } from './pages/board/board';
+import { Contacts } from './pages/contacts/contacts';
+import { Login } from './pages/login/login';
+import { PrivacyPolice } from './pages/privacy-police/privacyPolice';
+import { LegalNotice } from './pages/legal-notice/legalNotice';
+import { Discription } from './pages/discription/discription';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'summary', pathMatch: 'full' },

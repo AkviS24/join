@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, NavigationEnd, RouterModule } from '@angular/router';
 import { filter } from 'rxjs/operators';
-import { UserAvatar } from '../user-avatar/user-avatar';
+import { UserAvatar } from '../../pages/user-avatar/user-avatar';
 
 @Component({
   selector: 'app-header',

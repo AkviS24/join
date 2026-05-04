@@ -3,6 +3,7 @@
 
 .user-avatar {
   position: relative;
+  padding-right: 40px;
 }
 
 .user-avatar__button {
@@ -65,10 +66,14 @@
   display: none;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 800px) {
   .user-avatar__button {
     @include circle(48px);
     font-size: 16px;
+  }
+
+  .user-avatar{
+    padding-right: 10px;
   }
 
   .user-avatar__mobile-link {

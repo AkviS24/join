@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { createClient } from '@supabase/supabase-js';
+import { createClient, RealtimeChannel } from '@supabase/supabase-js';
 
 @Injectable({
   providedIn: 'root',
@@ -8,8 +8,9 @@ export class Supabase {
   supabaseUrl = 'https://ihqvvagcuemrsbalsksp.supabase.co';
   supabaseKey = 'sb_publishable_N4wmb3jqA8vxuofrj9kFPg_45-BAgZo';
   supabase = createClient(this.supabaseUrl, this.supabaseKey);
+  channels: RealtimeChannel | undefined;
 
-  demoDaten = signal<{ id: number, created_at: string, name: string, email: string, phone: number }[]>([]);
+  demoDaten = signal<{ id: number, created_at: string, name: string, email: string, phone: number, loggedIn: boolean, password: string }[]>([]);
 
   async getDemoData() {
 
@@ -20,24 +21,48 @@ export class Supabase {
     if (!demoDB) return
     this.demoDaten.set(demoDB)
 
+    this.channels = this.supabase.channel('custom-all-channel')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'demoDB' },
+        (payload) => {
+          console.log('Change received!', payload);
+          if (payload.eventType === 'INSERT') {
+            this.demoDaten.update((current) => [...current, payload.new as any]);
+          } else if (payload.eventType === 'UPDATE') {
+            this.demoDaten.update((current) =>
+              current.map((item) => (item.id === payload.new['id'] ? (payload.new as any) : item))
+            );
+          } else if (payload.eventType === 'DELETE') {
+            this.demoDaten.update((current) =>
+              current.filter((item) => item.id !== payload.old['id'])
+            );
+          }
+        }
+      )
+      .subscribe()
   }
 
-  async setDemoData(demoData: { name: string, email: string, phone: number }) {
+  ngOnDestroy() {
+    this.supabase.removeChannel(this.channels!);
+  }
+
+  async setDemoData(demoData: { name: string, email: string, phone: number, password: string }) {
     const { data, error } = await this.supabase
       .from('demoDB')
       .insert([demoData])
       .select()
   }
 
-  async getupdateDemoData(id: number, name: string, email: string, phone: number) {
+  async getupdateDemoData(id: number, name: string, email: string, phone: number, password: string) {
     const { data, error } = await this.supabase
       .from('demoDB')
-      .update({ name, email, phone })
+      .update({ name, email, phone, password })
       .eq('id', id)
       .select()
   }
 
-   async deleteData(id: number) {
+  async deleteData(id: number) {
     const { data, error } = await this.supabase
       .from('demoDB')
       .delete()

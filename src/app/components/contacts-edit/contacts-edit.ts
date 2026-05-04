@@ -20,13 +20,15 @@ export class ContactsEdit implements OnInit {
 
   contactName: string = '';
   contactEmail: string = '';
-  contactPhone: string = '';
+  contactPhone: number = 0;
+  contactPassword: string = '';
 
   ngOnInit() {
     if (this.user) {
       this.contactName = this.user.name || '';
       this.contactEmail = this.user.email || '';
       this.contactPhone = this.user.phone || '';
+      this.contactPassword = this.user.password || '';
     }
   }
 
@@ -56,6 +58,7 @@ export class ContactsEdit implements OnInit {
       this.contactName.trim(),
       this.contactEmail.trim(),
       phoneNum,
+      this.contactPassword
     );
     await this.demoDB.getDemoData(); // Liste sofort aktualisieren
 

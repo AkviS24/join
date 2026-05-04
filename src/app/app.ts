@@ -36,23 +36,23 @@ export class App {
       });
   }
 
-  addDemoData(demoData: { name: string; email: string; phone: number }) {
+  addDemoData(demoData: { name: string; email: string; phone: number, password: string }) {
     this.demoDB.setDemoData(demoData);
   }
 
  
-  addData(demoData: { name: string; email: string; password: string; phone: number }) {
-    this.contacts.setData(demoData);
-  }
+  // addData(demoData: { name: string; email: string; password: string; phone: number }) {
+  //   this.contacts.setData(demoData);
+  // }
 
   updateDemoData(id: number, name: string, email: string, phone: number, password: string) {
     this.demoDB.getupdateDemoData(id, name, email, phone, password);
   }
 
   
-  updateData(userId: number, name: string, email: string, password: string, phone: number) {
-    this.contacts.UpdateDatas(userId, name, email, password, phone);
-  }
+  // updateData(userId: number, name: string, email: string, password: string, phone: number) {
+  //   this.contacts.UpdateDatas(userId, name, email, password, phone);
+  // }
 
   
   deleteContact(id: number) {

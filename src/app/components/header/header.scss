@@ -3,8 +3,6 @@
 
 .header {
   height: 96px;
-
-  padding-inline: 116px 40px;
   background: $color-white;
   @include flex-between;
   box-shadow: 0 4px 4px rgba($color-black, 0.08);

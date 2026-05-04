@@ -27,7 +27,7 @@
     }
   </div>
   <app-contacts-details [user]="selectedUser" (editRequest)="openEditContact()" (deleteRequest)="deleteContact()"
-    [selectedUser]="selectedUser" [class.visible-mobile]="selectedUser"
+    [class.visible-mobile]="selectedUser"
     (backToMain)="selectedUser = null"></app-contacts-details>
 
   @if (showAddContact) {

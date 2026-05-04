@@ -16,11 +16,11 @@
         </button>
         @if (showMoreOptions) {
         <div #moreOptions class="more-options">
-            <div class="dis-flex" (click)="editContacts()">
+            <div class="dis-flex" (click)="onEditClick()">
                 <app-svg-db name="edit"></app-svg-db>
                 <p>Edit</p>
             </div>
-            <div class="dis-flex" (click)="deleteContact()">
+            <div class="dis-flex" (click)="onDeleteClick()">
                 <app-svg-db name="delete"></app-svg-db>
                 <p>Delete</p>
             </div>

@@ -19,11 +19,8 @@ export class ContactsDetails {
   userBadgeService = inject(UserBadge);
   showMoreOptions = false;
 
-  onEditClick() {
-    this.editRequest.emit();
-  }
   @Output() backToMain = new EventEmitter<void>();
-
+  
   @HostListener('document:click', ['$event'])
   clickout(event: Event) {
     if (this.showMoreOptions) {
@@ -33,25 +30,19 @@ export class ContactsDetails {
       }
     }
   }
-
+  
   goBack() {
     this.backToMain.emit();
   }
-
+  
   toggleMoreOptions() {
     this.showMoreOptions = !this.showMoreOptions
-    console.log(this.showMoreOptions);
-
+  }
+  
+  onEditClick() {
+    this.editRequest.emit();
   }
 
-  editContacts() {
-
-  }
-
-  deleteContact() {
-
-  }
-  // Diese neue Methode sendet das Lösch-Event
   onDeleteClick() {
     this.deleteRequest.emit();
   }

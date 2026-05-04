@@ -2,15 +2,14 @@ import { Component, signal, inject } from '@angular/core';
 import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs';
 import { Supabase } from './services/supabase';
-import { Database } from './services/database';
-import { JsonPipe } from '@angular/common';
+// import { Database } from './services/database';
 import { FormsModule } from '@angular/forms';
 import { Header } from './components/header/header';
 import { Navigation } from './components/navigation/navigation';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, JsonPipe, FormsModule, Header, Navigation],
+  imports: [RouterOutlet, FormsModule, Header, Navigation],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
@@ -19,14 +18,14 @@ export class App {
   protected readonly title = signal('join');
 
   demoDB = inject(Supabase);
-  contacts = inject(Database);
+  // contacts = inject(Database);
   router = inject(Router);
 
   hideMenuAndHeader = false;
 
   ngOnInit() {
     this.demoDB.getDemoData();
-    this.contacts.getData();
+    // this.contacts.getData();
 
     
     this.router.events

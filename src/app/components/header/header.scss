@@ -49,9 +49,9 @@ left:64px;
 }
 
 
-@media (max-width: 800px) {
+@media (max-width: $bp-tablet) {
   .header {
-    height: 80px;
+    height: $header-height-mobile;
     margin-left: 0;
     width: 100%; ;
   }

@@ -10,6 +10,12 @@ import { ContactsEdit } from '../contacts-edit/contacts-edit';
   selector: 'app-contacts',
   imports: [ContactsDetails, SvgDb, ContactsAdd, ContactsEdit],
   templateUrl: './contacts.html',
+  styles: [`
+    :host {
+      display: block;
+      width: 100%;
+    }
+  `],
   styleUrl: './contacts.scss',
 })
 export class Contacts {

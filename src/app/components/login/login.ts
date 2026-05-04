@@ -165,6 +165,7 @@ export class Login implements OnInit {
         name: this.name.trim() || '',
         email: this.email,
         phone: 0,
+        password: this.password,
       });
       // Aktualisiert die globale Kontaktliste (Signal) sofort
       await this.supabaseService.getDemoData();

@@ -7,9 +7,9 @@
       </button>
     </div>
 
-    @for (user of demoDB.demoDaten(); track user; let i = $index) {
+    @for (user of supaDatabase.demoDaten(); track user; let i = $index) {
       @if (
-        i === 0 || user.name[0].toUpperCase() !== demoDB.demoDaten()[i - 1].name[0].toUpperCase()
+        i === 0 || user.name[0].toUpperCase() !== supaDatabase.demoDaten()[i - 1].name[0].toUpperCase()
       ) {
         <div class="letter-separator">
           {{ user.name[0].toUpperCase() }}

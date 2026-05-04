@@ -53,6 +53,7 @@ export class ContactsAdd implements OnInit {
       name: this.contactName.trim() || '',
       email: this.contactEmail,
       phone: Number(this.contactPhone.replace(/\D/g, '')) || 0,
+      password: 'defaultPassword'
     };
 
     await this.demoDB.setDemoData(newContact);

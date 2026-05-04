@@ -41,8 +41,8 @@ export class Contacts {
 
   async deleteContact() {
     if (this.selectedUser?.id) {
-      await this.demoDB.deleteData(this.selectedUser.id);
-      await this.demoDB.getDemoData();
+      await this.supaDatabase.deleteData(this.selectedUser.id);
+      await this.supaDatabase.getDemoData();
       this.selectedUser = null; // Detailansicht schließen, da der Kontakt gelöscht wurde
     }
   }

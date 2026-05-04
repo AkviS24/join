@@ -45,8 +45,8 @@ export class App {
     this.contacts.setData(demoData);
   }
 
-  updateDemoData(userId: number, name: string, email: string, phone: number) {
-    this.demoDB.getupdateDemoData(userId, name, email, phone);
+  updateDemoData(id: number, name: string, email: string, phone: number, password: string) {
+    this.demoDB.getupdateDemoData(id, name, email, phone, password);
   }
 
   

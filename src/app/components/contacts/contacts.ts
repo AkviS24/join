@@ -13,7 +13,7 @@ import { ContactsEdit } from '../contacts-edit/contacts-edit';
   styleUrl: './contacts.scss',
 })
 export class Contacts {
-  demoDB = inject(Supabase);
+  supaDatabase = inject(Supabase);
   userBadgeService = inject(UserBadge);
   selectedUser: any = null;
   showAddContact = false;

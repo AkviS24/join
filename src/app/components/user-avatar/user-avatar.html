@@ -1,11 +1,16 @@
 <div class="user-avatar">
   <button class="user-avatar__button" type="button" (click)="toggleMenu($event)">
-    SM
+    {{ userInitial }}
   </button>
 
-  <div class="user-avatar__menu" [class.user-avatar__menu--open]="isMenuOpen" (click)="$event.stopPropagation()">
-    <a class="user-avatar__mobile-link" href="#">Help</a>
-    <a href="#">Legal Notice</a>
-    <a href="#">Privacy Policy</a>
-    <button type="button">Log out</button>
+  <div
+    class="user-avatar__menu"
+    [class.user-avatar__menu--open]="isMenuOpen"
+    (click)="$event.stopPropagation()"
+  >
+    <a class="user-avatar__mobile-link" routerLink="/help">Help</a>
+    <a routerLink="/legal-notice">Legal Notice</a>
+    <a routerLink="/privacy-police">Privacy Policy</a>
+    <button type="button" (click)="logout()">Log out</button>
   </div>
+</div>

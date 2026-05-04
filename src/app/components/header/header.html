@@ -1,10 +1,11 @@
 <header class="header">
- <img class="header__logo" src="images/join-header.png" alt="Join Logo">
+  <img class="header__logo" src="images/join-header.png" alt="Join Logo" />
 
   <p class="header__title">Kanban Project Management Tool</p>
-
-  <div class="header__actions">
-    <img class="header__help" src="icons/help.png" alt="Help">
-    <app-user-avatar></app-user-avatar>
-  </div>
+  @if (isLoggedIn) {
+    <div class="header__actions">
+      <img class="header__help" src="icons/help.png" alt="Help" routerLink="/help" />
+      <app-user-avatar></app-user-avatar>
+    </div>
+  }
 </header>

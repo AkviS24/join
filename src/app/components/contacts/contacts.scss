@@ -92,12 +92,12 @@
 @media (max-width: 960px) {
     .contact-list {
         height: calc(100vh - ($header-height + $footer-height));
-        padding: 0;
+        padding: 12px 0;
         padding-inline: 16px;
     }
 }
 
-@media (max-width: 600px) {
+@media (max-width: $bp-tablet) {
     .contact-list {
         height: calc(100vh - ($header-height-mobile + $footer-height));
     }

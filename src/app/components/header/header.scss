@@ -38,7 +38,7 @@
   }
 }
 
-@media (max-width: 800px) {
+@media (max-width: $bp-tablet) {
   .header {
     height: $header-height-mobile;
     margin-left: 0;

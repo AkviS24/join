@@ -60,6 +60,11 @@
             box-shadow: 0 4px 4px rgba($color-black, 0.08);
             animation: slideInRight 0.3s ease-out forwards;
 
+            .dis-flex:hover {
+                cursor: pointer;
+                color: $color-primary;
+            }
+
             app-svg-db {
                 padding: 8px;
             }
@@ -193,6 +198,12 @@
 @media (max-width: 960px) {
     .contact-details {
         height: calc(100vh - ($header-height + $footer-height));
+    }
+}
+
+@media (max-width: $bp-tablet) {
+    .contact-details {
+        height: calc(100vh - ($header-height-mobile + $footer-height));
     }
 }
 

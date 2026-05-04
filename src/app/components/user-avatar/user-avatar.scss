@@ -3,7 +3,6 @@
 
 .user-avatar {
   position: relative;
-  padding-right: 40px;
 }
 
 .user-avatar__button {
@@ -82,7 +81,7 @@
 
   .user-avatar__menu {
     top: 50px;
-    right: -8px;
+    right: 8px;
     transform: translateX(100%);
   }
 

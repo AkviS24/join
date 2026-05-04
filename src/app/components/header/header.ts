@@ -7,4 +7,5 @@ import { UserAvatar } from '../user-avatar/user-avatar';
   templateUrl: './header.html',
   styleUrl: './header.scss',
 })
+
 export class Header {}

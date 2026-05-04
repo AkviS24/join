@@ -2,14 +2,11 @@
 @use '../../../styles/abstracts/mixins' as *;
 
 .header {
-  height: $header-height;
-
-  padding-inline: 116px 40px;
+  height: 96px;
   background: $color-white;
   @include flex-between;
   box-shadow: 0 4px 4px rgba($color-black, 0.08);
   position: relative;
-  z-index: 20;
 }
 
 .header__logo {
@@ -20,7 +17,9 @@
 
 .header__title {
   font-size: 20px;
+  padding-left: 116px;
   color: $color-black;
+  white-space: nowrap;
 }
 
 .header__actions {
@@ -39,16 +38,16 @@
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 800px) {
   .header {
     height: 80px;
     margin-left: 0;
     width: 100%;
-    padding: 0 16px;
   }
 
   .header__logo {
     display: block;
+    margin-left: 24px;
   }
 
   .header__title,

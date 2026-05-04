@@ -1,0 +1,21 @@
+@use '../abstracts/variables' as *;
+
+.primary-button{
+    background-color: $color-dark;
+    color: $color-white;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 21px;
+    padding: 4px 8px;
+    border: none;
+    border-radius: 10px;
+
+    &:hover{
+        background-color: $color-primary;
+        border: 1ps solid $color-white;
+        box-shadow: 0 4px 4px rgba($color-black, 0.2);
+        cursor: pointer;
+    }
+}

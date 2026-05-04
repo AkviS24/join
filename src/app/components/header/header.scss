@@ -2,7 +2,7 @@
 @use '../../../styles/abstracts/mixins' as *;
 
 .header {
-  height: 96px;
+  height: $header-height;
 
   padding-inline: 116px 40px;
   background: $color-white;

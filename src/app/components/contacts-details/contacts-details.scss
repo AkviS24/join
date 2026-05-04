@@ -1,24 +1,29 @@
+@use '../../../styles/abstracts/variables' as *;
+@use '../../../styles/abstracts/mixins' as *;
+
 :host {
     flex-grow: 1;
-    background-color: #F6F7F8;
+    background-color: $color-bg;
     overflow: hidden;
 }
 
 .contact-details {
     padding: 16px;
-    
+
+    @media (max-width: $bp-laptop) {}
 
     h3 {
-        font-size: 48px;
+        font-size: 60px;
         font-weight: 600;
     }
 
-    p {
+    .slogan {
         font-size: 28px;
+        text-align: center;
     }
 
     .blue-dash {
-        color: #0F83EE;
+        color: $color-primary;
         font-size: 64px;
         font-weight: 600;
         padding: 0 16px;
@@ -32,6 +37,7 @@
     >.user-badge {
         width: 120px;
         height: 120px;
+        flex-shrink: 0;
         margin-left: 0;
         font-size: 36px;
         border: white 4px solid;
@@ -60,20 +66,24 @@
 .edit-and-delete {
     display: flex;
 
-    >p {
+    .dis-flex-row {
         &:hover {
-            color: #29ABE2;
+            color: $color-primary;
             cursor: pointer;
+            ::ng-deep app-svg-db{
+                fill: $color-primary;
+            }
         }
     }
 }
 
-.details-content{
+.details-content {
     padding: 16px;
     animation: slideInRight 0.3s ease-out forwards;
 }
 
 .details-contact-info {
+    font-size: 20px;
     padding: 16px;
 }
 
@@ -81,7 +91,6 @@
     padding: 16px;
 
     p {
-        font-size: 18px;
         font-weight: 600;
         padding: 4px;
     }
@@ -92,9 +101,19 @@
     }
 }
 
-.no-selection{
+.no-selection {
     padding-left: 16px;
     padding-top: 16px;
+}
+
+.dis-flex {
+    display: flex;
+    flex-direction: column;
+}
+
+.dis-flex-row {
+    display: flex;
+    align-items: center;
 }
 
 @keyframes slideInRight {
@@ -102,8 +121,15 @@
         opacity: 0;
         transform: translateX(100%);
     }
+
     to {
         opacity: 1;
         transform: translateX(0);
+    }
+}
+
+@media (max-width: $bp-laptop) {
+    .contact-details {
+        display: none;
     }
 }

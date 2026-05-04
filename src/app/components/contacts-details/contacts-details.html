@@ -1,36 +1,44 @@
 <div class="contact-details">
-        <div class="contact-header">
-            <h3>Contacts</h3>
-            <p class="blue-dash">|</p>
-            <p>Better with a team</p>
-        </div>
-        @if (selectedUser) {
-        <div class="details-content">
-            <div class="details-header">
-                <p class="user-badge" [style.backgroundColor]="nameColorService.getColor(selectedUser.id)">
-                    {{ nameColorService.getInitials(selectedUser.firstname, selectedUser.name) }}
-                </p>
-                <div class="dis-flex">
-                    <h2>{{selectedUser.firstname}} {{selectedUser.name}}</h2>
-                    <div class="edit-and-delete">
-                        <p>Edit</p>
-                        <p>Delete</p>
-                    </div>
-                </div>
+  <div class="contact-header">
+    <h3>Contacts</h3>
+    <p class="blue-dash">|</p>
+    <p class="slogan">Better with a team</p>
+  </div>
+  @if (user) {
+    <div class="details-content">
+      <div class="details-header">
+        <p class="user-badge" [style.backgroundColor]="userBadgeService.getColor(user.id)">
+          {{ userBadgeService.getInitials(user.name) }}
+        </p>
+        <div class="dis-flex">
+          <h2>{{ user.name }}</h2>
+          <div class="edit-and-delete">
+            <div class="dis-flex-row" (click)="onEditClick()">
+              <app-svg-db name="edit"></app-svg-db>
+              <p>Edit</p>
             </div>
-            <p class="details-contact-info">Contact Information</p>
-            <div class="contact-info-sub">
-                <div class="dis-flex">
-                    <p>Email</p> <a href="mailto:{{selectedUser.email}}">{{selectedUser.email}}</a>
-                </div>
-                <div class="dis-flex">
-                    <p>Phone</p> <a href="tel:{{selectedUser.phone}}">{{selectedUser.phone}}</a>
-                </div>
+            <div class="dis-flex-row" (click)="onDeleteClick()">
+              <app-svg-db name="delete"></app-svg-db>
+              <p>Delete</p>
             </div>
+          </div>
         </div>
-        } @else {
-        <div class="no-selection">
-            <p>Select a contact to view details</p>
+      </div>
+      <p class="details-contact-info">Contact Information</p>
+      <div class="contact-info-sub">
+        <div class="dis-flex">
+          <p>Email</p>
+          <a href="mailto:{{ user.email }}">{{ user.email }}</a>
         </div>
-        }
+        <div class="dis-flex">
+          <p>Phone</p>
+          <a href="tel:{{ user.phone }}">{{ user.phone }}</a>
+        </div>
+      </div>
     </div>
+  } @else {
+    <div class="no-selection">
+      <p>Select a contact to view details</p>
+    </div>
+  }
+</div>

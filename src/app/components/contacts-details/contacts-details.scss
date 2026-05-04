@@ -8,9 +8,9 @@
 }
 
 .contact-details {
+    position: relative;
     padding: 16px;
-
-    @media (max-width: $bp-laptop) {}
+    height: calc(100vh - ($header-height + $footer-height));
 
     h3 {
         font-size: 60px;
@@ -19,16 +19,59 @@
 
     .slogan {
         font-size: 28px;
-        text-align: center;
+        // text-align: center;
+    }
+
+    .slogan-div {
+        display: flex;
+        align-items: center;
     }
 
     .blue-dash {
-        color: $color-primary;
-        font-size: 64px;
-        font-weight: 600;
-        padding: 0 16px;
+        border-left: 3px solid $color-primary;
+        height: 60px;
+        margin: 0 16px;
+    }
+
+    button {
+        display: none;
+        border: none;
+        background: none;
+        cursor: pointer;
+        padding: 10px;
+
+    }
+
+    .back-arrow-mobile {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+    }
+
+    .more-options-container {
+        position: fixed;
+        bottom: calc($footer-height + 16px);
+        right: 16px;
+
+        .more-options {
+            padding: 8px;
+            border-radius: 10px 10px 0 10px;
+            background-color: white;
+            box-shadow: 0 4px 4px rgba($color-black, 0.08);
+            animation: slideInRight 0.3s ease-out forwards;
+
+            app-svg-db {
+                padding: 8px;
+            }
+        }
+    }
+
+    .more-options-mobile {
+        background-color: $color-dark;
+        border-radius: 50%;
     }
 }
+
 
 .details-header {
     display: flex;
@@ -55,24 +98,29 @@
         font-size: 18px;
         padding: 4px;
     }
+
+    .username {
+        font-size: 42px;
+        font-weight: 500;
+    }
 }
 
 .contact-header {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     padding: 16px;
 }
 
 .edit-and-delete {
     display: flex;
 
-    .dis-flex-row {
+    .edit-options {
+        display: flex;
+        margin: 6px;
+
         &:hover {
             color: $color-primary;
             cursor: pointer;
-            ::ng-deep app-svg-db{
-                fill: $color-primary;
-            }
         }
     }
 }
@@ -106,15 +154,7 @@
     padding-top: 16px;
 }
 
-.dis-flex {
-    display: flex;
-    flex-direction: column;
-}
 
-.dis-flex-row {
-    display: flex;
-    align-items: center;
-}
 
 @keyframes slideInRight {
     from {
@@ -129,7 +169,77 @@
 }
 
 @media (max-width: $bp-laptop) {
+    .contact-header {
+        flex-direction: column;
+    }
+
     .contact-details {
-        display: none;
+        .slogan-div {
+            flex-direction: column-reverse;
+            align-items: flex-start;
+
+            >.blue-dash {
+                margin: 6px 0;
+                border-left: 0;
+                width: 120px;
+                height: 0;
+                border-bottom: 3px solid $color-primary;
+                ;
+            }
+        }
+    }
+}
+
+@media (max-width: 960px) {
+    .contact-details {
+        height: calc(100vh - ($header-height + $footer-height));
+    }
+}
+
+@media (max-width: $bp-tablet) {
+    .contact-details {
+        button {
+            display: block;
+
+        }
+    }
+
+    .back-arrow-mobile {
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+@media (max-width: $bp-mobile) {
+    .contact-header {
+        padding: 0;
+    }
+
+    .contact-details {
+        h3 {
+            font-size: 47px;
+        }
+
+        .slogan {
+            font-size: 20px;
+        }
+
+        .user-badge {
+            height: 80px;
+            width: 80px;
+            margin-left: 4px;
+        }
+
+        .details-content {
+            padding: 0;
+        }
+
+        .edit-and-delete {
+            display: none;
+        }
+
+        .username {
+            font-size: 36px;
+        }
     }
 }

@@ -2,13 +2,18 @@ import { Component, inject } from '@angular/core';
 import { UserBadge } from '../../services/userbadge';
 import { ContactsDetails } from "../contacts-details/contacts-details";
 import { SvgDb } from "../../shared/svg-db/svg-db";
-import { JsonPipe } from '@angular/common';
 import { Supabase } from '../../services/supabase';
 
 @Component({
   selector: 'app-contacts',
-  imports: [ContactsDetails, SvgDb, JsonPipe],
+  imports: [ContactsDetails, SvgDb],
   templateUrl: './contacts.html',
+  styles: [`
+    :host {
+      display: block;
+      width: 100%;
+    }
+  `],
   styleUrl: './contacts.scss',
 })
 

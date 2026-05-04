@@ -1,8 +1,31 @@
 <div class="contact-details">
     <div class="contact-header">
         <h3>Contacts</h3>
-        <p class="blue-dash">|</p>
-        <p class="slogan">Better with a team</p>
+        <div class="slogan-div">
+            <div class="blue-dash"></div>
+            <p class="slogan">Better with a team</p>
+        </div>
+        <button class="back-arrow-mobile" (click)="goBack()">
+            <app-svg-db name="arrow-left"></app-svg-db>
+        </button>
+
+    </div>
+    <div class="more-options-container">
+        <button [class.dis-none]="showMoreOptions" class="more-options-mobile" (click)="toggleMoreOptions(); $event.stopPropagation()">
+            <app-svg-db name="more-vertical"></app-svg-db>
+        </button>
+        @if (showMoreOptions) {
+        <div #moreOptions class="more-options">
+            <div class="dis-flex" (click)="editContacts()">
+                <app-svg-db name="edit"></app-svg-db>
+                <p>Edit</p>
+            </div>
+            <div class="dis-flex" (click)="deleteContact()">
+                <app-svg-db name="delete"></app-svg-db>
+                <p>Delete</p>
+            </div>
+        </div>
+        }
     </div>
     @if (selectedUser) {
     <div class="details-content">
@@ -10,14 +33,14 @@
             <p class="user-badge" [style.backgroundColor]="userBadgeService.getColor(selectedUser.id)">
                 {{ userBadgeService.getInitials(selectedUser.name) }}
             </p>
-            <div class="dis-flex">
-                <h2>{{selectedUser.name}}</h2>
+            <div class="dis-flex-column">
+                <p class="username">{{selectedUser.name}}</p>
                 <div class="edit-and-delete">
-                    <div class="dis-flex-row">
+                    <div class="edit-options">
                         <app-svg-db name="edit"></app-svg-db>
                         <p>Edit</p>
                     </div>
-                    <div class="dis-flex-row">
+                    <div class="edit-options">
                         <app-svg-db name="delete"></app-svg-db>
                         <p>Delete</p>
                     </div>
@@ -26,10 +49,10 @@
         </div>
         <p class="details-contact-info">Contact Information</p>
         <div class="contact-info-sub">
-            <div class="dis-flex">
+            <div class="dis-flex-column">
                 <p>Email</p> <a href="mailto:{{selectedUser.email}}">{{selectedUser.email}}</a>
             </div>
-            <div class="dis-flex">
+            <div class="dis-flex-column">
                 <p>Phone</p> <a href="tel:{{selectedUser.phone}}">{{selectedUser.phone}}</a>
             </div>
         </div>

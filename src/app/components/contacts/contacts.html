@@ -1,8 +1,8 @@
 <section class="contacts">
 
-    <div class="contact-list">
+    <div class="contact-list" [class.hidden-mobile]="selectedUser">
         <div class="contact-button">
-            <button class="primary-button">Add new contact
+            <button class="primary-button"><span>Add new contact</span>
                 <app-svg-db name="person-add"></app-svg-db>
             </button>
         </div>
@@ -23,6 +23,8 @@
         </div>
         }
     </div>
-    <app-contacts-details [selectedUser]="selectedUser"></app-contacts-details>
+    <app-contacts-details [selectedUser]="selectedUser" [class.visible-mobile]="selectedUser"
+        (backToMain)="selectedUser = null">
+    </app-contacts-details>
 
 </section>

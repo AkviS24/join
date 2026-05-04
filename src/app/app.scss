@@ -16,7 +16,7 @@
   // min-height: 100vh;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 960px) {
   .app-layout {
     margin-left: 0;
     width: 100%;
@@ -26,9 +26,9 @@
   .app-content {
     width: auto;
     max-width: 100%;
-    padding-inline: 24px;
-    padding-top: 48px;
-    padding-bottom: 104px;
+    // padding-inline: 24px;
+    // padding-top: 48px;
+    // padding-bottom: 104px;
     overflow-x: hidden;
   }
 

@@ -8,10 +8,8 @@ import { PrivacyPolice } from './components/privacy-police/privacyPolice';
 import { LegalNotice } from './components/legal-notice/legalNotice';
 import { Discription } from './components/discription/discription';
 
-
-
 export const routes: Routes = [
-  { path: '', redirectTo: 'summary', pathMatch: 'full' },
+  { path: '', redirectTo: 'contacts', pathMatch: 'full' },
 
   { path: 'summary', component: Summary },
   { path: 'add-task', component: AddTask },

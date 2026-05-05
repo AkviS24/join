@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { Supabase } from '../../services/supabase';
 
 @Component({
@@ -10,14 +10,15 @@ import { Supabase } from '../../services/supabase';
 })
 export class ContactsAdd implements OnInit {
   @Input() user: any;
-  @Output() closeEdit = new EventEmitter<void>();
+  @Output() closeEdit = new EventEmitter<boolean>();
+  @Output() contactCreated = new EventEmitter<void>();
 
   demoDB = inject(Supabase);
 
-  contactName: string = '';
-  contactEmail: string = '';
-  contactPhone: string = '';
-  isLoading: boolean = false;
+  contactName = '';
+  contactEmail = '';
+  contactPhone = '';
+  isLoading = false;
 
   ngOnInit() {
     if (this.user) {
@@ -34,31 +35,51 @@ export class ContactsAdd implements OnInit {
   get initials(): string {
     const nameStr = this.user?.name === 'null' || !this.user?.name ? '' : this.user.name.trim();
     if (!nameStr) return '';
-    const parts = nameStr.split(' ').filter((n: string) => n.length > 0);
+
+    const parts = nameStr.split(' ').filter((name: string) => name.length > 0);
+
     if (parts.length > 1) {
       return `${parts[0][0]}${parts[parts.length - 1][0]}`.toUpperCase();
     }
+
     return nameStr.substring(0, 2).toUpperCase();
   }
 
   close() {
-    this.closeEdit.emit();
+    this.closeEdit.emit(false);
+  }
+
+  submitContact(form: NgForm) {
+    if (form.invalid) {
+      form.control.markAllAsTouched();
+      return;
+    }
+
+    this.createContact();
   }
 
   async createContact() {
     if (this.isLoading) return;
+
     this.isLoading = true;
 
-    const newContact = {
-      name: this.contactName.trim() || '',
-      email: this.contactEmail,
-      phone: Number(this.contactPhone.replace(/\D/g, '')) || 0,
-      password: ''
-    };
+    try {
+      const newContact = {
+        name: this.contactName.trim(),
+        email: this.contactEmail.trim(),
+        phone: Number(this.contactPhone.replace(/\D/g, '')) || 0,
+        password: '',
+      };
 
-    await this.demoDB.setDemoData(newContact);
-    await this.demoDB.getDemoData();
-    this.isLoading = false;
-    this.close();
+      await this.demoDB.setDemoData(newContact);
+      await this.demoDB.getDemoData();
+
+      this.contactCreated.emit();
+      this.closeEdit.emit(true);
+    } catch (error) {
+      console.error('Create contact failed:', error);
+    } finally {
+      this.isLoading = false;
+    }
   }
 }

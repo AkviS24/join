@@ -31,13 +31,17 @@ export class UserBadge {
     const n1 = name1 && name1 !== 'null' ? name1 : '';
     const n2 = name2 && name2 !== 'null' ? name2 : '';
     let fullName = `${n1} ${n2}`.trim();
-    return fullName
+    let initialsName = fullName
       .split(' ')
       .filter((n) => n.length > 0)
       .map((n) => n[0])
       .join('')
-      .toUpperCase()
-      .substring(0, 2);
+      .toUpperCase();
+       let compactInitialsName = initialsName[0];
+      if (initialsName.length >= 2) {
+        compactInitialsName = initialsName[0] + initialsName[initialsName.length - 1];
+      } 
+      return compactInitialsName;
   }
 
   getColor(uid: number): string {

@@ -1,25 +1,23 @@
-<div class="overlay-container">
-  <div class="left-panel">
-    <img src="/icons/img/logo-w.svg" alt="Join Logo" class="logo" />
-    <div class="title-group">
-      <h1>Edit contact</h1>
-      <img src="/icons/img/underline.svg" alt="Underline" class="underline" />
+<div class="overlay-backdrop" (click)="close()">
+  <div class="overlay-container" (click)="$event.stopPropagation()">
+    <div class="left-panel">
+      <img src="/icons/img/logo-w.svg" alt="Join Logo" class="logo" />
+      
+      <div class="title-group">
+        <h1>Edit contact</h1>
+        <img src="/icons/img/underline.svg" alt="Underline" class="underline" />
+      </div>
     </div>
-  </div>
 
-  <div class="right-panel">
-    <button class="close-btn" aria-label="Close" (click)="close()">
-      <img src="/icons/img/close.svg" alt="Close Icon" />
-    </button>
+    <div class="right-panel">
+      <button class="close-btn" aria-label="Close" (click)="close()">
+        <img src="/icons/img/close.svg" alt="Close Icon" />
+      </button>
 
-    <div class="content-wrapper">
-      <div
-        class="avatar-container"
-        style="display: flex; justify-content: center; align-items: center; margin-bottom: 24px"
-      >
-        <div
-          [style.backgroundColor]="userBadgeService.getColor(user?.id)"
-          style="
+      <div class="content-wrapper">
+        <div class="avatar-container"
+          style="display: flex; justify-content: center; align-items: center; margin-bottom: 24px">
+          <div [style.backgroundColor]="userBadgeService.getColor(user?.id)" style="
             width: 120px;
             height: 120px;
             border-radius: 50%;
@@ -30,105 +28,70 @@
             font-size: 36px;
             border: 4px solid white;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-          "
-        >
-          {{ userBadgeService.getInitials(user?.name) }}
+          ">
+            {{ userBadgeService.getInitials(user?.name) }}
+          </div>
         </div>
-      </div>
 
-      <form
-        class="contact-form"
-        #editForm="ngForm"
-        (ngSubmit)="editForm.form.valid && saveContact()"
-      >
-        <div class="input-group active">
-          <input
-            type="text"
-            [(ngModel)]="contactName"
-            name="name"
-            placeholder="Name"
-            required
-            pattern="^[a-zA-ZäöüÄÖÜß\s\-]+$"
-            #nameCtrl="ngModel"
-          />
-          <img src="/icons/img/person.svg" alt="Person Icon" class="input-icon" />
-        </div>
-        <div class="error-msg">
-          @if (nameCtrl.invalid && (nameCtrl.dirty || nameCtrl.touched)) {
+        <form class="contact-form" #editForm="ngForm" (ngSubmit)="editForm.form.valid && saveContact()">
+          <div class="input-group active">
+            <input type="text" [(ngModel)]="contactName" name="name" placeholder="Name" required
+              pattern="^[a-zA-ZäöüÄÖÜß\s\-]+$" #nameCtrl="ngModel" />
+            <img src="/icons/img/person.svg" alt="Person Icon" class="input-icon" />
+          </div>
+          <div class="error-msg">
+            @if (nameCtrl.invalid && (nameCtrl.dirty || nameCtrl.touched)) {
             @if (nameCtrl.errors?.['required']) {
-              <span>Name ist ein Pflichtfeld.</span>
+            <span>Name ist ein Pflichtfeld.</span>
             }
             @if (nameCtrl.errors?.['pattern']) {
-              <span>Der Name darf keine Zahlen enthalten.</span>
+            <span>Der Name darf keine Zahlen enthalten.</span>
             }
-          }
-        </div>
+            }
+          </div>
 
-        <div class="input-group">
-          <input
-            type="email"
-            [(ngModel)]="contactEmail"
-            name="email"
-            placeholder="Email"
-            required
-            pattern="^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$"
-            #emailCtrl="ngModel"
-          />
-          <img src="/icons/img/email.svg" alt="Mail Icon" class="input-icon" />
-        </div>
-        <div class="error-msg">
-          @if (emailCtrl.invalid && (emailCtrl.dirty || emailCtrl.touched)) {
+          <div class="input-group">
+            <input type="email" [(ngModel)]="contactEmail" name="email" placeholder="Email" required
+              pattern="^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$" #emailCtrl="ngModel" />
+            <img src="/icons/img/email.svg" alt="Mail Icon" class="input-icon" />
+          </div>
+          <div class="error-msg">
+            @if (emailCtrl.invalid && (emailCtrl.dirty || emailCtrl.touched)) {
             @if (emailCtrl.errors?.['required']) {
-              <span>Email ist ein Pflichtfeld.</span>
+            <span>Email ist ein Pflichtfeld.</span>
             }
             @if (emailCtrl.errors?.['pattern']) {
-              <span>Bitte eine gültige E-Mail-Adresse eingeben.</span>
+            <span>Bitte eine gültige E-Mail-Adresse eingeben.</span>
             }
-          }
-        </div>
+            }
+          </div>
 
-        <div class="input-group">
-          <input
-            type="tel"
-            [(ngModel)]="contactPhone"
-            name="phone"
-            placeholder="Phone"
-            required
-            pattern="^\+?[0-9\s]+$"
-            #phoneCtrl="ngModel"
-          />
-          <img src="/icons/img/phone.svg" alt="Phone Icon" class="input-icon" />
-        </div>
-        <div class="error-msg">
-          @if (phoneCtrl.invalid && (phoneCtrl.dirty || phoneCtrl.touched)) {
+          <div class="input-group">
+            <input type="tel" [(ngModel)]="contactPhone" name="phone" placeholder="Phone" required
+              pattern="^\+?[0-9\s]+$" #phoneCtrl="ngModel" />
+            <img src="/icons/img/phone.svg" alt="Phone Icon" class="input-icon" />
+          </div>
+          <div class="error-msg">
+            @if (phoneCtrl.invalid && (phoneCtrl.dirty || phoneCtrl.touched)) {
             @if (phoneCtrl.errors?.['required']) {
-              <span>Telefonnummer ist ein Pflichtfeld.</span>
+            <span>Telefonnummer ist ein Pflichtfeld.</span>
             }
             @if (phoneCtrl.errors?.['pattern']) {
-              <span>Nur Zahlen und ein optionales '+' am Anfang.</span>
+            <span>Nur Zahlen und ein optionales '+' am Anfang.</span>
             }
-          }
-        </div>
+            }
+          </div>
 
-        <div class="form-actions">
-          <button
-            type="button"
-            class="btn-delete"
-            (click)="deleteContact()"
-            [disabled]="isDeleting || isSaving"
-          >
-            {{ isDeleting ? 'Deleting...' : 'Delete' }}
-          </button>
-          <button
-            type="submit"
-            class="btn-save"
-            [disabled]="editForm.invalid || isSaving || isDeleting"
-          >
-            {{ isSaving ? 'Saving...' : 'Save' }}
-            <img src="/icons/img/save.svg" alt="Check Icon" />
-          </button>
-        </div>
-      </form>
+          <div class="form-actions">
+            <button type="button" class="btn-delete" (click)="deleteContact()" [disabled]="isDeleting || isSaving">
+              {{ isDeleting ? 'Deleting...' : 'Delete' }}
+            </button>
+            <button type="submit" class="btn-save" [disabled]="editForm.invalid || isSaving || isDeleting">
+              {{ isSaving ? 'Saving...' : 'Save' }}
+              <img src="/icons/img/save.svg" alt="Check Icon" />
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
-</div>

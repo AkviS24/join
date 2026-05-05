@@ -11,6 +11,7 @@
   color: $color-white;
   display: flex;
   flex-direction: column;
+  justify-content: space-around;
   padding: 64px 0 56px;
 }
 
@@ -71,14 +72,14 @@
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 960px) {
   .navigation {
     top: auto;
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 80px;
-    padding: 0;
+    height: $footer-height;
+    padding: 0 48px;
   }
 
   .navigation__logo,
@@ -133,7 +134,7 @@
       border-radius: 12px;
       background-color: transparent;
       transition: background-color 125ms ease-in-out;
-      
+
     }
 
     &:not(.navigation__link--active):hover::before,
@@ -144,5 +145,11 @@
     &--active {
       pointer-events: none;
     }
+  }
+}
+
+@media (max-width: $bp-mobile) {
+  .navigation {
+    padding: 0 0;
   }
 }

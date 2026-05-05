@@ -1,49 +1,82 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { UserBadge } from '../../services/userbadge';
 import { Supabase } from '../../services/supabase';
 import { ContactsDetails } from '../contacts-details/contacts-details';
 import { SvgDb } from '../../shared/svg-db/svg-db';
-import { ContactsAdd } from '../contacts-add/contacts-add';
-import { ContactsEdit } from '../contacts-edit/contacts-edit';
+// import { ContactsAdd } from '../contacts-add/contacts-add';
+// import { ContactsEdit } from '../contacts-edit/contacts-edit';
+import { ContactForm } from '../contacts-forms/contacts-forms';
 
 @Component({
   selector: 'app-contacts',
-  imports: [ContactsDetails, SvgDb, ContactsAdd, ContactsEdit],
+  imports: [ContactsDetails, SvgDb, ContactForm],
   templateUrl: './contacts.html',
+  styles: [`
+    :host {
+      display: block;
+      width: 100%;
+    }
+  `],
   styleUrl: './contacts.scss',
 })
 export class Contacts {
   supaDatabase = inject(Supabase);
   userBadgeService = inject(UserBadge);
-  selectedUser: any = null;
   showAddContact = false;
   showEditContact = false;
+  showToast = signal(false);
 
   showDetails(user: { id: any }) {
-    this.selectedUser = user;
+    this.supaDatabase.selectUser(user);
   }
 
   openAddContact() {
     this.showAddContact = true;
   }
 
-  closeAddContact() {
+  closeAddContact(wasCreated: boolean = false) {
     this.showAddContact = false;
+    if (wasCreated) {
+      this.triggerToast();
+    }
   }
 
   openEditContact() {
     this.showEditContact = true;
   }
 
-  closeEditContact() {
-    this.showEditContact = false;
+  closeEditContact(wasSaved: boolean = false) {
+  this.showEditContact = false;
+  
+  if (wasSaved) {
+    this.triggerToast(); 
+  }
+}
+
+  triggerToast() {
+    this.showToast.set(true);
+    setTimeout(() => {
+      this.showToast.set(false);
+    }, 1500);
   }
 
   async deleteContact() {
-    if (this.selectedUser?.id) {
-      await this.supaDatabase.deleteData(this.selectedUser.id);
-      await this.supaDatabase.getDemoData();
-      this.selectedUser = null; // Detailansicht schließen, da der Kontakt gelöscht wurde
+    const current = this.supaDatabase.selectedUser();
+    if (current?.id) {
+      await this.supaDatabase.deleteData(current.id);
+      this.supaDatabase.selectUser(null);
     }
   }
+
+  backToMain() {
+    this.supaDatabase.selectedUser.set(null);
+  }
+
+  // async deleteContact() {
+  //   if (this.selectedUser?.id) {
+  //     await this.supaDatabase.deleteData(this.selectedUser.id);
+  //     await this.supaDatabase.getDemoData();
+  //     this.selectedUser = null;
+  //   }
+  // }
 }

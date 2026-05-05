@@ -90,6 +90,8 @@
 .right-panel {
   flex: 1;
   position: relative;
+  max-height: 360px;
+  margin-bottom: 90px;
   display: flex;
   align-items: center;
   justify-content: center;

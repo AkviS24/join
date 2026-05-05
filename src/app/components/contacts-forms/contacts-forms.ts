@@ -36,7 +36,6 @@ export class ContactForm implements OnInit {
   }
 
   get initials(): string {
-    // Nutzt den Badge-Service für Edit oder generiert live Initialen für Add
     return this.userBadgeService.getInitials(this.contactName || 'Guest');
   }
 
@@ -61,7 +60,7 @@ export class ContactForm implements OnInit {
       } else {
         await this.supabase.setDemoData(contactData);
       }
-      this.close(true); // Schließen mit Erfolg (für Toast)
+      this.close(true);
     } catch (error) {
       console.error('Error saving contact:', error);
     } finally {

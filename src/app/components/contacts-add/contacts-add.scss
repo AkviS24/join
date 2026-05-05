@@ -242,6 +242,15 @@
   background-color: #29abe2;
 }
 
+.toast-message{
+  padding: 6px;
+  background-color: #2a3647;
+  color: white;
+  position: absolute;
+  bottom: 0px;
+  right: 100px;
+}
+
 /* Responsive Design */
 @media (max-width: 992px) {
   .overlay-container {

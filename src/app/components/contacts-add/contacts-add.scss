@@ -17,6 +17,7 @@
   0% {
     opacity: 0;
   }
+
   100% {
     opacity: 1;
   }
@@ -39,6 +40,7 @@
   0% {
     transform: translateX(100vw);
   }
+
   100% {
     transform: translateX(0);
   }
@@ -74,13 +76,15 @@
   margin: 0;
   line-height: 1.2;
 }
-.title-group h2{
+
+.title-group h2 {
   color: #ffffff;
   font-size: 25px;
   font-weight: 100;
   margin: 0;
   line-height: 1.2;
 }
+
 .underline {
   width: 90px;
   height: auto;
@@ -134,7 +138,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;/* Fallback color */
+  flex-shrink: 0;
+  /* Fallback color */
 }
 
 .avatar-bg {
@@ -263,6 +268,8 @@
 
   .right-panel {
     padding: 60px 20px 40px;
+    max-height: 360px;
+    margin-bottom: 90px;
   }
 
   .content-wrapper {

@@ -21,12 +21,12 @@ import { ContactsEdit } from '../contacts-edit/contacts-edit';
 export class Contacts {
   supaDatabase = inject(Supabase);
   userBadgeService = inject(UserBadge);
-  selectedUser: any = null;
+  // selectedUser: any = null;
   showAddContact = false;
   showEditContact = false;
 
   showDetails(user: { id: any }) {
-    this.selectedUser = user;
+    this.supaDatabase.selectUser(user);
   }
 
   openAddContact() {
@@ -46,10 +46,22 @@ export class Contacts {
   }
 
   async deleteContact() {
-    if (this.selectedUser?.id) {
-      await this.supaDatabase.deleteData(this.selectedUser.id);
-      await this.supaDatabase.getDemoData();
-      this.selectedUser = null; // Detailansicht schließen, da der Kontakt gelöscht wurde
+    const current = this.supaDatabase.selectedUser();
+    if (current?.id) {
+      await this.supaDatabase.deleteData(current.id);
+      this.supaDatabase.selectUser(null);
     }
   }
+
+  backToMain() {
+    this.supaDatabase.selectedUser.set(null);
+  }
+
+  // async deleteContact() {
+  //   if (this.selectedUser?.id) {
+  //     await this.supaDatabase.deleteData(this.selectedUser.id);
+  //     await this.supaDatabase.getDemoData();
+  //     this.selectedUser = null;
+  //   }
+  // }
 }

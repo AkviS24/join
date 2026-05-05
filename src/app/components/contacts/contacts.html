@@ -1,5 +1,5 @@
 <section class="contacts">
-  <div class="contact-list" [class.hidden-mobile]="selectedUser">
+  <div class="contact-list" [class.hidden-mobile]="supaDatabase.selectedUser()">
     <div class="contact-button">
       <button class="primary-button" (click)="openAddContact()">
         <span>Add new contact</span>
@@ -15,7 +15,7 @@
       {{ user.name[0].toUpperCase() }}
     </div>
     }
-    <div [class.selected-contact]="selectedUser == user" (click)="showDetails(user)" class="contact-info">
+    <div [class.selected-contact]="supaDatabase.selectedUser() == user" (click)="showDetails(user)" class="contact-info">
       <p class="user-badge" [style.backgroundColor]="userBadgeService.getColor(user.id)">
         {{ userBadgeService.getInitials(user.name) }}
       </p>
@@ -26,15 +26,14 @@
     </div>
     }
   </div>
-  <app-contacts-details [user]="selectedUser" (editRequest)="openEditContact()" (deleteRequest)="deleteContact()"
-    [class.visible-mobile]="selectedUser"
-    (backToMain)="selectedUser = null"></app-contacts-details>
+  <app-contacts-details [user]="supaDatabase.selectedUser()" (editRequest)="openEditContact()" (deleteRequest)="deleteContact()"
+    [class.visible-mobile]="supaDatabase.selectedUser()" (backToMain)="backToMain()"></app-contacts-details>
 
   @if (showAddContact) {
   <app-contacts-add (closeEdit)="closeAddContact()"></app-contacts-add>
   }
 
   @if (showEditContact) {
-  <app-contacts-edit [user]="selectedUser" (closeEdit)="closeEditContact()"></app-contacts-edit>
+  <app-contacts-edit [user]="supaDatabase.selectedUser()" (closeEdit)="closeEditContact()"></app-contacts-edit>
   }
 </section>

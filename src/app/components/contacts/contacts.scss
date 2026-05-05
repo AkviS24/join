@@ -10,11 +10,11 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    min-width: 320px;
-    width: 320px;
+    min-width: 360px;
+    width: 360px;
     height: calc(100vh - $header-height);
     overflow-y: auto;
-    padding: 16px;
+    padding: 16px 52px;
     border: 1px solid $color-white;
 }
 
@@ -32,7 +32,7 @@
 .letter-separator {
     width: 100%;
     // max-width: 300px;
-    padding: 24px;
+    padding: 17px 24px;
     border-bottom: 1px solid $color-gray;
 }
 
@@ -100,11 +100,6 @@
 @media (max-width: $bp-tablet) {
     .contact-list {
         height: calc(100vh - ($header-height-mobile + $footer-height));
-    }
-}
-
-@media (max-width: $bp-tablet) {
-    .contact-list {
         width: 100%;
         padding-inline: 60px;
         display: block;

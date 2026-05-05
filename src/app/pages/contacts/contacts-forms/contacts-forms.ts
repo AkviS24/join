@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
-import { Supabase } from '../../services/supabase';
-import { UserBadge } from '../../services/userbadge';
-import { SvgDb } from "../../shared/svg-db/svg-db";
+import { Supabase } from '../../../services/supabase';
+import { UserBadge } from '../../../services/userbadge';
+import { SvgDb } from "../../../shared/svg-db/svg-db";
 
 @Component({
   selector: 'app-contact-form',

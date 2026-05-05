@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, ElementRef, HostListener, ViewChild, Output, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { UserBadge } from '../../services/userbadge';
-import { SvgDb } from '../../shared/svg-db/svg-db';
+import { UserBadge } from '../../../services/userbadge';
+import { SvgDb } from '../../../shared/svg-db/svg-db';
 
 @Component({
   selector: 'app-contacts-details',

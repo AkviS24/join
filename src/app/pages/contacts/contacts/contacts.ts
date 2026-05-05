@@ -1,11 +1,9 @@
 import { Component, inject, signal } from '@angular/core';
-import { UserBadge } from '../../services/userbadge';
-import { Supabase } from '../../services/supabase';
+import { UserBadge } from '../../../services/userbadge';
+import { Supabase } from '../../../services/supabase';
 import { ContactsDetails } from '../contacts-details/contacts-details';
-import { SvgDb } from '../../shared/svg-db/svg-db';
-// import { ContactsAdd } from '../contacts-add/contacts-add';
-// import { ContactsEdit } from '../contacts-edit/contacts-edit';
 import { ContactForm } from '../contacts-forms/contacts-forms';
+import { SvgDb } from '../../../shared/svg-db/svg-db';
 
 @Component({
   selector: 'app-contacts',

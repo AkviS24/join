@@ -15,7 +15,8 @@
       {{ user.name[0].toUpperCase() }}
     </div>
     }
-    <div [class.selected-contact]="supaDatabase.selectedUser()?.id === user.id" (click)="showDetails(user)" class="contact-info">
+    <div [class.selected-contact]="supaDatabase.selectedUser()?.id === user.id" (click)="showDetails(user)"
+      class="contact-info">
       <p class="user-badge" [style.backgroundColor]="userBadgeService.getColor(user.id)">
         {{ userBadgeService.getInitials(user.name) }}
       </p>
@@ -26,17 +27,24 @@
     </div>
     }
   </div>
-  <app-contacts-details [user]="supaDatabase.selectedUser()" (editRequest)="openEditContact()" (deleteRequest)="deleteContact()"
-    [class.visible-mobile]="supaDatabase.selectedUser()" (backToMain)="backToMain()"></app-contacts-details>
+  <app-contacts-details [user]="supaDatabase.selectedUser()" (editRequest)="openEditContact()"
+    (deleteRequest)="deleteContact()" [class.visible-mobile]="supaDatabase.selectedUser()"
+    (backToMain)="backToMain()"></app-contacts-details>
 
-    @if (this.showAddContact) {
+  <!-- @if (this.showAddContact) {
     <app-contacts-add (closeEdit)="closeAddContact($event)"></app-contacts-add>
     }
 
     @if (showEditContact) {
     <app-contacts-edit [user]="supaDatabase.selectedUser()" (closeEdit)="closeEditContact()"></app-contacts-edit>
-    }
-    <div class="toast-message" [class.show]="showToast()">
-      <p>Contact successfully created!</p>
-    </div>
+    } -->
+  @if (showAddContact) {
+  <app-contact-form (closeEdit)="closeAddContact($event)"></app-contact-form>
+  }
+  @if (showEditContact) {
+  <app-contact-form [user]="supaDatabase.selectedUser()" (closeEdit)="closeEditContact($event)"></app-contact-form>
+  }
+  <div class="toast-message" [class.show]="showToast()">
+    <p>Contact successfully created!</p>
+  </div>
 </section>

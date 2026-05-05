@@ -1,0 +1,444 @@
+@use '../../../styles/abstracts/variables' as *;
+@use '../../../styles/components/buttons' as *;
+
+:host {
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    display: block;
+}
+
+.overlay-backdrop {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100dvh;
+    background-color: rgba($color-black, 0.35);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+    overflow: hidden;
+    animation: fadeIn 200ms ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.overlay-container {
+    width: min(1212px, calc(100vw - 48px));
+    height: min(592px, calc(100dvh - 48px));
+    background-color: $color-white;
+    border-radius: 30px;
+    display: flex;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba($color-black, 0.1);
+    animation: slideInRight 400ms ease-out forwards;
+    position: relative;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100vw);
+    }
+
+    to {
+        transform: translateX(0);
+    }
+}
+
+.left-panel {
+    width: clamp(320px, 37vw, 453px);
+    background-color: $color-dark;
+    color: $color-white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: clamp(40px, 5vw, 56px) clamp(28px, 4vw, 46px);
+    flex-shrink: 1;
+}
+
+.logo {
+    width: 54px;
+    height: auto;
+    margin-bottom: 12px;
+}
+
+.title-group {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    h1 {
+        color: $color-white;
+        font-size: clamp(40px, 4vw, 61px);
+        font-weight: 700;
+        margin: 0;
+        line-height: 1.1;
+        white-space: nowrap;
+    }
+
+    h2 {
+        color: $color-white;
+        font-size: clamp(18px, 2vw, 25px);
+        font-weight: 400;
+        margin: 0;
+        line-height: 1.2;
+        white-space: nowrap;
+    }
+}
+
+.underline {
+    width: 90px;
+    height: 3px;
+    background-color: $color-primary;
+    border-radius: 999px;
+}
+
+.right-panel {
+    flex: 1;
+    min-width: 0;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: $color-white;
+    padding: 56px clamp(32px, 4vw, 48px);
+}
+
+.close-btn {
+    position: absolute;
+    top: 48px;
+    right: clamp(32px, 4vw, 48px);
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 50%;
+    background-color: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 125ms ease-in-out;
+
+    &:hover {
+        background-color: $color-bg;
+    }
+
+    img {
+        width: 14px;
+        height: 14px;
+    }
+}
+
+.content-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(24px, 4vw, 72px);
+    width: 100%;
+}
+
+.avatar-container {
+    position: relative;
+    width: clamp(88px, 9vw, 120px);
+    height: clamp(88px, 9vw, 120px);
+    border-radius: 50%;
+    border: 3px solid $color-white;
+    box-shadow: 0 0 4px rgba($color-black, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    background-color: $color-gray;
+    overflow: hidden;
+}
+
+// .user-initials-large {
+//     width: 120px;
+//     height: 120px;
+//     border-radius: 50%;
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+//     color: white;
+//     font-size: 36px;
+//     border: 4px solid white;
+//     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+// }
+
+.avatar-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.avatar-text {
+    position: relative;
+    z-index: 2;
+    color: $color-white;
+    font-size: clamp(34px, 4vw, 47px);
+    font-weight: 500;
+}
+
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(18px, 2.2vw, 32px);
+    width: min(422px, 100%);
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+    padding: 13px 21px;
+    border-radius: 10px;
+    background-color: $color-white;
+    border: 1px solid $color-gray;
+    gap: 10px;
+    transition: border-color 125ms ease-in-out;
+
+    &:focus-within {
+        border-color: $color-primary;
+    }
+
+    input {
+        flex: 1;
+        min-width: 0;
+        border: none;
+        outline: none;
+        font-size: clamp(16px, 1.5vw, 20px);
+        font-family: 'Inter', sans-serif;
+        color: $color-black;
+        background: transparent;
+
+        &::placeholder {
+            color: $color-gray;
+        }
+    }
+}
+
+.input-icon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.error-msg {
+    color: $color-urgent;
+    font-size: 14px;
+    margin-top: -16px;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 25px;
+    margin-top: 8px;
+    flex-wrap: nowrap;
+}
+
+.btn-delete,
+.btn-save {
+    white-space: nowrap;
+}
+
+.btn-delete {
+    padding: 15px 24px;
+    border-radius: 10px;
+    border: 1px solid $color-dark;
+    background: $color-white;
+    color: $color-dark;
+    font-size: clamp(16px, 1.6vw, 20px);
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 2px 0 rgba($color-black, 0.15);
+
+    transition: all 120ms ease;
+
+    &:active {
+        box-shadow: 0 1px 0 rgba($color-black, 0.2);
+        transform: translateY(1px);
+    }
+}
+
+.btn-save {
+    width: auto;
+    white-space: nowrap;
+    gap: 8px;
+    padding: 16px 24px;
+}
+
+@media (max-width: $bp-laptop) {
+    .overlay-container {
+        width: calc(100vw - 40px);
+    }
+
+    .left-panel {
+        width: clamp(300px, 35vw, 380px);
+        padding-inline: 32px;
+    }
+
+    .right-panel {
+        padding: 48px 32px;
+    }
+
+    .close-btn {
+        right: 32px;
+    }
+
+    .content-wrapper {
+        gap: 24px;
+    }
+}
+
+@media (max-width: 860px) {
+    .overlay-backdrop {
+        padding: calc($header-height-mobile + 10px) 10px calc($footer-height + 10px);
+        align-items: center;
+    }
+
+    .overlay-container {
+        width: 100%;
+        max-width: 560px;
+        height: calc(100dvh - $header-height-mobile - $footer-height - 20px);
+        flex-direction: column;
+        border-radius: 30px;
+    }
+
+    .left-panel {
+        width: 100%;
+        height: 38%;
+        min-height: 220px;
+        padding: 40px 28px 64px;
+        justify-content: center;
+    }
+
+    .logo {
+        display: none;
+    }
+
+    .title-group {
+        gap: 12px;
+
+        h1 {
+            font-size: clamp(36px, 8vw, 47px);
+        }
+
+        h2 {
+            font-size: clamp(18px, 4vw, 20px);
+        }
+    }
+
+    .right-panel {
+        height: 62%;
+        align-items: flex-start;
+        padding: 68px 24px 24px;
+        position: static;
+    }
+
+    .close-btn {
+        top: 24px;
+        right: 24px;
+        background-color: transparent;
+
+        img {
+            filter: brightness(0) invert(1);
+        }
+
+        &:hover,
+        &:active,
+        &:focus-visible {
+            background-color: $color-primary;
+        }
+    }
+
+    .content-wrapper {
+        flex-direction: column;
+        gap: 20px;
+        max-width: 100%;
+    }
+
+    .avatar-container {
+        width: 112px;
+        height: 112px;
+        margin-top: -124px;
+    }
+
+    .contact-form {
+        gap: 16px;
+    }
+
+    .form-actions {
+        justify-content: center;
+        gap: 16px;
+    }
+
+    .btn-delete {
+        display: none;
+    }
+
+    .btn-save {
+        margin-top: 14px;
+        padding: 12px 18px;
+    }
+}
+
+@media (max-width: $bp-mobile) {
+    .overlay-backdrop {
+        padding: calc($header-height-mobile + 8px) 12px calc($footer-height + 8px);
+    }
+
+    .overlay-container {
+        height: calc(100dvh - $header-height-mobile - $footer-height - 16px);
+        border-radius: 24px;
+    }
+
+    .left-panel {
+        height: 36%;
+        min-height: 210px;
+        padding: 36px 24px 58px;
+    }
+
+    .right-panel {
+        height: 64%;
+        padding: 64px 20px 20px;
+    }
+
+    .avatar-container {
+        width: 104px;
+        height: 104px;
+        margin-top: -116px;
+    }
+
+    .input-group {
+        padding: 10px 14px;
+    }
+
+    .form-actions {
+        gap: 12px;
+    }
+
+    .btn-delete,
+    .btn-save {
+        padding: 11px 14px;
+        font-size: 16px;
+    }
+}

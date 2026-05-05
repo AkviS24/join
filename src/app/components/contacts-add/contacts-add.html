@@ -21,86 +21,57 @@
           <span class="avatar-text">{{ initials }}</span>
         </div>
 
-        <form
-          class="contact-form"
-          #contactForm="ngForm"
-          autocomplete="off"
-          novalidate
-          (ngSubmit)="submitContact(contactForm)"
-        >
+        <form class="contact-form" #contactForm="ngForm" autocomplete="off" novalidate
+          (ngSubmit)="submitContact(contactForm)">
           <div class="input-group">
-            <input
-              type="text"
-              [(ngModel)]="contactName"
-              name="contact-name"
-              placeholder="Name"
-              required
-              autocomplete="off"
-              pattern="^[a-zA-ZäöüÄÖÜß\s\-]+$"
-              #nameCtrl="ngModel"
-            />
+            <input type="text" [(ngModel)]="contactName" name="contact-name" placeholder="Name" required
+              autocomplete="off" pattern="^[a-zA-ZäöüÄÖÜß\s\-]+$" #nameCtrl="ngModel" />
             <img src="/icons/img/person.svg" alt="Person Icon" class="input-icon" />
           </div>
 
           @if (nameCtrl.invalid && (nameCtrl.dirty || nameCtrl.touched)) {
-            <div class="error-msg">
-              @if (nameCtrl.errors?.['required']) {
-                <span>Name ist ein Pflichtfeld.</span>
-              }
-              @if (nameCtrl.errors?.['pattern']) {
-                <span>Der Name darf keine Zahlen enthalten.</span>
-              }
-            </div>
+          <div class="error-msg">
+            @if (nameCtrl.errors?.['required']) {
+            <span>Name ist ein Pflichtfeld.</span>
+            }
+            @if (nameCtrl.errors?.['pattern']) {
+            <span>Der Name darf keine Zahlen enthalten.</span>
+            }
+          </div>
           }
 
           <div class="input-group">
-            <input
-              type="email"
-              [(ngModel)]="contactEmail"
-              name="contact-email"
-              placeholder="Email"
-              required
-              autocomplete="off"
-              pattern="^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$"
-              #emailCtrl="ngModel"
-            />
+            <input type="email" [(ngModel)]="contactEmail" name="contact-email" placeholder="Email" required
+              autocomplete="off" pattern="^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$" #emailCtrl="ngModel" />
             <img src="/icons/img/email.svg" alt="Mail Icon" class="input-icon" />
           </div>
 
           @if (emailCtrl.invalid && (emailCtrl.dirty || emailCtrl.touched)) {
-            <div class="error-msg">
-              @if (emailCtrl.errors?.['required']) {
-                <span>Email ist ein Pflichtfeld.</span>
-              }
-              @if (emailCtrl.errors?.['pattern']) {
-                <span>Bitte eine gültige E-Mail-Adresse eingeben.</span>
-              }
-            </div>
+          <div class="error-msg">
+            @if (emailCtrl.errors?.['required']) {
+            <span>Email ist ein Pflichtfeld.</span>
+            }
+            @if (emailCtrl.errors?.['pattern']) {
+            <span>Bitte eine gültige E-Mail-Adresse eingeben.</span>
+            }
+          </div>
           }
 
           <div class="input-group">
-            <input
-              type="tel"
-              [(ngModel)]="contactPhone"
-              name="contact-phone"
-              placeholder="Phone"
-              required
-              autocomplete="off"
-              pattern="^\+?[0-9\s]+$"
-              #phoneCtrl="ngModel"
-            />
+            <input type="tel" [(ngModel)]="contactPhone" name="contact-phone" placeholder="Phone" required
+              autocomplete="off" pattern="^\+?[0-9\s]+$" #phoneCtrl="ngModel" />
             <img src="/icons/img/phone.svg" alt="Phone Icon" class="input-icon" />
           </div>
 
           @if (phoneCtrl.invalid && (phoneCtrl.dirty || phoneCtrl.touched)) {
-            <div class="error-msg">
-              @if (phoneCtrl.errors?.['required']) {
-                <span>Telefonnummer ist ein Pflichtfeld.</span>
-              }
-              @if (phoneCtrl.errors?.['pattern']) {
-                <span>Nur Zahlen und ein optionales '+' am Anfang.</span>
-              }
-            </div>
+          <div class="error-msg">
+            @if (phoneCtrl.errors?.['required']) {
+            <span>Telefonnummer ist ein Pflichtfeld.</span>
+            }
+            @if (phoneCtrl.errors?.['pattern']) {
+            <span>Nur Zahlen und ein optionales '+' am Anfang.</span>
+            }
+          </div>
           }
 
           <div class="form-actions">
@@ -110,9 +81,9 @@
             </button>
 
             <button type="submit" class="primary-button btn-save" [disabled]="isLoading">
-  {{ isLoading ? 'Creating...' : 'Create contact' }}
-  <img src="/icons/img/save.svg" alt="Check Icon" />
-</button>
+              {{ isLoading ? 'Creating...' : 'Create contact' }}
+              <img src="/icons/img/save.svg" alt="Check Icon" />
+            </button>
           </div>
         </form>
       </div>

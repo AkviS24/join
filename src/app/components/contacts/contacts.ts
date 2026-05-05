@@ -3,12 +3,13 @@ import { UserBadge } from '../../services/userbadge';
 import { Supabase } from '../../services/supabase';
 import { ContactsDetails } from '../contacts-details/contacts-details';
 import { SvgDb } from '../../shared/svg-db/svg-db';
-import { ContactsAdd } from '../contacts-add/contacts-add';
-import { ContactsEdit } from '../contacts-edit/contacts-edit';
+// import { ContactsAdd } from '../contacts-add/contacts-add';
+// import { ContactsEdit } from '../contacts-edit/contacts-edit';
+import { ContactForm } from '../contacts-forms/contacts-forms';
 
 @Component({
   selector: 'app-contacts',
-  imports: [ContactsDetails, SvgDb, ContactsAdd, ContactsEdit],
+  imports: [ContactsDetails, SvgDb, ContactForm],
   templateUrl: './contacts.html',
   styles: [`
     :host {
@@ -44,9 +45,13 @@ export class Contacts {
     this.showEditContact = true;
   }
 
-  closeEditContact() {
-    this.showEditContact = false;
+  closeEditContact(wasSaved: boolean = false) {
+  this.showEditContact = false;
+  
+  if (wasSaved) {
+    this.triggerToast(); 
   }
+}
 
   triggerToast() {
     this.showToast.set(true);

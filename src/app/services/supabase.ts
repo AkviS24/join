@@ -1,12 +1,13 @@
 import { Injectable, signal } from '@angular/core';
 import { createClient, RealtimeChannel } from '@supabase/supabase-js';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Supabase {
-  supabaseUrl = 'https://ihqvvagcuemrsbalsksp.supabase.co';
-  supabaseKey = 'sb_publishable_N4wmb3jqA8vxuofrj9kFPg_45-BAgZo';
+  supabaseUrl = environment.supabaseUrl;
+  supabaseKey = environment.supabaseKey;
   supabase = createClient(this.supabaseUrl, this.supabaseKey);
   channels: RealtimeChannel | undefined;
 

@@ -94,6 +94,52 @@
     }
 }
 
+.toast-message {
+    position: fixed;
+    bottom: 50px;
+    right: -100px;
+    background-color: #2A3647;
+    color: white;
+    padding: 15px 35px;
+    border-radius: 20px 0 0 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+    pointer-events: none;
+
+    transition:
+        right 0.5s ease-out,
+        transform 0.5s ease-out,
+        opacity 0.4s ease-in-out;
+
+    opacity: 0;
+    transform: translateX(50px);
+
+    &.show {
+        right: 0;
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    p {
+        margin: 0;
+        font-size: 1.2rem;
+        white-space: nowrap;
+    }
+}
+
+@media (min-width: 1440px) {
+    .toast-message {
+        right: auto;
+        left: 1440px;
+
+        &.show {
+            left: 1340px;
+            right: auto;
+        }
+    }
+}
+
+
 @media (max-width: 960px) {
     .contact-list {
         height: calc(100vh - ($header-height + $footer-height));

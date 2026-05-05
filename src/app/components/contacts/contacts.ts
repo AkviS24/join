@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { UserBadge } from '../../services/userbadge';
 import { Supabase } from '../../services/supabase';
 import { ContactsDetails } from '../contacts-details/contacts-details';
@@ -21,9 +21,9 @@ import { ContactsEdit } from '../contacts-edit/contacts-edit';
 export class Contacts {
   supaDatabase = inject(Supabase);
   userBadgeService = inject(UserBadge);
-  // selectedUser: any = null;
   showAddContact = false;
   showEditContact = false;
+  showToast = signal(false);
 
   showDetails(user: { id: any }) {
     this.supaDatabase.selectUser(user);
@@ -33,8 +33,11 @@ export class Contacts {
     this.showAddContact = true;
   }
 
-  closeAddContact() {
+  closeAddContact(wasCreated: boolean = false) {
     this.showAddContact = false;
+    if (wasCreated) {
+      this.triggerToast();
+    }
   }
 
   openEditContact() {
@@ -43,6 +46,13 @@ export class Contacts {
 
   closeEditContact() {
     this.showEditContact = false;
+  }
+
+  triggerToast() {
+    this.showToast.set(true);
+    setTimeout(() => {
+      this.showToast.set(false);
+    }, 1500);
   }
 
   async deleteContact() {

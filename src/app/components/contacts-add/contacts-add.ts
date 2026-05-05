@@ -11,7 +11,8 @@ import { Contacts } from '../contacts/contacts';
 })
 export class ContactsAdd implements OnInit {
   @Input() user: any;
-  @Output() closeEdit = new EventEmitter<void>();
+  // @Output() closeEdit = new EventEmitter<void>();
+  @Output() closeEdit = new EventEmitter<boolean>();
 
   demoDB = inject(Supabase);
 
@@ -43,7 +44,7 @@ export class ContactsAdd implements OnInit {
   }
 
   close() {
-    this.closeEdit.emit();
+    this.closeEdit.emit(false);
   }
 
   async createContact() {
@@ -58,8 +59,9 @@ export class ContactsAdd implements OnInit {
     };
 
     await this.demoDB.setDemoData(newContact);
-    await this.demoDB.getDemoData();
+    // await this.demoDB.getDemoData();
     this.isLoading = false;
-    this.close();
+    this.closeEdit.emit(true);
+    // this.close();
   }
 }

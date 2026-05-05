@@ -6,7 +6,6 @@
 /out-tsc
 /bazel-out
 /src/app/services/supabase.ts
-/src/app/services/database.ts
 
 # Node
 /node_modules

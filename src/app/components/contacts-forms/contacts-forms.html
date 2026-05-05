@@ -1,13 +1,13 @@
 <div class="overlay-backdrop" (click)="close()">
   <div class="overlay-container" (click)="$event.stopPropagation()">
-    
+
     <!-- Linkes Panel (Blau) -->
     <div class="left-panel">
       <img src="/icons/img/logo-w.svg" alt="Join Logo" class="logo" />
       <div class="title-group">
         <h1>{{ isEditMode ? 'Edit contact' : 'Add contact' }}</h1>
         @if (!isEditMode) {
-          <h2>Tasks are better with a team!</h2>
+        <h2>Tasks are better with a team!</h2>
         }
         <img src="/icons/img/underline.svg" alt="Underline" class="underline" />
       </div>
@@ -23,62 +23,62 @@
         <!-- Avatar Bereich -->
         <div class="avatar-container">
           @if (isEditMode) {
-            <!-- Farbiges Badge für Edit -->
-            <div class="avatar-bg" [style.backgroundColor]="userBadgeService.getColor(user?.id)">
-              {{ initials }}
-            </div>
+          <!-- Farbiges Badge für Edit -->
+          <div class="user-initials-large" [style.backgroundColor]="userBadgeService.getColor(user?.id)">
+            <span>{{ initials }}</span>
+          </div>
           } @else {
-            <!-- Standard Avatar für Add -->
-            <img src="/icons/img/avatarNew.svg" alt="Avatar" class="avatar-bg" />
-            <span class="avatar-text">{{ initials }}</span>
+          <!-- Standard Avatar für Add -->
+          <img src="/icons/img/avatarNew.svg" alt="Avatar" class="avatar-bg" />
+          <!-- <span class="avatar-text">{{ initials }}</span> -->
           }
         </div>
 
         <form class="contact-form" #contactForm="ngForm" (ngSubmit)="submitForm(contactForm)" autocomplete="off">
-          
+
           <!-- Name Input -->
           <div class="input-group">
             <input type="text" [(ngModel)]="contactName" name="name" placeholder="Name" required
-                   pattern="^[a-zA-ZäöüÄÖÜß\s\-]+$" #nameCtrl="ngModel" />
+              pattern="^[a-zA-ZäöüÄÖÜß\s\-]+$" #nameCtrl="ngModel" />
             <img src="/icons/img/person.svg" alt="Icon" class="input-icon" />
           </div>
           @if (nameCtrl.invalid && (nameCtrl.dirty || nameCtrl.touched)) {
-            <div class="error-msg">Name ist erforderlich (keine Zahlen).</div>
+          <div class="error-msg">Name ist erforderlich (keine Zahlen).</div>
           }
 
           <!-- Email Input -->
           <div class="input-group">
             <input type="email" [(ngModel)]="contactEmail" name="email" placeholder="Email" required
-                   pattern="^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$" #emailCtrl="ngModel" />
+              pattern="^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$" #emailCtrl="ngModel" />
             <img src="/icons/img/email.svg" alt="Icon" class="input-icon" />
           </div>
           @if (emailCtrl.invalid && (emailCtrl.dirty || emailCtrl.touched)) {
-            <div class="error-msg">Bitte eine gültige E-Mail eingeben.</div>
+          <div class="error-msg">Bitte eine gültige E-Mail eingeben.</div>
           }
 
           <!-- Phone Input -->
           <div class="input-group">
             <input type="tel" [(ngModel)]="contactPhone" name="phone" placeholder="Phone" required
-                   pattern="^\+?[0-9\s]+$" #phoneCtrl="ngModel" />
+              pattern="^\+?[0-9\s]+$" #phoneCtrl="ngModel" />
             <img src="/icons/img/phone.svg" alt="Icon" class="input-icon" />
           </div>
 
           <!-- Buttons -->
           <div class="form-actions">
             @if (isEditMode) {
-              <button type="button" class="btn-delete" (click)="deleteContact()" [disabled]="isLoading">
-                Delete
-              </button>
-              <button type="submit" class="primary-button btn-save" [disabled]="contactForm.invalid || isLoading">
-                Save <img src="/icons/img/save.svg" alt="" />
-              </button>
+            <button type="button" class="btn-delete" (click)="deleteContact()" [disabled]="isLoading">
+              Delete
+            </button>
+            <button type="submit" class="primary-button btn-save" [disabled]="contactForm.invalid || isLoading">
+              Save <img src="/icons/img/save.svg" alt="" />
+            </button>
             } @else {
-              <button type="button" class="btn-delete" (click)="close()">
-                Cancel <img src="/icons/img/close.svg" alt="" />
-              </button>
-              <button type="submit" class="primary-button btn-save" [disabled]="contactForm.invalid || isLoading">
-                {{ isLoading ? 'Creating...' : 'Create contact' }} <img src="/icons/img/save.svg" alt="" />
-              </button>
+            <button type="button" class="btn-cancel" (click)="close()">
+              Cancel <app-svg-db name="cancel"></app-svg-db>
+            </button>
+            <button type="submit" class="primary-button btn-save" [disabled]="contactForm.invalid || isLoading">
+              {{ isLoading ? 'Creating...' : 'Create contact' }} <img src="/icons/img/save.svg" alt="" />
+            </button>
             }
           </div>
         </form>

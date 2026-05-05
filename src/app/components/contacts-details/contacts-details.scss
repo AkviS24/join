@@ -1,5 +1,6 @@
 @use '../../../styles/abstracts/variables' as *;
 @use '../../../styles/abstracts/mixins' as *;
+@use '../../../styles/abstracts/keyframes' as *;
 
 :host {
     flex-grow: 1;
@@ -159,18 +160,6 @@
 .no-selection {
     padding-left: 16px;
     padding-top: 16px;
-}
-
-@keyframes slideInRight {
-    from {
-        opacity: 0;
-        transform: translateX(100%);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
 }
 
 @media (max-width: $bp-laptop) {

@@ -2,11 +2,12 @@ import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular
 import { FormsModule, NgForm } from '@angular/forms';
 import { Supabase } from '../../services/supabase';
 import { UserBadge } from '../../services/userbadge';
+import { SvgDb } from "../../shared/svg-db/svg-db";
 
 @Component({
   selector: 'app-contact-form',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, SvgDb],
   templateUrl: './contacts-forms.html',
   styleUrl: './contacts-forms.scss'
 })
@@ -36,7 +37,7 @@ export class ContactForm implements OnInit {
 
   get initials(): string {
     // Nutzt den Badge-Service für Edit oder generiert live Initialen für Add
-    return this.userBadgeService.getInitials(this.contactName || '?');
+    return this.userBadgeService.getInitials(this.contactName || 'Guest');
   }
 
   close(wasSuccess = false) {

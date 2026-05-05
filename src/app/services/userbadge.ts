@@ -37,7 +37,10 @@ export class UserBadge {
       .map((n) => n[0])
       .join('')
       .toUpperCase();
-    let compactInitialsName = initialsName[0] + initialsName[initialsName.length - 1];
+       let compactInitialsName = initialsName[0];
+      if (initialsName.length >= 2) {
+        compactInitialsName = initialsName[0] + initialsName[initialsName.length - 1];
+      } 
       return compactInitialsName;
   }
 

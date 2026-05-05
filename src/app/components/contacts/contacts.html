@@ -7,7 +7,7 @@
       </button>
     </div>
 
-    @for (user of supaDatabase.demoDaten(); track user; let i = $index) {
+    @for (user of supaDatabase.demoDaten(); track user.id; let i = $index) {
     @if (
     i === 0 || user.name[0].toUpperCase() !== supaDatabase.demoDaten()[i - 1].name[0].toUpperCase()
     ) {

@@ -112,6 +112,11 @@
     align-items: center;
     justify-content: center;
     transition: background-color 125ms ease-in-out;
+
+    &:hover {
+        background-color: $color-gray;
+        border-radius: 50%;
+    }
 }
 
 .content-wrapper {
@@ -212,7 +217,7 @@
 
 .error-msg {
     position: absolute;
-    top: 100%;          
+    top: 100%;
     left: 6px;
     color: $color-urgent;
     font-size: 14px;
@@ -344,8 +349,8 @@
         right: 24px;
         background-color: transparent;
 
-        img {
-            filter: brightness(0) invert(1);
+        app-svg-db{
+            color: white;
         }
 
         &:hover,

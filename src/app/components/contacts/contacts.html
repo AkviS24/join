@@ -1,4 +1,5 @@
 <section class="contacts">
+<<<<<<< HEAD
   <div class="contact-list" [class.hidden-mobile]="supaDatabase.selectedUser()">
     <div class="contact-button">
       <button class="primary-button" (click)="openAddContact()">
@@ -29,11 +30,14 @@
   <app-contacts-details [user]="supaDatabase.selectedUser()" (editRequest)="openEditContact()" (deleteRequest)="deleteContact()"
     [class.visible-mobile]="supaDatabase.selectedUser()" (backToMain)="backToMain()"></app-contacts-details>
 
-  @if (showAddContact) {
-  <app-contacts-add (closeEdit)="closeAddContact()"></app-contacts-add>
-  }
+    @if (this.showAddContact) {
+    <app-contacts-add (closeEdit)="closeAddContact($event)"></app-contacts-add>
+    }
 
-  @if (showEditContact) {
-  <app-contacts-edit [user]="supaDatabase.selectedUser()" (closeEdit)="closeEditContact()"></app-contacts-edit>
-  }
+    @if (showEditContact) {
+    <app-contacts-edit [user]="supaDatabase.selectedUser()" (closeEdit)="closeEditContact()"></app-contacts-edit>
+    }
+    <div class="toast-message" [class.show]="showToast()">
+      <p>Contact successfully created!</p>
+    </div>
 </section>

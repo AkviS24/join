@@ -10,8 +10,9 @@ import { Supabase } from '../../services/supabase';
 })
 export class ContactsAdd implements OnInit {
   @Input() user: any;
-  @Output() closeEdit = new EventEmitter<void>();
+  // @Output() closeEdit = new EventEmitter<void>();
   @Output() contactCreated = new EventEmitter<void>();
+  @Output() closeEdit = new EventEmitter<boolean>();
 
   demoDB = inject(Supabase);
 
@@ -46,7 +47,7 @@ export class ContactsAdd implements OnInit {
   }
 
   close() {
-    this.closeEdit.emit();
+    this.closeEdit.emit(false);
   }
 
   submitContact(form: NgForm) {
@@ -71,15 +72,9 @@ export class ContactsAdd implements OnInit {
         password: '',
       };
 
-      await this.demoDB.setDemoData(newContact);
-      await this.demoDB.getDemoData();
-
-      this.contactCreated.emit();
-      this.closeEdit.emit();
-    } catch (error) {
-      console.error('Create contact failed:', error);
-    } finally {
-      this.isLoading = false;
-    }
+    await this.demoDB.setDemoData(newContact);
+    await this.demoDB.getDemoData();
+    this.isLoading = false;
+    this.close();
   }
 }

@@ -11,7 +11,6 @@ import { Contacts } from '../contacts/contacts';
 })
 export class ContactsAdd implements OnInit {
   @Input() user: any;
-  // @Output() closeEdit = new EventEmitter<void>();
   @Output() closeEdit = new EventEmitter<boolean>();
 
   demoDB = inject(Supabase);

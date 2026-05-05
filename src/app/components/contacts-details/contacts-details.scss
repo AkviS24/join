@@ -45,13 +45,13 @@
     .back-arrow-mobile {
         position: absolute;
         top: 16px;
-        right: 16px;
+        right: 24px;
     }
 
     .more-options-container {
         position: fixed;
         bottom: calc($footer-height + 16px);
-        right: 16px;
+        right: 24px;
 
         .more-options {
             padding: 8px;
@@ -114,6 +114,7 @@
     display: flex;
     align-items: flex-start;
     padding: 16px;
+    padding-left: 32px;
 }
 
 .edit-and-delete {
@@ -149,8 +150,10 @@
     }
 
     a {
-        text-decoration: none;
         padding: 4px;
+    }
+    .phonenumber{
+        color: $color-black;
     }
 }
 
@@ -158,8 +161,6 @@
     padding-left: 16px;
     padding-top: 16px;
 }
-
-
 
 @keyframes slideInRight {
     from {
@@ -189,7 +190,6 @@
                 width: 120px;
                 height: 0;
                 border-bottom: 3px solid $color-primary;
-                ;
             }
         }
     }

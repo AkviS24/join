@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Supabase } from '../../services/supabase';
+import { Contacts } from '../contacts/contacts';
 
 @Component({
   selector: 'app-contacts-add',

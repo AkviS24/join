@@ -12,6 +12,7 @@ export class Supabase {
   channels: RealtimeChannel | undefined;
 
   demoDaten = signal<{ id: number, created_at: string, name: string, email: string, phone: number, loggedIn: boolean, password: string }[]>([]);
+  selectedUser = signal<any | null>(null);
 
   async getDemoData() {
 
@@ -29,7 +30,14 @@ export class Supabase {
         (payload) => {
           console.log('Change received!', payload);
           if (payload.eventType === 'INSERT') {
-            this.demoDaten.update((current) => [...current, payload.new as any]);
+            // this.demoDaten.update((current) => [...current, payload.new as any]);
+            this.demoDaten.update((current) => {
+              const exists = current.some(item => item.id === payload.new['id']);
+              if (exists) {
+                return current;
+              }
+              return [...current, payload.new as any];
+            });
           } else if (payload.eventType === 'UPDATE') {
             this.demoDaten.update((current) =>
               current.map((item) => (item.id === payload.new['id'] ? (payload.new as any) : item))
@@ -52,7 +60,10 @@ export class Supabase {
     const { data, error } = await this.supabase
       .from('demoDB')
       .insert([demoData])
-      .select()
+      .select();
+    if (data && data.length > 0) {
+      this.selectedUser.set(data[0]);
+    }
   }
 
   async getupdateDemoData(id: number, name: string, email: string, phone: number, password: string) {
@@ -69,5 +80,9 @@ export class Supabase {
       .delete()
       .select()
       .eq('id', id)
+  }
+
+  selectUser(user: any | null) {
+    this.selectedUser.set(user);
   }
 }

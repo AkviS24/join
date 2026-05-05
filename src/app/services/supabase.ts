@@ -11,22 +11,31 @@ export class Supabase {
   supabase = createClient(this.supabaseUrl, this.supabaseKey);
   private channel?: RealtimeChannel | undefined;
 
-  demoDaten = signal<{ id: number, created_at: string, name: string, email: string, phone: number, loggedIn: boolean, password: string }[]>([]);
+  demoDaten = signal<
+    {
+      id: number;
+      created_at: string;
+      name: string;
+      email: string;
+      phone: number;
+      loggedIn: boolean;
+      password: string;
+    }[]
+  >([]);
   selectedUser = signal<any | null>(null);
+  tasks = signal<any[]>([]);
 
   constructor() {
     this.initRealtimeSync();
   }
 
-
   initRealtimeSync() {
-    this.supabase.channel('custom-all-channel')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'demoDB' }, 
-        (payload) => {
-          console.log('Change received!', payload);
-          this.handleRealtimePayload(payload);
-        }
-      )
+    this.supabase
+      .channel('custom-all-channel')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'demoDB' }, (payload) => {
+        console.log('Change received!', payload);
+        this.handleRealtimePayload(payload);
+      })
       .subscribe();
   }
 
@@ -35,7 +44,7 @@ export class Supabase {
       .from('demoDB')
       .select('*')
       .order('name', { ascending: true });
-    
+
     if (demoDB) {
       this.demoDaten.set(demoDB);
     }
@@ -44,37 +53,38 @@ export class Supabase {
   private handleRealtimePayload(payload: any) {
     this.demoDaten.update((current) => {
       if (payload.eventType === 'INSERT') {
-        const exists = current.some(item => item.id === payload.new.id);
+        const exists = current.some((item) => item.id === payload.new.id);
         return exists ? current : [...current, payload.new];
-      } 
-      
+      }
+
       if (payload.eventType === 'UPDATE') {
-        return current.map((item) => 
-          item.id === payload.new.id ? payload.new : item
-        );
-      } 
-      
+        return current.map((item) => (item.id === payload.new.id ? payload.new : item));
+      }
+
       if (payload.eventType === 'DELETE') {
         return current.filter((item) => item.id !== payload.old.id);
       }
-      
+
       return current;
     });
   }
 
-  async setDemoData(demoData: { name: string, email: string, phone: number, password: string }) {
-    const { data, error } = await this.supabase
-      .from('demoDB')
-      .insert([demoData])
-      .select();
-    
+  async setDemoData(demoData: { name: string; email: string; phone: number; password: string }) {
+    const { data, error } = await this.supabase.from('demoDB').insert([demoData]).select();
+
     if (data && data.length > 0) {
       this.selectedUser.set(data[0]);
     }
     // HINWEIS: Du musst hier kein getDemoData() aufrufen, Realtime erledigt das!
   }
 
-  async getupdateDemoData(id: number, name: string, email: string, phone: number, password: string) {
+  async getupdateDemoData(
+    id: number,
+    name: string,
+    email: string,
+    phone: number,
+    password: string,
+  ) {
     await this.supabase
       .from('demoDB')
       .update({ name, email, phone, password })
@@ -83,15 +93,34 @@ export class Supabase {
   }
 
   async deleteData(id: number) {
-    await this.supabase
-      .from('demoDB')
-      .delete()
-      .eq('id', id)
-      .select();
+    await this.supabase.from('demoDB').delete().eq('id', id).select();
   }
 
   selectUser(user: any | null) {
     this.selectedUser.set(user);
+  }
+
+  async getTasks() {
+    const { data: tasks, error } = await this.supabase
+      .from('tasks')
+      .select('*')
+      .order('id', { ascending: true });
+
+    if (tasks) {
+      this.tasks.set(tasks);
+    }
+  }
+
+  async insertTask(task: any) {
+    await this.supabase.from('tasks').insert([task]);
+  }
+
+  async updateTask(id: number, updatedTask: any) {
+    await this.supabase.from('tasks').update(updatedTask).eq('id', id);
+  }
+
+  async deleteTaskSupabase(id: number) {
+    await this.supabase.from('tasks').delete().eq('id', id);
   }
 
   ngOnDestroy() {
@@ -99,5 +128,4 @@ export class Supabase {
       this.supabase.removeChannel(this.channel);
     }
   }
-
 }

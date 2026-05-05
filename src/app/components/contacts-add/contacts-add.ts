@@ -10,7 +10,6 @@ import { Supabase } from '../../services/supabase';
 })
 export class ContactsAdd implements OnInit {
   @Input() user: any;
-  // @Output() closeEdit = new EventEmitter<void>();
   @Output() contactCreated = new EventEmitter<void>();
   @Output() closeEdit = new EventEmitter<boolean>();
 

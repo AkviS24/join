@@ -1,0 +1,265 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1100;
+  overflow: hidden;
+  animation: fadeInBg 0.15s ease-out forwards;
+}
+
+#section-task-card {
+  background-color: #ffffff;
+  border-radius: 30px;
+  width: 525px;
+  max-width: 90vw;
+  max-height: 90vh;
+  box-sizing: border-box;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  scrollbar-width: none; /* Firefox */
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Edge */
+  }
+  animation: slideInFromRight 0.3s ease-out forwards;
+}
+
+.task-card {
+  padding: 48px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Header */
+.task-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.badge-type {
+  display: inline-block;
+  padding: 4px 24px;
+  border-radius: 8px;
+  font-size: 16px;
+  color: #ffffff;
+
+  &.user-story {
+    background-color: #0038ff;
+  }
+  &.technical-task {
+    background-color: #1fd7c1;
+  }
+}
+
+.btn-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.1s;
+
+  &:hover {
+    background-color: #f0f0f0;
+  }
+}
+
+/* Title & Description */
+.task-title {
+  font-size: 36px;
+  font-weight: 700;
+  color: #2a3647;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.task-desc {
+  font-size: 16px;
+  color: #000000;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Meta Rows (Due date & Prio) */
+.meta-row {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  font-size: 16px;
+}
+
+.meta-label {
+  color: #2a3647;
+  font-weight: 400;
+  width: 80px;
+}
+
+.meta-value {
+  color: #000000;
+}
+
+.priority-value {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  .prio-text {
+    color: #000000;
+  }
+}
+
+/* Sections (Assigned to & Subtasks) */
+.task-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: 400;
+  color: #2a3647;
+  margin: 0;
+}
+
+.assignee-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.assignee-item {
+  display: flex;
+  align-items: center;
+  padding: 4px 16px;
+}
+
+.assignee-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #ffffff;
+  box-sizing: border-box;
+}
+
+.avatar-initials {
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.assignee-name {
+  font-size: 16px;
+  color: #000000;
+}
+
+/* Subtasks */
+.subtask-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.subtask-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 6px 16px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 0.1s;
+
+  &:hover {
+    background-color: #f9f9f9;
+  }
+}
+
+.checkbox-icon {
+  width: 24px;
+  height: 24px;
+}
+
+/* Footer Actions */
+.task-footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  font-size: 16px;
+  color: #2a3647;
+  transition: background-color 0.1s;
+
+  &:hover {
+    background-color: #f0f0f0;
+    color: #29abe2;
+  }
+
+  img {
+    width: 16px;
+    height: 16px;
+  }
+
+  &.delete-btn:hover img {
+    content: url('/icons/img/deleteB.svg');
+  }
+
+  &.edit-btn:hover img {
+    content: url('/icons/img/penb.svg');
+  }
+}
+
+.divider {
+  width: 1px;
+  height: 24px;
+  background-color: #d1d1d1;
+}
+
+/* Animations */
+@keyframes fadeInBg {
+  from {
+    background-color: rgba(0, 0, 0, 0);
+  }
+  to {
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+}
+
+@keyframes slideInFromRight {
+  from {
+    transform: translateX(100vw);
+  }
+  to {
+    transform: translateX(0);
+  }
+}

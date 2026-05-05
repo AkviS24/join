@@ -15,7 +15,7 @@
       {{ user.name[0].toUpperCase() }}
     </div>
     }
-    <div [class.selected-contact]="supaDatabase.selectedUser() == user" (click)="showDetails(user)" class="contact-info">
+    <div [class.selected-contact]="supaDatabase.selectedUser()?.id === user.id" (click)="showDetails(user)" class="contact-info">
       <p class="user-badge" [style.backgroundColor]="userBadgeService.getColor(user.id)">
         {{ userBadgeService.getInitials(user.name) }}
       </p>

@@ -29,7 +29,14 @@ export class Supabase {
         (payload) => {
           console.log('Change received!', payload);
           if (payload.eventType === 'INSERT') {
-            this.demoDaten.update((current) => [...current, payload.new as any]);
+            // this.demoDaten.update((current) => [...current, payload.new as any]);
+            this.demoDaten.update((current) => {
+              const exists = current.some(item => item.id === payload.new['id']);
+              if (exists) {
+                return current;
+              }
+              return [...current, payload.new as any];
+            });
           } else if (payload.eventType === 'UPDATE') {
             this.demoDaten.update((current) =>
               current.map((item) => (item.id === payload.new['id'] ? (payload.new as any) : item))

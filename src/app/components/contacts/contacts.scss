@@ -31,7 +31,6 @@
 
 .letter-separator {
     width: 100%;
-    // max-width: 300px;
     padding: 17px 24px;
     border-bottom: 1px solid $color-gray;
 }
@@ -65,7 +64,7 @@
         font-size: 16px;
         margin-right: 4px;
         white-space: nowrap;
-        overflow: hidden; 
+        overflow: hidden;
         text-overflow: ellipsis;
         color: $color-email-blue;
         white-space: nowrap;

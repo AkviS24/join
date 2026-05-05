@@ -2,7 +2,6 @@
 @use '../../../styles/abstracts/keyframes' as *;
 @use '../../../styles/components/buttons' as *;
 
-
 :host {
     position: fixed;
     inset: 0;
@@ -38,6 +37,7 @@
     animation: slideInRight 400ms ease-out forwards;
     position: relative;
 }
+
 
 .left-panel {
     width: clamp(320px, 37vw, 453px);
@@ -168,11 +168,12 @@
 .contact-form {
     display: flex;
     flex-direction: column;
-    gap: clamp(18px, 2.2vw, 32px);
+    gap: clamp(24px, 2.6vw, 36px);
     width: min(422px, 100%);
 }
 
 .input-group {
+    position: relative;
     display: flex;
     align-items: center;
     padding: 13px 21px;
@@ -210,9 +211,13 @@
 }
 
 .error-msg {
+    position: absolute;
+    top: 100%;          
+    left: 6px;
     color: $color-urgent;
     font-size: 14px;
-    margin-top: -16px;
+    margin-top: 2px;
+    white-space: nowrap;
 }
 
 .form-actions {
@@ -362,9 +367,9 @@
         margin-top: -120px;
     }
 
-    .contact-form {
-        gap: 16px;
-    }
+    // .contact-form {
+    //     gap: 20px;
+    // }
 
     .form-actions {
         justify-content: center;

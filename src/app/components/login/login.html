@@ -2,13 +2,13 @@
   @if (showOverlay) {
     <div class="blue-overlay" id="blue-overlay">
       <div class="joinLogoWhite logo-animation" id="logo" (animationend)="hideOverlay()">
-        <img src="/icons/img/logo.svg" alt="logo" />
+        <img src="icons/img/logo.svg" alt="logo" />
       </div>
     </div>
   }
   <header class="loginHeader">
     <div class="joinLogoBlue">
-      <img [src]="isSignUpMode ? '/icons/img/logo-m.svg' : '/icons/img/logo-m.svg'" alt="logo" />
+      <img [src]="isSignUpMode ? '/icons/img/logo-m.svg' : 'icons/img/logo-m.svg'" alt="logo" />
     </div>
     <div class="signUpField" [class.fade-out]="isSignUpMode">
       <span>Not a Join user?</span>
@@ -20,7 +20,7 @@
       @if (isSignUpMode) {
         <img
           class="back-arrow"
-          src="/icons/img/icon-arrow_left.svg"
+          src="icons/img/icon-arrow_left.svg"
           alt="Back to login"
           (click)="backToLogin()"
         />
@@ -41,7 +41,7 @@
               type="text"
               required
             />
-            <div class="mailIcon"><img src="/icons/img/perso.svg" alt="user" /></div>
+            <div class="mailIcon"><img src="icons/img/perso.svg" alt="user" /></div>
           </div>
         }
         <div class="loginEmailBox loginInputField">
@@ -53,7 +53,7 @@
             placeholder="Email"
             required
           />
-          <div class="mailIcon"><img src="/icons/img/mail.svg" alt="letter" /></div>
+          <div class="mailIcon"><img src="icons/img/mail.svg" alt="letter" /></div>
         </div>
 
         <div class="loginPasswordBox loginInputField">
@@ -69,14 +69,14 @@
             @if (password.length > 0) {
               <img
                 [src]="
-                  isPasswordVisible ? '/icons/img/visibility.svg' : '/icons/img/visibility_off.svg'
+                  isPasswordVisible ? 'icons/img/visibility.svg' : '/icons/img/visibility_off.svg'
                 "
                 alt="toggle password visibility"
                 (click)="togglePasswordVisibility()"
                 style="cursor: pointer"
               />
             } @else {
-              <img src="/icons/img/lock.svg" alt="lock" />
+              <img src="icons/img/lock.svg" alt="lock" />
             }
           </div>
         </div>
@@ -96,15 +96,15 @@
                 <img
                   [src]="
                     isConfirmPasswordVisible
-                      ? '/icons/img/visibility.svg'
-                      : '/icons/img/visibility_off.svg'
+                      ? 'icons/img/visibility.svg'
+                      : 'icons/img/visibility_off.svg'
                   "
                   alt="toggle confirm password visibility"
                   (click)="toggleConfirmPasswordVisibility()"
                   style="cursor: pointer"
                 />
               } @else {
-                <img src="/icons/img/lock.svg" alt="lock" />
+                <img src="icons/img/lock.svg" alt="lock" />
               }
             </div>
           </div>

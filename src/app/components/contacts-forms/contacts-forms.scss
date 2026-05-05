@@ -212,7 +212,7 @@
 
 .error-msg {
     position: absolute;
-    top: 100%;          
+    top: 100%;
     left: 6px;
     color: $color-urgent;
     font-size: 14px;
@@ -237,7 +237,7 @@
 
 .btn-delete,
 .btn-cancel {
-    padding: 15px 24px;
+    padding: 16px 24px;
     border-radius: 10px;
     border: 1px solid $color-dark;
     background: $color-white;
@@ -260,8 +260,13 @@
 
     &:hover {
         border: 1px solid $color-primary;
+        box-shadow: 0 4px 4px rgba($color-black, 0.2);
         color: $color-primary;
     }
+}
+
+.btn-delete{
+    padding: 14px 22px;
 }
 
 .btn-save {
@@ -269,6 +274,7 @@
     white-space: nowrap;
     gap: 8px;
     padding: 16px 24px;
+    font-size: clamp(16px, 1.6vw, 20px);
 }
 
 @media (max-width: $bp-laptop) {
@@ -380,10 +386,15 @@
         display: none;
     }
 
-    .btn-save,
-    .btn-delete {
+    .btn-save {
         margin-top: 14px;
         padding: 12px 18px;
+    }
+
+    .btn-delete {
+        margin-top: 14px;
+        padding: 10px 16px;
+
     }
 }
 
@@ -423,9 +434,14 @@
     }
 
     .btn-delete,
-    .btn-cancel,
+    .btn-cancel {
+        padding: 10px 12px;
+        font-size: 16px;
+
+    }
+
     .btn-save {
-        padding: 11px 14px;
+        padding: 12px 14px;
         font-size: 16px;
     }
 }

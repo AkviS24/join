@@ -10,8 +10,8 @@ import { Supabase } from '../../services/supabase';
 })
 export class ContactsAdd implements OnInit {
   @Input() user: any;
-  @Output() contactCreated = new EventEmitter<void>();
   @Output() closeEdit = new EventEmitter<boolean>();
+  @Output() contactCreated = new EventEmitter<void>();
 
   demoDB = inject(Supabase);
 
@@ -71,9 +71,15 @@ export class ContactsAdd implements OnInit {
         password: '',
       };
 
-    await this.demoDB.setDemoData(newContact);
-    await this.demoDB.getDemoData();
-    this.isLoading = false;
-    this.close();
+      await this.demoDB.setDemoData(newContact);
+      await this.demoDB.getDemoData();
+
+      this.contactCreated.emit();
+      this.closeEdit.emit(true);
+    } catch (error) {
+      console.error('Create contact failed:', error);
+    } finally {
+      this.isLoading = false;
+    }
   }
 }

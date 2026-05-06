@@ -30,31 +30,26 @@
 
         <form class="contact-form" #contactForm="ngForm" (ngSubmit)="submitForm(contactForm)" autocomplete="off">
 
-          <div class="input-group">
+          <div class="input-group" [class.error-message]="(nameCtrl.invalid && (nameCtrl.dirty || nameCtrl.touched))">
             <input type="text" [(ngModel)]="contactName" name="name" placeholder="Name" required
               pattern="^[a-zA-ZäöüÄÖÜß\s\-]+$" #nameCtrl="ngModel" />
             <img src="icons/img/person.svg" alt="Icon" class="input-icon" />
-            @if (nameCtrl.invalid && (nameCtrl.dirty || nameCtrl.touched)) {
-            <div class="error-msg">Name ist erforderlich (keine Zahlen).</div>
-            }
+            <p class="error-text">Name is required (no numbers).</p>
           </div>
 
-          <div class="input-group">
+          <div class="input-group" [class.error-message]="(emailCtrl.invalid && (emailCtrl.dirty || emailCtrl.touched))">
             <input type="email" [(ngModel)]="contactEmail" name="email" placeholder="Email" required
               pattern="^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$" #emailCtrl="ngModel" />
             <img src="icons/img/email.svg" alt="Icon" class="input-icon" />
-            @if (emailCtrl.invalid && (emailCtrl.dirty || emailCtrl.touched)) {
-            <div class="error-msg">Bitte eine gültige E-Mail eingeben.</div>
-            }
+            <p class="error-text">Please insert a valid email</p>
+   
           </div>
 
-          <div class="input-group">
+          <div class="input-group" [class.error-message]="(phoneCtrl.invalid && (phoneCtrl.dirty || phoneCtrl.touched))">
             <input type="tel" [(ngModel)]="contactPhone" name="phone" placeholder="Phone" required
               pattern="^\+?[0-9\s]+$" #phoneCtrl="ngModel" />
             <img src="icons/img/phone.svg" alt="Icon" class="input-icon" />
-            @if (phoneCtrl.invalid && (phoneCtrl.dirty || phoneCtrl.touched)) {
-            <div class="error-msg">Bitte eine gültige Nummer eingeben.</div>
-            }
+            <p class="error-text">Please insert a valid number</p>
           </div>
 
           <div class="form-actions">

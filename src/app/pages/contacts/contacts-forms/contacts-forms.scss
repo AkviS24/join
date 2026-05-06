@@ -217,7 +217,16 @@
     flex-shrink: 0;
 }
 
-.error-msg {
+.error-message {
+    border: 1px solid red;
+
+    p {
+        display: block;
+    }
+}
+
+.error-text {
+    display: none;
     position: absolute;
     top: 100%;
     left: 6px;

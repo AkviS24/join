@@ -21,7 +21,7 @@ export class Supabase {
 
   initRealtimeSync() {
     this.supabase.channel('custom-all-channel')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'demoDB' }, 
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'demoDB' },
         (payload) => {
           console.log('Change received!', payload);
           this.handleRealtimePayload(payload);
@@ -35,7 +35,7 @@ export class Supabase {
       .from('demoDB')
       .select('*')
       .order('name', { ascending: true });
-    
+
     if (demoDB) {
       this.demoDaten.set(demoDB);
     }
@@ -43,22 +43,19 @@ export class Supabase {
 
   private handleRealtimePayload(payload: any) {
     this.demoDaten.update((current) => {
+      let newList;
+
       if (payload.eventType === 'INSERT') {
-        const exists = current.some(item => item.id === payload.new.id);
-        return exists ? current : [...current, payload.new];
-      } 
-      
-      if (payload.eventType === 'UPDATE') {
-        return current.map((item) => 
-          item.id === payload.new.id ? payload.new : item
-        );
-      } 
-      
-      if (payload.eventType === 'DELETE') {
-        return current.filter((item) => item.id !== payload.old.id);
+        if (current.some(item => item.id === payload.new.id)) return current;
+        newList = [...current, payload.new];
+      } else if (payload.eventType === 'UPDATE') {
+        newList = current.map(item => item.id === payload.new.id ? payload.new : item);
+      } else if (payload.eventType === 'DELETE') {
+        return current.filter(item => item.id !== payload.old.id);
+      } else {
+        return current;
       }
-      
-      return current;
+      return newList.sort((a, b) => a.name.localeCompare(b.name));
     });
   }
 
@@ -67,7 +64,7 @@ export class Supabase {
       .from('demoDB')
       .insert([demoData])
       .select();
-    
+
     if (data && data.length > 0) {
       this.selectedUser.set(data[0]);
     }

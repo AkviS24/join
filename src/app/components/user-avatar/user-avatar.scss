@@ -22,6 +22,10 @@
   }
 }
 
+.logout_btn{
+  cursor: pointer ;
+}
+
 .user-avatar__menu {
   position: absolute;
   top: 78px;
@@ -49,16 +53,18 @@
 .user-avatar__menu button {
   padding: 14px 16px;
   margin: 0 8px;
-  color: $color-white;
+  color: $color-gray;
   background: transparent;
   border: none;
   text-align: left;
   font: inherit;
+  cursor: pointer;
 }
 
 .user-avatar__menu a:hover,
 .user-avatar__menu button:hover {
   background-color: rgba($color-primary, 0.16);
+  color: $color-white;
 }
 
 .user-avatar__mobile-link {

@@ -11,7 +11,6 @@
   color: $color-white;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
   padding: 64px 0 56px;
 }
 
@@ -25,61 +24,95 @@
   display: flex;
   flex-direction: column;
 }
-
 .navigation__link {
   @include flex-center;
   justify-content: flex-start;
 
   gap: 12px;
-  padding: 14px 56px;
-  color: $color-white;
+  padding: 10px 56px;
+  margin-bottom: 12px;
+  color: $color-gray;
   font-size: 16px;
-  transition: background-color 125ms ease-in-out;
+  font-weight: 400;
+
+  transition:
+    background-color 125ms ease-in-out,
+    color 125ms ease-in-out,
+    font-weight 125ms ease-in-out;
 
   img {
     @include icon-size(30px);
+    transition:
+      filter 125ms ease-in-out,
+      opacity 125ms ease-in-out;
+
+    opacity: 0.8;
   }
 
   &:not(.navigation__link--active):hover {
-    background-color: rgba($color-white, 0.1);
+    background-color: rgba($color-white, 0.07);
+    font-weight: 500;
+
+    img {
+      opacity: 1;
+    }
   }
 
   &--active {
-    background-color: rgba($color-black, 0.24);
+    background-color: $color-secondary;
+    color: $color-white;
+    font-weight: 500;
     pointer-events: none;
+
+    img {
+      filter: brightness(0) invert(1);
+      opacity: 1;
+    }
   }
 }
-
 .navigation__legal {
   margin-top: auto;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding-left: 56px;
 
   a {
-    width: fit-content;
-    display: inline-block;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 10px 56px;
+
     color: $color-gray;
     font-size: 14px;
-    transition: color 125ms ease-in-out, transform 125ms ease-in-out;
-    transform-origin: left center;
+    font-weight: 400;
+
+    transition:
+      background-color 125ms ease-in-out,
+      color 125ms ease-in-out,
+      font-weight 125ms ease-in-out;
 
     &:hover {
       color: $color-primary;
-      transform: translate(2px, -1px) scale(1.02);
+      font-weight: 500;
+    }
+
+    &.navigation__legal--active {
+      background-color: $color-secondary;
+      color: $color-white;
+      font-weight: 500;
+      pointer-events: none;
     }
   }
 }
 
-@media (max-width: 960px) {
+
+@media (max-width: 800px) {
   .navigation {
     top: auto;
     bottom: 0;
     left: 0;
     width: 100%;
-    height: $footer-height;
-    padding: 0 48px;
+    height: 80px;
+    padding:0 64px;
   }
 
   .navigation__logo,
@@ -134,7 +167,7 @@
       border-radius: 12px;
       background-color: transparent;
       transition: background-color 125ms ease-in-out;
-
+      
     }
 
     &:not(.navigation__link--active):hover::before,
@@ -145,11 +178,5 @@
     &--active {
       pointer-events: none;
     }
-  }
-}
-
-@media (max-width: $bp-mobile) {
-  .navigation {
-    padding: 0 0;
   }
 }

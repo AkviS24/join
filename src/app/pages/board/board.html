@@ -1,1 +1,14 @@
-<p>board works!</p>
+<div class="board-container">
+  <h2>Supabase Tasks Test</h2>
+
+  @for (item of taskService.demoTasks(); track item.id) {
+    <div class="task-card" style="border: 1px solid #ccc; margin: 10px; padding: 10px; border-radius: 8px;">
+      <strong>Titel:</strong> {{ item.title }} <br>
+      <strong>Beschreibung:</strong> {{ item.description }} <br>
+      <strong>Kategorie:</strong> <span class="badge">{{ item.category }}</span> <br>
+      <strong>Status:</strong> {{ item.status }}
+    </div>
+  } @empty {
+    <p>Keine Tasks gefunden oder laden noch...</p>
+  }
+</div>

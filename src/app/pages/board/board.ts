@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { Tasks } from '../../services/tasks';
 
 @Component({
   selector: 'app-board',
@@ -6,4 +7,10 @@ import { Component } from '@angular/core';
   templateUrl: './board.html',
   styleUrl: './board.scss',
 })
-export class Board {}
+export class Board {
+  taskService = inject(Tasks);
+
+  ngOnInit(){
+    this.taskService.getTasks()
+  }
+}

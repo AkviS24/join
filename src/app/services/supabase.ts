@@ -11,17 +11,36 @@ export class Supabase {
   supabase = createClient(this.supabaseUrl, this.supabaseKey);
   private channel?: RealtimeChannel | undefined;
 
-  demoDaten = signal<{ id: number, created_at: string, name: string, email: string, phone: number, loggedIn: boolean, password: string }[]>([]);
+  demoDaten = signal<
+    {
+      id: number;
+      created_at: string;
+      name: string;
+      email: string;
+      phone: number;
+      loggedIn: boolean;
+      password: string;
+    }[]
+  >([]);
+
   selectedUser = signal<any | null>(null);
+
+  // HINWEIS:
+  // Das ist erstmal nur eine lokale Fake-Speicherung für Tasks.
+  // Die Daten bleiben nur solange erhalten, bis du die Seite neu lädst.
+  // Später kann diese Signal-Liste durch Supabase ersetzt werden.
+  tasks = signal<any[]>([]);
 
   constructor() {
     this.initRealtimeSync();
   }
 
-
   initRealtimeSync() {
-    this.supabase.channel('custom-all-channel')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'demoDB' },
+    this.supabase
+      .channel('custom-all-channel')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'demoDB' },
         (payload) => {
           console.log('Change received!', payload);
           this.handleRealtimePayload(payload);
@@ -46,32 +65,54 @@ export class Supabase {
       let newList;
 
       if (payload.eventType === 'INSERT') {
-        if (current.some(item => item.id === payload.new.id)) return current;
+        if (current.some((item) => item.id === payload.new.id)) return current;
         newList = [...current, payload.new];
       } else if (payload.eventType === 'UPDATE') {
-        newList = current.map(item => item.id === payload.new.id ? payload.new : item);
+        newList = current.map((item) =>
+          item.id === payload.new.id ? payload.new : item
+        );
       } else if (payload.eventType === 'DELETE') {
-        return current.filter(item => item.id !== payload.old.id);
+        return current.filter((item) => item.id !== payload.old.id);
       } else {
         return current;
       }
+
       return newList.sort((a, b) => a.name.localeCompare(b.name));
     });
   }
 
-  async setDemoData(demoData: { name: string, email: string, phone: number, password: string }) {
+  async setDemoData(demoData: {
+    name: string;
+    email: string;
+    phone: number;
+    password: string;
+  }) {
     const { data, error } = await this.supabase
       .from('demoDB')
       .insert([demoData])
       .select();
 
+    if (error) {
+      console.error('Fehler beim Speichern der Demo-Daten:', error);
+      return;
+    }
+
     if (data && data.length > 0) {
       this.selectedUser.set(data[0]);
     }
-    // HINWEIS: Du musst hier kein getDemoData() aufrufen, Realtime erledigt das!
+
+    // HINWEIS:
+    // Du musst hier kein getDemoData() aufrufen,
+    // Realtime erledigt das!
   }
 
-  async getupdateDemoData(id: number, name: string, email: string, phone: number, password: string) {
+  async getupdateDemoData(
+    id: number,
+    name: string,
+    email: string,
+    phone: number,
+    password: string
+  ) {
     await this.supabase
       .from('demoDB')
       .update({ name, email, phone, password })
@@ -80,15 +121,24 @@ export class Supabase {
   }
 
   async deleteData(id: number) {
-    await this.supabase
-      .from('demoDB')
-      .delete()
-      .eq('id', id)
-      .select();
+    await this.supabase.from('demoDB').delete().eq('id', id).select();
   }
 
   selectUser(user: any | null) {
     this.selectedUser.set(user);
+  }
+
+  // HINWEIS:
+  // Diese Methode ersetzt erstmal die echte Datenbank-Speicherung.
+  // Sie speichert Tasks nur lokal im Angular-Signal.
+  // Dadurch kannst du AddTask testen, ohne eine Supabase-Tabelle für Tasks zu haben.
+  async insertTask(task: any) {
+    this.tasks.update((currentTasks) => [...currentTasks, task]);
+
+    console.log('Fake Task gespeichert:', task);
+    console.log('Alle Fake Tasks:', this.tasks());
+
+    return task;
   }
 
   ngOnDestroy() {
@@ -96,5 +146,4 @@ export class Supabase {
       this.supabase.removeChannel(this.channel);
     }
   }
-
 }

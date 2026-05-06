@@ -5,6 +5,7 @@ import { Supabase } from './services/supabase';
 import { FormsModule } from '@angular/forms';
 import { Header } from './components/header/header';
 import { Navigation } from './components/navigation/navigation';
+import { Tasks } from './services/tasks';
 
 @Component({
   selector: 'app-root',
@@ -17,12 +18,14 @@ export class App {
   protected readonly title = signal('join');
 
   demoDB = inject(Supabase);
+  taskService = inject(Tasks);
   router = inject(Router);
 
   hideMenuAndHeader = false;
 
   ngOnInit() {
     this.demoDB.getDemoData();
+    this.taskService.getTasks();
 
     
     this.router.events

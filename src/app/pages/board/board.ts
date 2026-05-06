@@ -1,16 +1,34 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, computed } from '@angular/core';
 import { Tasks } from '../../services/tasks';
+import { NgTemplateOutlet } from '@angular/common';
+import { SvgDb } from "../../shared/svg-db/svg-db";
 
 @Component({
   selector: 'app-board',
-  imports: [],
+  imports: [NgTemplateOutlet, SvgDb],
   templateUrl: './board.html',
   styleUrl: './board.scss',
 })
 export class Board {
   taskService = inject(Tasks);
 
-  ngOnInit(){
-    this.taskService.getTasks()
+  todoTasks = computed(() => 
+    this.taskService.demoTasks().filter(t => t.status === 'todo')
+  );
+  
+  inProgressTasks = computed(() => 
+    this.taskService.demoTasks().filter(t => t.status === 'inProgress')
+  );
+
+  awaitFeedbackTasks = computed(() => 
+    this.taskService.demoTasks().filter(t => t.status === 'awaitFeedback')
+  );
+  
+  doneTasks = computed(() => 
+    this.taskService.demoTasks().filter(t => t.status === 'done')
+  );
+
+  insertFunctionHere(){
+    
   }
 }

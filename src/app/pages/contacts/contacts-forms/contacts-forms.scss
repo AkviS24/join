@@ -129,6 +129,8 @@
 
 .avatar-container {
     position: relative;
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
     border: 3px solid $color-white;
     box-shadow: 0 0 4px rgba($color-black, 0.1);
@@ -270,7 +272,7 @@
     }
 }
 
-.btn-delete{
+.btn-delete {
     padding: 14px 22px;
 }
 
@@ -355,7 +357,7 @@
         right: 24px;
         background-color: transparent;
 
-        app-svg-db{
+        app-svg-db {
             color: white;
         }
 

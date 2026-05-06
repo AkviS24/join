@@ -293,9 +293,9 @@
     font-size: clamp(16px, 1.6vw, 20px);
 
     &:disabled {
-        cursor: not-allowed; 
+        cursor: not-allowed;
         opacity: 0.5;
-        filter: grayscale(1); 
+        filter: grayscale(1);
         pointer-events: none;
     }
 }
@@ -335,6 +335,7 @@
         height: calc(100dvh - $header-height-mobile - $footer-height - 20px);
         flex-direction: column;
         border-radius: 30px;
+        overflow-y: auto;
     }
 
     .left-panel {
@@ -410,12 +411,12 @@
     }
 
     .btn-save {
-        margin-top: 14px;
+        margin: 8px 0;
         padding: 12px 18px;
     }
 
     .btn-delete {
-        margin-top: 14px;
+        margin: 8px 0;
         padding: 10px 16px;
 
     }

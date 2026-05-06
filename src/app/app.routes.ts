@@ -9,7 +9,7 @@ import { LegalNotice } from './pages/legal-notice/legalNotice';
 import { Discription } from './components/discription/discription';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'contacts', pathMatch: 'full' },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
 
   { path: 'summary', component: Summary },
   { path: 'add-task', component: AddTask },

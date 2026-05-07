@@ -48,6 +48,15 @@
   border-radius: 8px;
 }
 
+.task-card {
+    border: 1px solid #ccc; 
+    margin-bottom: 10px; 
+    padding: 10px; 
+    border-radius: 8px; 
+    background: white; 
+    cursor: grab;
+}
+
 app-svg-db{
     padding: 6px;
     &:hover{

@@ -44,8 +44,9 @@ export class UserBadge {
       return compactInitialsName;
   }
 
-  getColor(uid: number): string {
-    let colorNumber = uid % this.palette.length;
+  getColor(uid: number|string): string {
+    let colorNumber = typeof uid === 'string' ? parseInt(uid) : uid;
+    colorNumber = colorNumber % this.palette.length;
     return this.palette[colorNumber];
   }
 }

@@ -2,10 +2,11 @@ import { Component, inject, computed } from '@angular/core';
 import { Tasks } from '../../services/tasks';
 import { NgTemplateOutlet } from '@angular/common';
 import { SvgDb } from "../../shared/svg-db/svg-db";
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-board',
-  imports: [NgTemplateOutlet, SvgDb],
+  imports: [NgTemplateOutlet, SvgDb, DragDropModule],
   templateUrl: './board.html',
   styleUrl: './board.scss',
 })

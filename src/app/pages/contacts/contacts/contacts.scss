@@ -63,11 +63,8 @@
     .contact-info-email {
         font-size: 16px;
         margin-right: 4px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        @include text-truncate;
         color: $color-email-blue;
-        white-space: nowrap;
     }
 }
 

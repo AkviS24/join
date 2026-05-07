@@ -1,46 +1,89 @@
-<div class="board-layout" style="display: flex; gap: 20px; padding: 20px;">
+<header class="board-header">
+  <div class="header-title-area">
+    <h1 class="board-title">Board</h1>
+  </div>
+  <div class="header-actions">
+    <div class="search-bar">
+      <input type="text" placeholder="Find Task" class="search-input">
+      <div class="search-divider"></div>
+      <app-svg-db name="search"></app-svg-db>
+    </div>
+    <button class="primary-button">
+      <span>Add task</span>
+      <app-svg-db name="add"></app-svg-db>
+    </button>
+  </div>
+</header>
 
+<div class="board-layout">
   <!-- Spalte: To Do -->
   <div class="column">
-    <app-svg-db (click)="insertFunctionHere()" name="plus-button"></app-svg-db>
-    <h3>To Do</h3>
+    <div class="column-header">
+      <h3>To Do</h3>
+      <app-svg-db (click)="insertFunctionHere()" name="plus-button"></app-svg-db>
+    </div>
     @for (item of todoTasks(); track item.id) {
-      <ng-container *ngTemplateOutlet="taskCard; context: { $implicit: item }"></ng-container>
-    } @empty { <p class="empty-msg">Keine Aufgaben</p> }
+    <div class="task-card">
+      <p class="type-badge" [class]="item.type === 'userStory' ? 'user-story' : 'technical-task'">
+        {{formatType(item.type)}}</p>
+      <p class="task-title">{{ item.title }}</p>
+      <p class="task-description">{{ item.description }}</p>
+    </div>
+    } @empty { <p class="empty-msg">No Tasks to do</p> }
+
   </div>
 
   <!-- Spalte: In Progress -->
   <div class="column">
-    <app-svg-db (click)="insertFunctionHere()" name="plus-button"></app-svg-db>
-    <h3>In Progress</h3>
+    <div class="column-header">
+      <h3>In Progress</h3>
+      <app-svg-db (click)="insertFunctionHere()" name="plus-button"></app-svg-db>
+    </div>
     @for (item of inProgressTasks(); track item.id) {
-      <ng-container *ngTemplateOutlet="taskCard; context: { $implicit: item }"></ng-container>
-    } @empty { <p class="empty-msg">Keine Aufgaben</p> }
+    <div class="task-card">
+      <p class="type-badge" [class]="item.type === 'userStory' ? 'user-story' : 'technical-task'">
+        {{formatType(item.type)}}</p>
+      <p class="task-title">{{ item.title }}</p>
+      <p class="task-description">{{ item.description }}</p>
+    </div>
+    } @empty { <p class="empty-msg">No Tasks in progress</p> }
+
   </div>
   <!-- Spalte: await Feedback -->
   <div class="column">
-    <app-svg-db (click)="insertFunctionHere()" name="plus-button"></app-svg-db>
-    <h3>Await Feedback</h3>
+    <div class="column-header">
+      <h3>Await Feedback</h3>
+      <app-svg-db (click)="insertFunctionHere()" name="plus-button"></app-svg-db>
+    </div>
     @for (item of awaitFeedbackTasks(); track item.id) {
-      <ng-container *ngTemplateOutlet="taskCard; context: { $implicit: item }"></ng-container>
-    } @empty { <p class="empty-msg">Keine Aufgaben</p> }
+    <div class="task-card">
+      <p class="type-badge" [class]="item.type === 'userStory' ? 'user-story' : 'technical-task'">
+        {{formatType(item.type)}}</p>
+      <p class="task-title">{{ item.title }}</p>
+      <p class="task-description">{{ item.description }}</p>
+    </div>
+    } @empty { <p class="empty-msg">No Tasks awaiting feedback</p> }
+
   </div>
 
   <!-- Spalte: Done -->
   <div class="column">
-    <app-svg-db (click)="insertFunctionHere()" name="plus-button"></app-svg-db>
-    <h3>Done</h3>
+    <div class="column-header">
+      <h3 class="done">Done</h3>
+    </div>
     @for (item of doneTasks(); track item.id) {
-      <ng-container *ngTemplateOutlet="taskCard; context: { $implicit: item }"></ng-container>
-    } @empty { <p class="empty-msg">Keine Aufgaben</p> }
+    <div class="task-card">
+      <p class="type-badge" [class]="item.type === 'userStory' ? 'user-story' : 'technical-task'">
+        {{formatType(item.type)}}</p>
+      <p class="task-title">{{ item.title }}</p>
+      <p class="task-description">{{ item.description }}</p>
+    </div>
+    } @empty { <p class="empty-msg">No Tasks done</p> }
   </div>
 
 </div>
 
 <!-- Template-Definition für die Karte (um Code-Duplikate zu vermeiden) -->
 <ng-template #taskCard let-item>
-  <div class="task-card" style="border: 1px solid #ccc; margin-bottom: 10px; padding: 10px; border-radius: 8px; background: white;">
-    <strong>{{ item.title }}</strong><br>
-    <small>{{ item.description }}</small>
-  </div>
+
 </ng-template>

@@ -7,27 +7,51 @@
     <div class="page-body">
       <div class="column left-column">
         <div class="form-group">
-          <label>Title<span class="required">*</span></label>
-          <input type="text" class="form-control" placeholder="Enter a title" [(ngModel)]="title" />
+          <label for="task-title">Title<span class="required">*</span></label>
+          <input
+            id="task-title"
+            type="text"
+            class="form-control"
+            placeholder="Enter a title"
+            [(ngModel)]="title"
+            [class.has-value]="title"
+            [class.error]="isSubmitted && !title"
+          />
+          @if (isSubmitted && !title) {
+            <span class="field-error-text">This field is required</span>
+          }
         </div>
 
         <div class="form-group">
-          <label>Description</label>
+          <label for="task-description">Description</label>
           <div class="textarea-wrapper">
             <textarea
+              id="task-description"
               class="form-control"
               placeholder="Enter a Description"
               [(ngModel)]="description"
+              [class.has-value]="description"
             ></textarea>
-            <img src="/icons/z.svg" class="resize-icon" alt="Resize" />
+            <img src="icons/img/z.svg" class="resize-icon" alt="Resize" />
           </div>
         </div>
 
         <div class="form-group">
-          <label>Due date<span class="required">*</span></label>
+          <label for="task-due-date">Due date<span class="required">*</span></label>
           <div class="input-with-icon">
-            <input type="date" class="form-control" [(ngModel)]="dueDate" />
+            <input
+              id="task-due-date"
+              type="date"
+              class="form-control"
+              [(ngModel)]="dueDate"
+              [class.has-value]="dueDate"
+              [class.error]="isSubmitted && !dueDate"
+            />
+            <img src="icons/img/event.svg" alt="Calendar" />
           </div>
+          @if (isSubmitted && !dueDate) {
+            <span class="field-error-text">This field is required</span>
+          }
         </div>
       </div>
 
@@ -42,21 +66,21 @@
               [class.active]="selectedPriority === 'urgent'"
               (click)="selectPriority('urgent')"
             >
-              Urgent <img src="/icons/high2.svg" alt="Urgent" />
+              Urgent <img src="icons/img/high2.svg" alt="Urgent" />
             </button>
             <button
               class="btn-priority medium"
               [class.active]="selectedPriority === 'medium'"
               (click)="selectPriority('medium')"
             >
-              Medium <img src="/icons/medium.svg" alt="Medium" />
+              Medium <img src="icons/img/medium.svg" alt="Medium" />
             </button>
             <button
               class="btn-priority low"
               [class.active]="selectedPriority === 'low'"
               (click)="selectPriority('low')"
             >
-              Low <img src="/icons/low.svg" alt="Low" />
+              Low <img src="icons/img/low2.svg" alt="Low" />
             </button>
           </div>
         </div>
@@ -64,9 +88,14 @@
         <div class="form-group">
           <label>Assigned to</label>
           <div class="custom-select-wrapper" (click)="toggleDropdown()">
-            <div class="form-control select-display">
+            <div
+              class="form-control select-display"
+              [class.has-value]="selectedContacts.length > 0"
+            >
               <span>Select contacts to assign</span>
-              <img src="/icons/pic.svg" alt="Dropdown" [class.rotated]="dropdownOpen" />
+              <div class="arrow-btn">
+                <img src="icons/img/pic.svg" alt="Dropdown" [class.rotated]="dropdownOpen" />
+              </div>
             </div>
 
             @if (dropdownOpen) {
@@ -83,54 +112,85 @@
                       </div>
                       <span>{{ contact.name }}</span>
                     </div>
-                    <img
-                      [src]="isSelected(contact) ? '/icons/img/cb1.svg' : '/icons/img/cb0.svg'"
-                      alt="Checkbox"
-                      class="custom-checkbox-icon"
-                    />
+                    <div class="checkbox-btn">
+                      <img
+                        [src]="
+                          isSelected(contact)
+                            ? 'icons/img/cb1.svg'
+                            : 'icons/img/cb0.svg'
+                        "
+                        alt="Checkbox"
+                        class="custom-checkbox-icon"
+                      />
+                    </div>
                   </div>
                 }
               </div>
             }
           </div>
 
-          @if (selectedContacts.length > 0) {
-            <div class="selected-avatars">
-              @for (contact of selectedContacts; track contact.id) {
-                <div class="avatar" [style.backgroundColor]="contact.color">
-                  {{ contact.initials }}
-                </div>
-              }
-            </div>
-          }
-        </div>
-
-        <div class="form-group">
-          <label>Category<span class="required">*</span></label>
-          <div class="select-wrapper">
-            <select class="form-control" [(ngModel)]="taskType">
-              <option value="" disabled selected hidden>Select task category</option>
-              <option value="Technical Task">Technical Task</option>
-              <option value="User Story">User Story</option>
-            </select>
-            <img src="/icons/pic1.svg" alt="Dropdown" />
+          <div class="selected-avatars">
+            @for (contact of selectedContacts; track contact.id) {
+              <div class="avatar" [style.backgroundColor]="contact.color">
+                {{ contact.initials }}
+              </div>
+            }
           </div>
         </div>
 
         <div class="form-group">
-          <label>Subtasks</label>
+          <label>Category<span class="required">*</span></label>
+          <div class="custom-select-wrapper" (click)="toggleCategoryDropdown()">
+            <div
+              class="form-control select-display"
+              [class.has-value]="taskType"
+              [class.error]="isSubmitted && !taskType"
+            >
+              <span>{{ taskType ? taskType : 'Select task category' }}</span>
+              <div class="arrow-btn">
+                <img
+                  src="icons/img/pic.svg"
+                  alt="Dropdown"
+                  [class.rotated]="categoryDropdownOpen"
+                />
+              </div>
+            </div>
+            @if (categoryDropdownOpen) {
+              <div class="dropdown-list">
+                <div class="dropdown-item" (click)="selectCategory('Technical Task', $event)">
+                  <span>Technical Task</span>
+                </div>
+                <div class="dropdown-item" (click)="selectCategory('User Story', $event)">
+                  <span>User Story</span>
+                </div>
+              </div>
+            }
+          </div>
+          @if (isSubmitted && !taskType) {
+            <span class="field-error-text">This field is required</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="task-subtask">Subtasks</label>
           <div class="subtask-wrapper">
             <input
+              id="task-subtask"
               type="text"
               class="form-control"
               placeholder="Add new subtask"
               [(ngModel)]="newSubtaskText"
+              [class.has-value]="newSubtaskText"
               (keyup.enter)="addSubtask()"
             />
             <div class="subtask-actions">
-              <img src="/icons/close.svg" alt="Clear" class="action-icon" (click)="clearSubtaskInput()" />
+              <div class="subtask-btn" (click)="clearSubtaskInput()">
+                <img src="icons/img/close.svg" alt="Clear" class="action-icon" />
+              </div>
               <div class="action-divider"></div>
-              <img src="/icons/add+.svg" alt="Add" class="action-icon" (click)="addSubtask()" />
+              <div class="subtask-btn" (click)="addSubtask()">
+                <img src="icons/img/check.svg" alt="Add" class="action-icon check-icon" />
+              </div>
             </div>
           </div>
           @if (newSubtasks.length > 0) {
@@ -139,9 +199,13 @@
                 <div class="new-subtask-item">
                   <span>• {{ subtask.subtaskText }}</span>
                   <div class="subtask-list-actions">
-                    <img src="/icons/pen.svg" alt="Edit" (click)="editNewSubtask($index)" />
+                    <div class="subtask-btn" (click)="editNewSubtask($index)">
+                      <img src="icons/img/pen.svg" alt="Edit" />
+                    </div>
                     <div class="icon-divider-small"></div>
-                    <img src="/icons/delete.svg" alt="Delete" (click)="removeNewSubtask($index)" />
+                    <div class="subtask-btn" (click)="removeNewSubtask($index)">
+                      <img src="icons/img/delete.svg" alt="Delete" />
+                    </div>
                   </div>
                 </div>
               }
@@ -151,20 +215,20 @@
       </div>
     </div>
 
-@if (errorMessage) {
-  <div style="color: #ff3333; font-size: 14px; text-align: center; margin-bottom: 16px;">
-    {{ errorMessage }}
-  </div>
-}
+    @if (errorMessage) {
+      <div style="color: #ff3333; font-size: 14px; text-align: center; margin-bottom: 16px">
+        {{ errorMessage }}
+      </div>
+    }
 
     <footer class="page-footer">
       <div class="required-note"><span class="required">*</span>This field is required</div>
       <div class="actions">
-        <button class="btn-cancel" (click)="cancelAction()">
-          Cancel <img src="/icons/img/cancle.svg" alt="Cancel" />
+        <button class="btn-cancel" (click)="clearForm()">
+          Clear <img src="icons/img/cancle.svg" alt="Clear" />
         </button>
         <button class="btn-create" (click)="createTask()">
-          Create Task <img src="/icons/check.svg" alt="Create" />
+          Create Task <img src="icons/img/check.svg" alt="Create" />
         </button>
       </div>
     </footer>
@@ -172,7 +236,7 @@
 
   @if (showSuccessMessage) {
     <div class="success-message">
-      <img src="/icons/tasksucces.svg" alt="Task successfully created" />
+      <img src="icons/img/tasksucces.svg" alt="Task successfully created" />
     </div>
   }
 </section>

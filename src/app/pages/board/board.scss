@@ -1,11 +1,16 @@
 @use '../../../styles/abstracts/variables' as *;
 @use '../../../styles/abstracts/mixins' as *;
 
+section {
+  padding-inline: 64px;
+  padding-top: 64px;
+}
+
 .board-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 24px 64px;
+  padding-inline: 10px;
 
   .primary-button {
     width: auto;
@@ -17,34 +22,72 @@
   align-items: center;
 }
 
-.search-bar {
+.search-wrapper {
   display: flex;
   align-items: center;
   background-color: white;
+  border: 1px solid $color-gray;
+  border-radius: 10px;
+  padding: 5px;
+  margin: 6px 30px 6px 6px;
+  width: fit-content;
+  transition: border-color 0.2s;
+
+  &:focus-within {
+    border-color: $color-primary;
+  }
+
+  input {
+    border: none;
+    outline: none;
+    // font-size: 16px;
+    // color: #000;
+    flex-grow: 1;
+
+    &::placeholder {
+      color: $color-gray;
+    }
+  }
+
+  .divider {
+    width: 1px;
+    height: 32px;
+    background-color: $color-gray;
+    margin: 0 8px;
+  }
+
+  .search-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    @include flex-center;
+    border-radius: 50%;
+
+  }
 }
 
 .board-layout {
   display: flex;
   justify-content: space-between;
-  height: calc(100vh - $header-height);
+  min-height: calc(100vh - $header-height);
 }
 
 .column {
   flex: 1;
   border-radius: 10px;
   padding: 10px;
-  min-width: 250px;
+  min-width: 220px;
 }
 
 .column-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 8px;
+  margin: 8px 8px 8px 0;
+}
 
-  .done {
-    padding: 6.5px 0;
-  }
+app-svg-db:hover {
+  color: $color-primary;
 }
 
 .task-card {
@@ -54,6 +97,7 @@
   background-color: $color-white;
   border-radius: 10px;
   box-shadow: 0 0 15px 3px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
 
   .type-badge {
     padding: 6px;
@@ -66,12 +110,13 @@
 
   .task-title {
     font-weight: 700;
-    margin: 8px 0;
+    // margin: 8px 0;
   }
 
   .task-description,
   .task-title {
     @include line-clamp(2);
+    margin: 4px 0;
   }
 }
 
@@ -83,6 +128,37 @@
   background-color: $color-mint;
 }
 
+.task-assignment {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.avatar-stack {
+  display: flex;
+  align-items: center;
+  margin: 6px 0;
+}
+
+.badge {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  margin-left: -8px;
+  border: 1px solid white;
+  flex-shrink: 0;
+}
+
+.badge:first-child {
+  margin-left: 0;
+}
+
 .empty-msg {
   text-align: center;
   color: $color-light-gray;
@@ -91,12 +167,4 @@
   background-color: $color-dark-gray;
   border: 2px dashed #ccc;
   border-radius: 8px;
-}
-
-app-svg-db {
-  padding: 6px;
-
-  &:hover {
-    color: $color-primary;
-  }
 }

@@ -1,6 +1,7 @@
 import { Component, inject, computed } from '@angular/core';
 import { Tasks } from '../../services/tasks';
 import { SvgDb } from "../../shared/svg-db/svg-db";
+import { UserBadge } from '../../services/userbadge';
 
 @Component({
   selector: 'app-board',
@@ -10,6 +11,7 @@ import { SvgDb } from "../../shared/svg-db/svg-db";
 })
 export class Board {
   taskService = inject(Tasks);
+  userBadgeService = inject(UserBadge);
 
   todoTasks = computed(() => 
     this.taskService.demoTasks().filter(t => t.status === 'todo')
@@ -32,6 +34,10 @@ export class Board {
   const result = type.replace(/([A-Z])/g, " $1");
   return result.charAt(0).toUpperCase() + result.slice(1);
 } 
+
+getDoneSubtasksCount(task: any): number {
+  return task.subtasks.filter((s: any) => s.status === 'done').length;
+}
 
   insertFunctionHere(){
     

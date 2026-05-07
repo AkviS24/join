@@ -1,89 +1,129 @@
-<header class="board-header">
-  <div class="header-title-area">
-    <h1 class="board-title">Board</h1>
+<section>
+
+  <header class="board-header">
+    <div class="header-title-area">
+      <h1 class="board-title">Board</h1>
+    </div>
+    <div class="header-actions">
+      <div class="search-wrapper">
+        <input type="text" placeholder="Find Task">
+        <div class="divider"></div>
+        <button class="search-btn">
+          <app-svg-db name="search"></app-svg-db>
+        </button>
+      </div>
+      <button class="primary-button">
+        <span>Add task</span>
+        <app-svg-db name="add"></app-svg-db>
+      </button>
+    </div>
+  </header>
+
+  <div class="board-layout">
+    <!-- Spalte: To Do -->
+    <div class="column">
+      <div class="column-header">
+        <h3>To Do</h3>
+        <app-svg-db (click)="insertFunctionHere()" name="plus-button"></app-svg-db>
+      </div>
+      @for (task of todoTasks(); track task.id) {
+      <div class="task-card">
+        <p class="type-badge" [class]="task.type === 'userStory' ? 'user-story' : 'technical-task'">
+          {{formatType(task.type)}}</p>
+        <p class="task-title">{{ task.title }}</p>
+        <p class="task-description">{{ task.description }}</p>
+        <div class="task-assignment">
+          <div class="avatar-stack">
+            @for (user of task.assignedToNames; track user) {
+            <div class="badge" [style.background-color]="userBadgeService.getColor(task.assignedTo[$index])">
+              {{ this.userBadgeService.getInitials(user) }}
+            </div>
+            }
+          </div>
+          <app-svg-db name="cappa-{{task.priority}}"></app-svg-db>
+        </div>
+      </div>
+      } @empty { <p class="empty-msg">No Tasks to do</p> }
+
+    </div>
+
+    <!-- Spalte: In Progress -->
+    <div class="column">
+      <div class="column-header">
+        <h3>In Progress</h3>
+        <app-svg-db (click)="insertFunctionHere()" name="plus-button"></app-svg-db>
+      </div>
+      @for (task of inProgressTasks(); track task.id) {
+      <div class="task-card">
+        <p class="type-badge" [class]="task.type === 'userStory' ? 'user-story' : 'technical-task'">
+          {{formatType(task.type)}}</p>
+        <p class="task-title">{{ task.title }}</p>
+        <p class="task-description">{{ task.description }}</p>
+        <div class="task-assignment">
+          <div class="avatar-stack">
+            @for (user of task.assignedToNames; track user) {
+            <div class="badge" [style.background-color]="userBadgeService.getColor(task.assignedTo[$index])">
+              {{ this.userBadgeService.getInitials(user) }}
+            </div>
+            }
+          </div>
+          <app-svg-db name="cappa-{{task.priority}}"></app-svg-db>
+        </div>
+      </div>
+      }
+
+    </div>
+    <!-- Spalte: await Feedback -->
+    <div class="column">
+      <div class="column-header">
+        <h3>Await Feedback</h3>
+        <app-svg-db (click)="insertFunctionHere()" name="plus-button"></app-svg-db>
+      </div>
+      @for (task of awaitFeedbackTasks(); track task.id) {
+      <div class="task-card">
+        <p class="type-badge" [class]="task.type === 'userStory' ? 'user-story' : 'technical-task'">
+          {{formatType(task.type)}}</p>
+        <p class="task-title">{{ task.title }}</p>
+        <p class="task-description">{{ task.description }}</p>
+        <div class="task-assignment">
+          <div class="avatar-stack">
+            @for (user of task.assignedToNames; track user) {
+            <div class="badge" [style.background-color]="userBadgeService.getColor(task.assignedTo[$index])">
+              {{ this.userBadgeService.getInitials(user) }}
+            </div>
+            }
+          </div>
+          <app-svg-db name="cappa-{{task.priority}}"></app-svg-db>
+        </div>
+      </div>
+      } @empty { <p class="empty-msg">No Tasks awaiting feedback</p> }
+
+    </div>
+
+    <!-- Spalte: Done -->
+    <div class="column">
+      <div class="column-header">
+        <h3 class="done">Done</h3>
+      </div>
+      @for (task of doneTasks(); track task.id) {
+      <div class="task-card">
+        <p class="type-badge" [class]="task.type === 'userStory' ? 'user-story' : 'technical-task'">
+          {{formatType(task.type)}}</p>
+        <p class="task-title">{{ task.title }}</p>
+        <p class="task-description">{{ task.description }}</p>
+        <div class="task-assignment">
+          <div class="avatar-stack">
+            @for (user of task.assignedToNames; track user) {
+            <div class="badge" [style.background-color]="userBadgeService.getColor(task.assignedTo[$index])">
+              {{ this.userBadgeService.getInitials(user) }}
+            </div>
+            }
+          </div>
+          <app-svg-db name="cappa-{{task.priority}}"></app-svg-db>
+        </div>
+      </div>
+      } @empty { <p class="empty-msg">No Tasks done</p> }
+    </div>
+
   </div>
-  <div class="header-actions">
-    <div class="search-bar">
-      <input type="text" placeholder="Find Task" class="search-input">
-      <div class="search-divider"></div>
-      <app-svg-db name="search"></app-svg-db>
-    </div>
-    <button class="primary-button">
-      <span>Add task</span>
-      <app-svg-db name="add"></app-svg-db>
-    </button>
-  </div>
-</header>
-
-<div class="board-layout">
-  <!-- Spalte: To Do -->
-  <div class="column">
-    <div class="column-header">
-      <h3>To Do</h3>
-      <app-svg-db (click)="insertFunctionHere()" name="plus-button"></app-svg-db>
-    </div>
-    @for (item of todoTasks(); track item.id) {
-    <div class="task-card">
-      <p class="type-badge" [class]="item.type === 'userStory' ? 'user-story' : 'technical-task'">
-        {{formatType(item.type)}}</p>
-      <p class="task-title">{{ item.title }}</p>
-      <p class="task-description">{{ item.description }}</p>
-    </div>
-    } @empty { <p class="empty-msg">No Tasks to do</p> }
-
-  </div>
-
-  <!-- Spalte: In Progress -->
-  <div class="column">
-    <div class="column-header">
-      <h3>In Progress</h3>
-      <app-svg-db (click)="insertFunctionHere()" name="plus-button"></app-svg-db>
-    </div>
-    @for (item of inProgressTasks(); track item.id) {
-    <div class="task-card">
-      <p class="type-badge" [class]="item.type === 'userStory' ? 'user-story' : 'technical-task'">
-        {{formatType(item.type)}}</p>
-      <p class="task-title">{{ item.title }}</p>
-      <p class="task-description">{{ item.description }}</p>
-    </div>
-    } @empty { <p class="empty-msg">No Tasks in progress</p> }
-
-  </div>
-  <!-- Spalte: await Feedback -->
-  <div class="column">
-    <div class="column-header">
-      <h3>Await Feedback</h3>
-      <app-svg-db (click)="insertFunctionHere()" name="plus-button"></app-svg-db>
-    </div>
-    @for (item of awaitFeedbackTasks(); track item.id) {
-    <div class="task-card">
-      <p class="type-badge" [class]="item.type === 'userStory' ? 'user-story' : 'technical-task'">
-        {{formatType(item.type)}}</p>
-      <p class="task-title">{{ item.title }}</p>
-      <p class="task-description">{{ item.description }}</p>
-    </div>
-    } @empty { <p class="empty-msg">No Tasks awaiting feedback</p> }
-
-  </div>
-
-  <!-- Spalte: Done -->
-  <div class="column">
-    <div class="column-header">
-      <h3 class="done">Done</h3>
-    </div>
-    @for (item of doneTasks(); track item.id) {
-    <div class="task-card">
-      <p class="type-badge" [class]="item.type === 'userStory' ? 'user-story' : 'technical-task'">
-        {{formatType(item.type)}}</p>
-      <p class="task-title">{{ item.title }}</p>
-      <p class="task-description">{{ item.description }}</p>
-    </div>
-    } @empty { <p class="empty-msg">No Tasks done</p> }
-  </div>
-
-</div>
-
-<!-- Template-Definition für die Karte (um Code-Duplikate zu vermeiden) -->
-<ng-template #taskCard let-item>
-
-</ng-template>
+</section>

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Supabase } from '../../services/supabase';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { UserBadge } from '../../services/userbadge';
 
 @Component({
   selector: 'app-add-task',
@@ -12,11 +13,13 @@ import { FormsModule } from '@angular/forms';
 })
 export class AddTask implements OnInit {
   supabaseService = inject(Supabase);
+  userBadgeService = inject(UserBadge);
   route = inject(ActivatedRoute);
   router = inject(Router);
 
   contacts: any[] = [];
   dropdownOpen = false;
+  categoryDropdownOpen = false;
   selectedContacts: any[] = [];
   selectedPriority: string = 'medium';
 
@@ -28,6 +31,7 @@ export class AddTask implements OnInit {
   newSubtasks: { subtaskText: string; completed: boolean }[] = [];
   showSuccessMessage: boolean = false;
   errorMessage: string = '';
+  isSubmitted: boolean = false;
 
   @Input() targetCategory: string = 'category-0';
   @Input() asOverlay: boolean = false;
@@ -42,49 +46,14 @@ export class AddTask implements OnInit {
 
     await this.supabaseService.getDemoData();
 
-    const dbContacts = this.supabaseService.demoDaten();
+    const dbContacts = this.supabaseService ? this.supabaseService.demoDaten() : [];
 
     this.contacts = dbContacts.map((c: any) => ({
       id: c.id,
       name: c.name,
-      color: c.color || this.getColorForName(c.name),
-      initials: c.initials || this.getInitials(c.name),
+      color: this.userBadgeService.getColor(c),
+      initials: c.initials || this.userBadgeService.getInitials(c.name),
     }));
-  }
-
-  getInitials(name: string): string {
-    if (!name) return '';
-    return name
-      .split(' ')
-      .map((n) => n[0])
-      .join('')
-      .toUpperCase()
-      .substring(0, 2);
-  }
-
-  getColorForName(name: string): string {
-    const colors = [
-      '#ff7a00',
-      '#ff5eb3',
-      '#6e52ff',
-      '#9327FF',
-      '#00BEE8',
-      '#1FD7C1',
-      '#FF745E',
-      '#FFA35E',
-      '#FC71FF',
-      '#FFC701',
-      '#0038FF',
-      '#C3FF2B',
-      '#FFE62B',
-      '#FF4646',
-      '#FFBB2B',
-    ];
-    let hash = 0;
-    if (name) {
-      for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
-    }
-    return colors[Math.abs(hash) % colors.length];
   }
 
   toggleDropdown() {
@@ -92,7 +61,7 @@ export class AddTask implements OnInit {
   }
 
   toggleContact(contact: any, event: Event) {
-    event.stopPropagation(); // Verhindert das sofortige Schließen des Dropdowns
+    event.stopPropagation();
     const index = this.selectedContacts.findIndex((c) => c.id === contact.id);
     if (index === -1) {
       this.selectedContacts.push(contact);
@@ -105,20 +74,37 @@ export class AddTask implements OnInit {
     return this.selectedContacts.some((c) => c.id === contact.id);
   }
 
+  toggleCategoryDropdown() {
+    this.categoryDropdownOpen = !this.categoryDropdownOpen;
+  }
+
+  selectCategory(category: string, event: Event) {
+    event.stopPropagation();
+    this.taskType = category;
+    this.categoryDropdownOpen = false;
+  }
+
   selectPriority(priority: string) {
     this.selectedPriority = priority;
   }
 
-  cancelAction() {
+  clearForm() {
     this.title = '';
     this.description = '';
     this.dueDate = '';
     this.taskType = '';
     this.selectedContacts = [];
     this.selectedPriority = 'medium';
+    this.dropdownOpen = false;
+    this.categoryDropdownOpen = false;
     this.newSubtaskText = '';
     this.newSubtasks = [];
     this.errorMessage = '';
+    this.isSubmitted = false;
+  }
+
+  cancelAction() {
+    this.clearForm();
 
     if (this.asOverlay) {
       this.closeOverlay.emit();
@@ -126,10 +112,12 @@ export class AddTask implements OnInit {
   }
 
   async createTask() {
+    this.isSubmitted = true;
     if (!this.title || !this.dueDate || !this.taskType) {
-      alert('Bitte fülle alle Pflichtfelder (*) aus!');
+      this.errorMessage = 'Please fill in all required fields (*)!';
       return;
     }
+    this.errorMessage = '';
     const newTask = {
       id: new Date().getTime(),
       title: this.title,
@@ -149,7 +137,6 @@ export class AddTask implements OnInit {
     setTimeout(() => {
       this.showSuccessMessage = false;
       this.cancelAction();
-      // Wenn wir nicht im Overlay sind, sondern auf der separaten Add-Task Seite: zurück zum Board!
       if (!this.asOverlay) {
         this.router.navigate(['/board']);
       }
@@ -176,4 +163,3 @@ export class AddTask implements OnInit {
     this.newSubtasks.splice(index, 1);
   }
 }
-

@@ -88,7 +88,7 @@
         flex-shrink: 0;
         margin-left: 0;
         font-size: 36px;
-        border: white 4px solid;
+        border: white 2px solid;
         border-radius: 50%;
         margin: 16px;
         display: flex;
@@ -107,6 +107,8 @@
     .username {
         font-size: 42px;
         font-weight: 500;
+        word-wrap: break-word;
+        hyphens: auto;
     }
 }
 
@@ -152,7 +154,8 @@
     a {
         padding: 4px;
     }
-    .phonenumber{
+
+    .phonenumber {
         color: $color-black;
     }
 }
@@ -165,6 +168,11 @@
 @media (max-width: $bp-laptop) {
     .contact-header {
         flex-direction: column;
+        padding-left: 0;
+    }
+
+    .details-content {
+        padding-left: 0;
     }
 
     .contact-details {
@@ -179,6 +187,26 @@
                 height: 0;
                 border-bottom: 3px solid $color-primary;
             }
+
+        }
+
+        .user-badge {
+            padding-left: 0;
+            margin: 6px 6px 6px 0;
+        }
+
+        .username {
+            font-size: 36px;
+        }
+
+        .details-contact-info {
+
+            padding-left: 0;
+        }
+
+        .contact-info-sub {
+            padding-left: 0;
+
         }
     }
 }
@@ -193,9 +221,7 @@
     .contact-details {
         height: calc(100vh - ($header-height-mobile + $footer-height));
     }
-}
 
-@media (max-width: $bp-tablet) {
     .contact-details {
         button {
             display: block;
@@ -226,7 +252,8 @@
         .user-badge {
             height: 80px;
             width: 80px;
-            margin-left: 4px;
+            margin-left: 0;
+            margin-right: 8px;
         }
 
         .details-content {
@@ -238,7 +265,7 @@
         }
 
         .username {
-            font-size: 36px;
+            font-size: 32px;
         }
     }
 }

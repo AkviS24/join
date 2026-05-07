@@ -22,7 +22,7 @@ export class Tasks {
       dueDate: string;
       due_date: string;
       priority: string;
-      assignedTo: string[];
+      assignedTo: number[];
       assignedToNames: string[];
       subtasks: { subtaskText: string; completed: boolean }[];
       status: string;

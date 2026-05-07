@@ -32,8 +32,9 @@ export class Tasks {
     let { data: tasks, error } = await this.supabase
       .from('tasks')
       .select('*')
-    if (!tasks) return
-    this.demoTasks.set(tasks)
+    if (tasks) {
+      this.demoTasks.set(tasks);
+    }
   }
 
   async setTasks(demoData: { title: string, description: string, category: string, type: string, dueDate: string  }) {

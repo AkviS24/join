@@ -1,45 +1,65 @@
-<div class="board-layout" style="display: flex; gap: 20px; padding: 20px;">
+<div class="search-bar" style="padding: 20px; padding-bottom: 0;">
+  <input type="text" placeholder="Search Tasks..." (input)="updateSearch($event)"
+    style="padding: 8px; border-radius: 4px; border: solid 1px #ccc; width: 300px;">
+</div>
+<div class="board-layout" style="display: flex; gap: 20px; padding: 20px;" cdkDropListGroup>
 
   <!-- Spalte: To Do -->
-  <div class="column">
+  <div class="column" cdkDropList [cdkDropListData]="todoTasks()" (cdkDropListDropped)="drop($event, 'todo')">
+
     <app-svg-db (click)="insertFunctionHere()" name="plus-button"></app-svg-db>
     <h3>To Do</h3>
     @for (item of todoTasks(); track item.id) {
+    <div cdkDrag [cdkDragData]="item">
       <ng-container *ngTemplateOutlet="taskCard; context: { $implicit: item }"></ng-container>
-    } @empty { <p class="empty-msg">Keine Aufgaben</p> }
+    </div>
+    } @empty { <p class="empty-msg">{{searchQuery() ? 'No Data found' : 'No Tasks available'}}</p> }
   </div>
 
+
   <!-- Spalte: In Progress -->
-  <div class="column">
+  <div class="column" cdkDropList [cdkDropListData]="inProgressTasks()"
+    (cdkDropListDropped)="drop($event, 'inProgress')">
     <app-svg-db (click)="insertFunctionHere()" name="plus-button"></app-svg-db>
     <h3>In Progress</h3>
     @for (item of inProgressTasks(); track item.id) {
+    <div cdkDrag [cdkDragData]="item">
       <ng-container *ngTemplateOutlet="taskCard; context: { $implicit: item }"></ng-container>
-    } @empty { <p class="empty-msg">Keine Aufgaben</p> }
+    </div>
+    } @empty { <p class="empty-msg">{{ searchQuery() ? 'No Data found' : 'No Tasks available' }}</p> }
   </div>
+
+
   <!-- Spalte: await Feedback -->
-  <div class="column">
+  <div class="column" cdkDropList [cdkDropListData]="awaitFeedbackTasks()"
+    (cdkDropListDropped)="drop($event, 'awaitFeedback')">
     <app-svg-db (click)="insertFunctionHere()" name="plus-button"></app-svg-db>
     <h3>Await Feedback</h3>
     @for (item of awaitFeedbackTasks(); track item.id) {
+    <div cdkDrag [cdkDragData]="item">
       <ng-container *ngTemplateOutlet="taskCard; context: { $implicit: item }"></ng-container>
-    } @empty { <p class="empty-msg">Keine Aufgaben</p> }
+    </div>
+    } @empty { <p class="empty-msg">{{ searchQuery() ? 'No Data found' : 'No Tasks available' }}</p> }
   </div>
 
   <!-- Spalte: Done -->
-  <div class="column">
+  <div class="column" cdkDropList [cdkDropListData]="doneTasks()"
+    (cdkDropListDropped)="drop($event, 'done')">
     <app-svg-db (click)="insertFunctionHere()" name="plus-button"></app-svg-db>
     <h3>Done</h3>
     @for (item of doneTasks(); track item.id) {
+    <div cdkDrag [cdkDragData]="item">
       <ng-container *ngTemplateOutlet="taskCard; context: { $implicit: item }"></ng-container>
-    } @empty { <p class="empty-msg">Keine Aufgaben</p> }
+    </div>
+    } @empty { <p class="empty-msg">{{ searchQuery() ? 'No Data found' : 'No Tasks available' }}</p> }
   </div>
 
 </div>
 
 <!-- Template-Definition für die Karte (um Code-Duplikate zu vermeiden) -->
 <ng-template #taskCard let-item>
-  <div class="task-card" style="border: 1px solid #ccc; margin-bottom: 10px; padding: 10px; border-radius: 8px; background: white;">
+  <div class="task-card"
+    style="border: 1px solid #ccc; margin-bottom: 10px; padding: 10px; border-radius: 8px; background: white; cursor: grab;">
     <strong>{{ item.title }}</strong><br>
     <small>{{ item.description }}</small>
   </div>

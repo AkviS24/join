@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { Summary } from './pages/summary/summary';
 import { AddTask } from './pages/add-task/add-task';
-import { Board } from './pages/board/board';
+import { Board } from './pages/boards/board/board';
 import { Contacts } from './pages/contacts/contacts/contacts';
 import { Login } from './components/login/login';
 import { PrivacyPolice } from './pages/privacy-policy/privacyPolicy';

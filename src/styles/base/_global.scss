@@ -29,3 +29,10 @@ body {
   max-width: 1440px;
   margin: 0 auto;
 }
+
+button {
+  background: transparent;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+}

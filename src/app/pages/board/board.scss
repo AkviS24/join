@@ -8,6 +8,17 @@
   min-height: 80vh;
 }
 
+.second-board-class {
+  display: flex; 
+  gap: 20px; 
+  padding: 20px;
+}
+
+.search-bar {
+   padding: 20px; 
+   padding-bottom: 0;
+}
+
 .column {
   flex: 1;
   background-color: #ebecf0;

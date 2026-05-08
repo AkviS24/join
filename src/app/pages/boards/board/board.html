@@ -30,7 +30,6 @@
         }
       </div>
       <div class="task-card-wrapper">
-
         @for (task of section.tasks; track task.id) {
         <div class="task-card" (click)="openTaskDetails(task.id)">
           <p class="type-badge" [class]="task.type === 'userStory' ? 'user-story' : 'technical-task'">

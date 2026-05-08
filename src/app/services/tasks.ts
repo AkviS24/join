@@ -67,9 +67,9 @@ export class Tasks {
 
   async updateTasksStatus(id: number, newStatus: string) {
     const {error} = await this.supabase
-    .from('tasks'),
-    .update({status: newStatus}),
-    .eq('id', id);
+    .from('tasks')
+      .update({status: newStatus})
+      .eq('id', id)
 
     if (error) {
       console.log('Error updating Task:', error);

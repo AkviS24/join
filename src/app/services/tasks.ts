@@ -65,6 +65,20 @@ export class Tasks {
     await this.getTasks();
   }
 
+  async updateTasksStatus(id: number, newStatus: string) {
+    const {error} = await this.supabase
+    .from('tasks'),
+    .update({status: newStatus}),
+    .eq('id', id);
+
+    if (error) {
+      console.log('Error updating Task:', error);
+      return;
+    }
+
+    await this.getTasks();
+  }
+
   async getupdateTasks(
     id: number,
     demoData: {

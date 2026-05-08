@@ -38,7 +38,6 @@ export class Tasks {
     }
 
     if (!tasks) return;
-
     this.demoTasks.set(tasks);
   }
 

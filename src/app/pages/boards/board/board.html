@@ -2,7 +2,7 @@
   <header class="board-header">
     <div class="header-top-row">
       <h2 class="board-title">Board</h2>
-      <button class="primary-button" (click)="openAddTask()">
+      <button class="primary-button" (click)="$event.stopPropagation(); openAddTask()">
         <span class="button-text">Add task</span>
         <app-svg-db name="add"></app-svg-db>
       </button>
@@ -23,7 +23,7 @@
       <div class="column-header">
         <h3>{{section.label}}</h3>
         @if (section.id !== 'done') {
-        <button (click)="openAddTask()">
+        <button (click)="$event.stopPropagation(); openAddTask()">
           <app-svg-db name="plus-button"></app-svg-db>
         </button>
         }

@@ -278,7 +278,7 @@ app-svg-db:hover {
 
 @media (max-width: $bp-tablet) {
   .board-header {
-    flex-direction: column-reverse;
+    flex-direction: column;
     align-items: flex-start;
 
     .header-top-row {

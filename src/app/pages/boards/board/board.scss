@@ -2,7 +2,7 @@
 @use '../../../../styles/abstracts/mixins' as *;
 
 section {
-  padding: 64px;
+  padding: 64px 64px 32px 64px;
   min-height: calc(100vh - $header-height);
 }
 
@@ -260,9 +260,9 @@ app-svg-db:hover {
   }
 
   .task-card {
-    margin: 0 8px 0 0;
-    max-width: 220px;
-    min-width: 200px;
+    margin: 0 16px 0 0;
+    max-width: 250px;
+    min-width: 225px;
     width: 200px;
     flex-shrink: 0;
   }

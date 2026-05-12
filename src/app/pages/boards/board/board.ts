@@ -6,11 +6,12 @@ import { LowerCasePipe } from '@angular/common';
 import { BoardDetails } from '../board-details/board-details';
 import { FormsModule } from '@angular/forms';
 import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
+import { AddTask } from "../../add-task/add-task";
 
 @Component({
   selector: 'app-board',
   standalone: true,
-  imports: [SvgDb, LowerCasePipe, BoardDetails, FormsModule, DragDropModule],
+  imports: [SvgDb, LowerCasePipe, BoardDetails, FormsModule, DragDropModule, AddTask],
   templateUrl: './board.html',
   styleUrl: './board.scss',
 })
@@ -19,6 +20,7 @@ export class Board implements OnInit {
   userBadgeService = inject(UserBadge);
 
   showDetails = false;
+  addTask = false;
   selectedTaskId = signal<number | null>(null);
   searchQuery = signal('');
 
@@ -31,7 +33,8 @@ export class Board implements OnInit {
     const target = event.target as HTMLElement;
 
     if (!target.closest('.task-card') && !target.closest('.dialog-overlay')) {
-      this.close();
+      this.closeDetails();
+      this.closeAddTask();
     }
   }
 
@@ -94,11 +97,21 @@ export class Board implements OnInit {
     this.showDetails = true;
   }
 
-  close() {
+  closeDetails() {
     this.selectedTaskId.set(null);
     this.showDetails = false;
   }
 
-  insertFunctionHere() {
+  getOrientation() {
+    return window.innerWidth <= 1200 ? 'horizontal' : 'vertical';
+  }
+
+  openAddTask() {
+    this.addTask = true;
+    console.log("hallo task");
+  }
+
+  closeAddTask() {
+    this.addTask = false;
   }
 }

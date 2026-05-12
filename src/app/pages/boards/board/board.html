@@ -2,7 +2,7 @@
   <header class="board-header">
     <div class="header-top-row">
       <h2 class="board-title">Board</h2>
-      <button class="primary-button">
+      <button class="primary-button" (click)="openAddTask()">
         <span class="button-text">Add task</span>
         <app-svg-db name="add"></app-svg-db>
       </button>
@@ -18,17 +18,18 @@
 
   <div class="board-layout" cdkDropListGroup>
     @for (section of boardSections(); track section.id) {
-    <div class="column" cdkDropList [cdkDropListData]="section.tasks" (cdkDropListDropped)="drop($event, section.id)">
+    <div class="column">
 
       <div class="column-header">
         <h3>{{section.label}}</h3>
         @if (section.id !== 'done') {
-        <button (click)="insertFunctionHere()">
+        <button (click)="openAddTask()">
           <app-svg-db name="plus-button"></app-svg-db>
         </button>
         }
       </div>
-      <div class="task-card-wrapper">
+      <div class="task-card-wrapper" cdkDropList [cdkDropListData]="section.tasks"
+        (cdkDropListDropped)="drop($event, section.id)" [cdkDropListOrientation]="getOrientation()">
 
         @for (task of section.tasks; track task.id) {
         <div class="task-card" cdkDrag [cdkDragData]="task" (click)="openTaskDetails(task.id)">
@@ -48,7 +49,6 @@
                 <div class="progress-fill" [style.width.%]="(getDoneSubtasksCount(task) / task.subtasks.length) * 100">
                 </div>
               </div>
-
               <span>
                 {{ getDoneSubtasksCount(task) }}/{{ task.subtasks.length }} Subtasks
               </span>
@@ -80,8 +80,15 @@
 </section>
 
 @if (showDetails) {
-<div class="dialog-overlay" (click)="close()">
-  <app-board-details (click)="$event.stopPropagation()" (close)="close()">
+<div class="dialog-overlay" (click)="closeDetails()">
+  <app-board-details (click)="$event.stopPropagation()" (close)="closeDetails()">
   </app-board-details>
+</div>
+}
+
+@if (addTask) {
+<div class="dialog-overlay" (click)="closeAddTask()">
+  <app-add-task (click)="$event.stopPropagation()" (close)="closeAddTask()">
+  </app-add-task>
 </div>
 }

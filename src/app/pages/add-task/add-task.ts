@@ -4,6 +4,7 @@ import { Supabase } from '../../services/supabase';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { UserBadge } from '../../services/userbadge';
+import { Tasks } from '../../services/tasks';
 
 @Component({
   selector: 'app-add-task',
@@ -13,6 +14,7 @@ import { UserBadge } from '../../services/userbadge';
 })
 export class AddTask implements OnInit {
   supabaseService = inject(Supabase);
+  tasksService = inject(Tasks);
   userBadgeService = inject(UserBadge);
   route = inject(ActivatedRoute);
   router = inject(Router);
@@ -29,9 +31,9 @@ export class AddTask implements OnInit {
   taskType = '';
   newSubtaskText = '';
   newSubtasks: { subtaskText: string; completed: boolean }[] = [];
-  showSuccessMessage: boolean = false;
-  errorMessage: string = '';
-  isSubmitted: boolean = false;
+  showSuccessMessage = false;
+  errorMessage = '';
+  isSubmitted = false;
 
   @Input() targetCategory: string = 'category-0';
   @Input() asOverlay: boolean = false;
@@ -46,7 +48,7 @@ export class AddTask implements OnInit {
 
     await this.supabaseService.getDemoData();
 
-    const dbContacts = this.supabaseService ? this.supabaseService.demoDaten() : [];
+    const dbContacts = this.supabaseService.demoDaten();
 
     this.contacts = dbContacts.map((c: any) => ({
       id: c.id,
@@ -62,7 +64,9 @@ export class AddTask implements OnInit {
 
   toggleContact(contact: any, event: Event) {
     event.stopPropagation();
+
     const index = this.selectedContacts.findIndex((c) => c.id === contact.id);
+
     if (index === -1) {
       this.selectedContacts.push(contact);
     } else {
@@ -113,30 +117,36 @@ export class AddTask implements OnInit {
 
   async createTask() {
     this.isSubmitted = true;
+
     if (!this.title || !this.dueDate || !this.taskType) {
       this.errorMessage = 'Please fill in all required fields (*)!';
       return;
     }
+
     this.errorMessage = '';
+
     const newTask = {
-      id: new Date().getTime(),
       title: this.title,
       description: this.description,
       category: this.targetCategory,
       type: this.taskType,
       dueDate: this.dueDate,
+      due_date: this.dueDate,
       priority: this.selectedPriority,
-      assignedTo: this.selectedContacts.map((c) => c.initials),
+      assignedTo: this.selectedContacts.map((c) => c.id),
       assignedToNames: this.selectedContacts.map((c) => c.name),
       subtasks: [...this.newSubtasks],
+      status: 'todo',
     };
 
-    await this.supabaseService.insertTask(newTask);
+    await this.tasksService.setTasks(newTask);
 
     this.showSuccessMessage = true;
+
     setTimeout(() => {
       this.showSuccessMessage = false;
       this.cancelAction();
+
       if (!this.asOverlay) {
         this.router.navigate(['/board']);
       }
@@ -149,7 +159,11 @@ export class AddTask implements OnInit {
 
   addSubtask() {
     if (this.newSubtaskText.trim()) {
-      this.newSubtasks.push({ subtaskText: this.newSubtaskText.trim(), completed: false });
+      this.newSubtasks.push({
+        subtaskText: this.newSubtaskText.trim(),
+        completed: false,
+      });
+
       this.newSubtaskText = '';
     }
   }

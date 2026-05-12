@@ -4,45 +4,69 @@ import { SvgDb } from "../../../shared/svg-db/svg-db";
 import { UserBadge } from '../../../services/userbadge';
 import { LowerCasePipe } from '@angular/common';
 import { BoardDetails } from "../board-details/board-details";
+import { FormsModule } from '@angular/forms';
+import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-board',
-  imports: [SvgDb, LowerCasePipe, BoardDetails],
+  standalone: true,
+  imports: [SvgDb, LowerCasePipe, BoardDetails, FormsModule, DragDropModule],
   templateUrl: './board.html',
   styleUrl: './board.scss',
 })
 export class Board {
   taskService = inject(Tasks);
   userBadgeService = inject(UserBadge);
+
   showDetails = false;
   selectedTaskId = signal<number | null>(null);
+  searchQuery = signal('');
+
+  private filterTasks(status: string) {
+    const query = this.searchQuery().toLowerCase().trim();
+    return this.taskService.demoTasks().filter(t=>{
+      const matchesStatus = t.status === status;
+      const matchesSearch = t.title.toLowerCase().includes(query) ||
+        t.description.toLowerCase().includes(query);
+        return matchesStatus && matchesSearch;
+    })
+  }
 
   boardSections = computed(() => [
-    { id: 'toDo', label: 'To Do', tasks: this.toDoTasks() },
+    { id: 'todo', label: 'To Do', tasks: this.toDoTasks() },
     { id: 'inProgress', label: 'In Progress', tasks: this.inProgressTasks() },
     { id: 'awaitFeedback', label: 'Await Feedback', tasks: this.awaitFeedbackTasks() },
     { id: 'done', label: 'Done', tasks: this.doneTasks() }
   ]);
 
   toDoTasks = computed(() =>
-    this.taskService.demoTasks().filter(t => t.status === 'todo')
+    this.filterTasks('todo')
   );
 
   inProgressTasks = computed(() =>
-    this.taskService.demoTasks().filter(t => t.status === 'inProgress')
+    this.filterTasks('inProgress')
   );
 
   awaitFeedbackTasks = computed(() =>
-    this.taskService.demoTasks().filter(t => t.status === 'awaitFeedback')
+    this.filterTasks('awaitFeedback')
   );
 
   doneTasks = computed(() =>
-    this.taskService.demoTasks().filter(t => t.status === 'done')
+    this.filterTasks('done')
   );
 
   selectedTask = computed(() =>
     this.taskService.demoTasks().find(t => t.id === this.selectedTaskId())
   );
+
+  async drop(event: CdkDragDrop<any[]>, newStatus: string) {
+    if ( event.previousContainer === event.container) {
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    } else {
+      const task = event.item.data;
+      await this.taskService.updateTasksStatus(task.id, newStatus);
+    }
+  }
 
   formatType(type: string): string {
     if (!type) return '';
@@ -51,7 +75,8 @@ export class Board {
   }
 
   getDoneSubtasksCount(task: any): number {
-    return task.subtasks.filter((s: any) => s.status === 'done').length;
+    if (!task.subtasks) return 0;
+    return task.subtasks.filter((s: any) => s.completed).length;
   }
 
 

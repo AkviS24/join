@@ -11,6 +11,36 @@ export class Tasks {
   supabase = createClient(this.supabaseUrl, this.supabaseKey);
   private channel?: RealtimeChannel | undefined;
 
+  constructor() {
+    this.getTasks();
+    this.setupRealtimeSubscription();
+  }
+
+  setupRealtimeSubscription() {
+    this.channel = this.supabase
+      .channel('schema-db-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'tasks',
+        },
+        (payload) => {
+          console.log('Realtime Change erhalten:', payload);
+          this.getTasks();
+        }
+      )
+      .subscribe();
+  }
+
+  ngOnDestroy() {
+    if (this.channel) {
+      this.supabase.removeChannel(this.channel);
+    }
+  }
+
+
   demoTasks = signal<
     {
       id: number;
@@ -65,9 +95,9 @@ export class Tasks {
   }
 
   async updateTasksStatus(id: number, newStatus: string) {
-    const {error} = await this.supabase
-    .from('tasks')
-      .update({status: newStatus})
+    const { error } = await this.supabase
+      .from('tasks')
+      .update({ status: newStatus })
       .eq('id', id)
 
     if (error) {

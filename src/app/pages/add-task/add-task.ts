@@ -125,21 +125,25 @@ export class AddTask implements OnInit {
 
     this.errorMessage = '';
 
-    const newTask = {
-      title: this.title,
-      description: this.description,
-      category: this.targetCategory,
-      type: this.taskType,
-      dueDate: this.dueDate,
-      due_date: this.dueDate,
-      priority: this.selectedPriority,
-      assignedTo: this.selectedContacts.map((c) => c.id),
-      assignedToNames: this.selectedContacts.map((c) => c.name),
-      subtasks: [...this.newSubtasks],
-      status: 'todo',
-    };
+ const newTask = {
+  title: this.title,
+  description: this.description,
+  category: this.targetCategory,
+  type: this.taskType,
+  dueDate: this.dueDate,
+  due_date: this.dueDate,
+  priority: this.selectedPriority,
+  assignedTo: this.selectedContacts.map((c) => c.id),
+  assignedToNames: this.selectedContacts.map((c) => c.name),
+  subtasks: this.newSubtasks.map((subtask) => ({
+    subtaskText: subtask.subtaskText,
+    completed: subtask.completed,
+  })),
+  status: 'todo',
+};
 
-    await this.tasksService.setTasks(newTask);
+
+await this.tasksService.setTasks(newTask);
 
     this.showSuccessMessage = true;
 

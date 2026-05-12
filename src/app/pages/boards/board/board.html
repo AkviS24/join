@@ -23,49 +23,66 @@
 
   <div class="board-layout" cdkDropListGroup>
     @for (section of boardSections(); track section.id) {
-    <div class="column" 
-         cdkDropList 
-         [cdkDropListData]="section.tasks" 
-         (cdkDropListDropped)="drop($event, section.id)">
-      
-      <div class="column-header">
-        <h3>{{section.label}}</h3>
-        @if (section.id !== 'done') {
-          <button (click)="insertFunctionHere()">
-            <app-svg-db name="plus-button"></app-svg-db>
-          </button>
+      <div class="column" 
+           cdkDropList 
+           [cdkDropListData]="section.tasks" 
+           (cdkDropListDropped)="drop($event, section.id)">
+        
+        <div class="column-header">
+          <h3>{{section.label}}</h3>
+          @if (section.id !== 'done') {
+            <button (click)="insertFunctionHere()">
+              <app-svg-db name="plus-button"></app-svg-db>
+            </button>
+          }
+        </div>
+
+        @for (task of section.tasks; track task.id) {
+          <div class="task-card" cdkDrag [cdkDragData]="task" (click)="openTaskDetails(task.id)">
+            
+            <div class="drag-placeholder" *cdkDragPlaceholder></div>
+
+            <p class="type-badge" [class]="task.type === 'userStory' ? 'user-story' : 'technical-task'">
+              {{formatType(task.type)}}
+            </p>
+            <p class="task-title">{{ task.title }}</p>
+            <p class="task-description">{{ task.description }}</p>
+
+            @if (task.subtasks && task.subtasks.length > 0) {
+              <div class="subtask-preview">
+                <div class="progress-row">
+                  <div class="progress-bar">
+                    <div
+                      class="progress-fill"
+                      [style.width.%]="(getDoneSubtasksCount(task) / task.subtasks.length) * 100">
+                    </div>
+                  </div>
+
+                  <span>
+                    {{ getDoneSubtasksCount(task) }}/{{ task.subtasks.length }} Subtasks
+                  </span>
+                </div>
+              </div>
+            }
+            
+            <div class="task-assignment">
+              <div class="avatar-stack">
+                @for (user of task.assignedToNames; track $index) {
+                  <div class="badge" [style.background-color]="userBadgeService.getColor(task.assignedTo[$index])">
+                    {{ userBadgeService.getInitials(user) }}
+                  </div>
+                }
+              </div>
+              <!-- Prio-Icon außerhalb der Avatar-Schleife -->
+              <app-svg-db name="cappa-{{task.priority}}"></app-svg-db>
+            </div>
+          </div>
+        } @empty { 
+          <p class="empty-msg">
+            {{ searchQuery() ? 'No matches found' : 'No Tasks ' + (section.label | lowercase) }}
+          </p> 
         }
       </div>
-
-      @for (task of section.tasks; track task.id) {
-        <div class="task-card" cdkDrag [cdkDragData]="task" (click)="openTaskDetails(task.id)">
-          
-          <div class="drag-placeholder" *cdkDragPlaceholder></div>
-
-          <p class="type-badge" [class]="task.type === 'userStory' ? 'user-story' : 'technical-task'">
-            {{formatType(task.type)}}
-          </p>
-          <p class="task-title">{{ task.title }}</p>
-          <p class="task-description">{{ task.description }}</p>
-          
-          <div class="task-assignment">
-            <div class="avatar-stack">
-              @for (user of task.assignedToNames; track $index) {
-                <div class="badge" [style.background-color]="userBadgeService.getColor(task.assignedTo[$index])">
-                  {{ userBadgeService.getInitials(user) }}
-                </div>
-              }
-            </div>
-            <!-- Prio-Icon außerhalb der Avatar-Schleife -->
-            <app-svg-db name="cappa-{{task.priority}}"></app-svg-db>
-          </div>
-        </div>
-      } @empty { 
-        <p class="empty-msg">
-          {{ searchQuery() ? 'No matches found' : 'No Tasks ' + (section.label | lowercase) }}
-        </p> 
-      }
-    </div>
     }
   </div>
 </section>

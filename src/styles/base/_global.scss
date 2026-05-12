@@ -1,3 +1,5 @@
+@use '../../styles/abstracts/variables' as *;
+
 @font-face {
   font-family: 'Inter';
   src: url('../../../public/fonts/inter/Inter_18pt-Regular.ttf') format('truetype');
@@ -34,4 +36,23 @@ button {
   background: transparent;
   border: none;
   cursor: pointer;
+}
+
+input {
+  border: none;
+  outline: none;
+  flex-grow: 1;
+
+  &::placeholder {
+    color: $color-gray;
+  }
+}
+
+h2 {
+  font-size: 61px;
+  font-weight: 700;
+
+  @media (max-width: $bp-tablet) {
+    font-size: 47px;
+  }
 }

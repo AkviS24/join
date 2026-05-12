@@ -278,8 +278,13 @@ app-svg-db:hover {
 @media (max-width: 1200px) {
   section {
     padding: 32px;
-    margin-bottom: $footer-height;
     min-height: calc(100vh - $header-height - $footer-height);
+  }
+}
+
+@media (max-width: 960px) {
+  section {
+    margin-bottom: $footer-height;
   }
 }
 

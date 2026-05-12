@@ -15,6 +15,7 @@ import { AddTask } from "../../add-task/add-task";
   templateUrl: './board.html',
   styleUrl: './board.scss',
 })
+
 export class Board implements OnInit {
   taskService = inject(Tasks);
   userBadgeService = inject(UserBadge);

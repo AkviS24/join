@@ -2,7 +2,7 @@
   <div class="detail-card">
     <div class="detail-header">
       <p class="type-badge" [class]="task.type">{{ boardTS.formatType(task.type) }}</p>
-      <button (click)="boardTS.close()"><app-svg-db name="cancel"></app-svg-db></button>
+      <button (click)="boardTS.closeDetails()"><app-svg-db name="cancel"></app-svg-db></button>
     </div>
 
     <h1>{{ task.title }}</h1>

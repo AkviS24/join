@@ -5,37 +5,52 @@
     </div>
     <div class="header-actions">
       <div class="search-wrapper">
-        <input type="text" placeholder="Find Task">
+        <input type="text" 
+               placeholder="Find Task" 
+               [ngModel]="searchQuery()" 
+               (ngModelChange)="searchQuery.set($event)">
         <div class="divider"></div>
         <button class="search-btn">
           <app-svg-db name="search"></app-svg-db>
         </button>
       </div>
-      <button class="primary-button">
+      <button class="primary-button" (click)="insertFunctionHere()">
         <span>Add task</span>
         <app-svg-db name="add"></app-svg-db>
       </button>
     </div>
   </header>
-
-  <div class="board-layout">
-    @for (section of boardSections(); track $index) {
-    <div class="column">
+  <div class="board-layout" cdkDropListGroup>
+    @for (section of boardSections(); track section.id) {
+    <div class="column" 
+         cdkDropList 
+         [cdkDropListData]="section.tasks" 
+         (cdkDropListDropped)="drop($event, section.id)">
+      
       <div class="column-header">
         <h3>{{section.label}}</h3>
         <button>
           <app-svg-db (click)="insertFunctionHere()" name="plus-button"></app-svg-db>
         </button>
       </div>
+
       @for (task of section.tasks; track task.id) {
-      <div class="task-card" (click)="openTaskDetails(task.id)">
+      <div class="task-card" 
+           cdkDrag 
+           [cdkDragData]="task" 
+           (click)="openTaskDetails(task.id)">
+        
+        <div class="drag-placeholder" *cdkDragPlaceholder></div>
+
         <p class="type-badge" [class]="task.type === 'userStory' ? 'user-story' : 'technical-task'">
-          {{formatType(task.type)}}</p>
+          {{formatType(task.type)}}
+        </p>
         <p class="task-title">{{ task.title }}</p>
         <p class="task-description">{{ task.description }}</p>
+        
         <div class="task-assignment">
           <div class="avatar-stack">
-            @for (user of task.assignedToNames; track user) {
+            @for (user of task.assignedToNames; track $index) {
             <div class="badge" [style.background-color]="userBadgeService.getColor(task.assignedTo[$index])">
               {{ this.userBadgeService.getInitials(user) }}
             </div>
@@ -44,15 +59,19 @@
           <app-svg-db name="cappa-{{task.priority}}"></app-svg-db>
         </div>
       </div>
-      } @empty { <p class="empty-msg">No Tasks {{ section.label | lowercase }}</p> }
+      } @empty { 
+        <p class="empty-msg">
+          {{ searchQuery() ? 'No matches found' : 'No Tasks ' + (section.label | lowercase) }}
+        </p> 
+      }
     </div>
     }
   </div>
 </section>
 
 @if (showDetails) {
-<div class="dialog-overlay" (click)="showDetails = false">
-  <app-board-details (click)="$event.stopPropagation()" (close)="showDetails = false">
+<div class="dialog-overlay" (click)="close()">
+  <app-board-details (click)="$event.stopPropagation()" (close)="close()">
   </app-board-details>
 </div>
 }

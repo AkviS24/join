@@ -6,6 +6,7 @@ import { LowerCasePipe } from '@angular/common';
 import { BoardDetails } from "../board-details/board-details";
 import { FormsModule } from '@angular/forms';
 import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
+import { HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-board',
@@ -22,13 +23,21 @@ export class Board {
   selectedTaskId = signal<number | null>(null);
   searchQuery = signal('');
 
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+    if (!target.closest('.task-card') && !target.closest('.dialog-overlay')) {
+      this.close();
+    }
+  }
+
   private filterTasks(status: string) {
     const query = this.searchQuery().toLowerCase().trim();
-    return this.taskService.demoTasks().filter(t=>{
+    return this.taskService.demoTasks().filter(t => {
       const matchesStatus = t.status === status;
       const matchesSearch = t.title.toLowerCase().includes(query) ||
         t.description.toLowerCase().includes(query);
-        return matchesStatus && matchesSearch;
+      return matchesStatus && matchesSearch;
     })
   }
 
@@ -60,7 +69,7 @@ export class Board {
   );
 
   async drop(event: CdkDragDrop<any[]>, newStatus: string) {
-    if ( event.previousContainer === event.container) {
+    if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
       const task = event.item.data;

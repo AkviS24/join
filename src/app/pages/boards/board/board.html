@@ -29,9 +29,11 @@
       
       <div class="column-header">
         <h3>{{section.label}}</h3>
+        @if (!(section.id === "done")) {
         <button>
           <app-svg-db (click)="insertFunctionHere()" name="plus-button"></app-svg-db>
         </button>
+        }
       </div>
 
       @for (task of section.tasks; track task.id) {
@@ -54,10 +56,10 @@
             <div class="badge" [style.background-color]="userBadgeService.getColor(task.assignedTo[$index])">
               {{ this.userBadgeService.getInitials(user) }}
             </div>
-            }
+            <app-svg-db name="cappa-{{task.priority}}"></app-svg-db>
           </div>
-          <app-svg-db name="cappa-{{task.priority}}"></app-svg-db>
         </div>
+        } @empty { <p class="empty-msg">No Tasks {{ section.label | lowercase }}</p> }
       </div>
       } @empty { 
         <p class="empty-msg">

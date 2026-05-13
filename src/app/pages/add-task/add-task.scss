@@ -1,7 +1,11 @@
+@use '../../../styles/abstracts/variables' as *;
+@use '../../../styles/abstracts/mixins' as *;
+
 .add-task-page {
   min-height: 100vh;
   padding: 40px 64px;
   width: 100%;
+  max-width: 1000px;
   box-sizing: border-box;
 }
 
@@ -19,14 +23,14 @@
   font-size: 64px;
   font-weight: 700;
   margin: 0;
-  color: #000000;
+  color: $color-black;
 }
 
 .page-body {
   display: flex;
   justify-content: space-between;
   gap: 43px;
-  margin-bottom: 176px;
+  margin-bottom: 64px;
 }
 
 .column {
@@ -46,7 +50,7 @@
 
 .divider {
   width: 1px;
-  background-color: #d1d1d1;
+  background-color: $color-gray;
   flex-shrink: 0;
 }
 
@@ -58,20 +62,21 @@
 
 .form-group label {
   font-size: 16px;
-  color: #2a3647;
+  color: $color-dark;
 }
 
-.form-group label .required {
+.form-group label .required,
+.required-note .required {
   color: #ff8190;
 }
 
 .form-control {
-  background-color: #ffffff;
-  border: 1px solid #d1d1d1;
+  background-color: $color-white;
+  border: 1px solid $color-gray;
   border-radius: 10px;
   padding: 12px 16px;
   font-size: 16px;
-  color: #000000;
+  color: $color-black;
   width: 100%;
   box-sizing: border-box;
   outline: none;
@@ -80,17 +85,17 @@
 
   &:focus,
   &.has-value {
-    border-color: #29abe2;
+    border-color: $color-primary;
   }
 
   &.error,
   &.error:focus {
     border-color: #ff8190;
   }
-}
 
-.form-control::placeholder {
-  color: #d1d1d1;
+  &::placeholder {
+    color: $color-gray;
+  }
 }
 
 .textarea-wrapper {
@@ -114,29 +119,29 @@ textarea.form-control {
   position: relative;
   display: flex;
   align-items: center;
-}
 
-.input-with-icon input {
-  padding-right: 40px;
-  position: relative;
+  input {
+    padding-right: 40px;
+    position: relative;
 
-  &::-webkit-calendar-picker-indicator {
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: 40px;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    opacity: 0;
-    cursor: pointer;
+    &::-webkit-calendar-picker-indicator {
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 40px;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
   }
-}
 
-.input-with-icon img {
-  position: absolute;
-  right: 16px;
-  pointer-events: none;
+  img {
+    position: absolute;
+    right: 16px;
+    pointer-events: none;
+  }
 }
 
 .custom-select-wrapper {
@@ -150,14 +155,14 @@ textarea.form-control {
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
-}
 
-.select-display img {
-  transition: transform 0.2s ease;
-}
+  img {
+    transition: transform 0.2s ease;
 
-.select-display img.rotated {
-  transform: rotate(180deg);
+    &.rotated {
+      transform: rotate(180deg);
+    }
+  }
 }
 
 .dropdown-list {
@@ -165,17 +170,39 @@ textarea.form-control {
   top: calc(100% + 4px);
   left: 0;
   width: 100%;
-  background-color: #ffffff;
-  border: 1px solid #d1d1d1;
+  background-color: $color-white;
+  border: 1px solid $color-gray;
   border-radius: 10px;
-  max-height: 200px;
+  max-height: 240px;
   overflow-y: auto;
   z-index: 10;
-  box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 4px rgba($color-black, 0.1);
   display: flex;
   flex-direction: column;
   gap: 2px;
   padding: 2px;
+}
+
+.contact-search-wrapper {
+  padding: 8px 16px;
+  background-color: $color-white;
+  border-bottom: 1px solid $color-dark-gray;
+  cursor: default;
+}
+
+.contact-search-input {
+  width: 100%;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  color: $color-black;
+  font-size: 16px;
+  font-family: inherit;
+  padding: 8px 0;
+
+  &::placeholder {
+    color: $color-gray;
+  }
 }
 
 .dropdown-item {
@@ -186,28 +213,29 @@ textarea.form-control {
   cursor: pointer;
   border-radius: 10px;
   transition: background-color 0.2s ease;
-}
 
-.dropdown-item:hover {
-  background-color: #f6f6f6;
-}
-
-.dropdown-item.selected {
-  background-color: #2a3647;
-  color: #ffffff;
-
-  .contact-info span {
-    color: #ffffff;
+  &:hover {
+    background-color: $color-bg;
   }
 
-  .custom-checkbox-icon {
-    filter: brightness(0) invert(1);
-  }
+  &.selected {
+    background-color: $color-dark;
+    color: $color-white;
 
-  .checkbox-btn:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-    img {
+    .contact-info span {
+      color: $color-white;
+    }
+
+    .custom-checkbox-icon {
       filter: brightness(0) invert(1);
+    }
+
+    .checkbox-btn:hover {
+      background-color: rgba($color-white, 0.1);
+
+      img {
+        filter: brightness(0) invert(1);
+      }
     }
   }
 }
@@ -216,11 +244,11 @@ textarea.form-control {
   display: flex;
   align-items: center;
   gap: 16px;
-}
 
-.contact-info span {
-  font-size: 16px;
-  color: #000000;
+  span {
+    font-size: 16px;
+    color: $color-black;
+  }
 }
 
 .avatar {
@@ -230,10 +258,11 @@ textarea.form-control {
   display: flex;
   justify-content: center;
   align-items: center;
-  color: #ffffff;
+  color: $color-white;
   font-size: 14px;
   font-weight: 400;
-  border: 2px solid #ffffff;
+  border: 2px solid $color-white;
+  flex-shrink: 0;
 }
 
 .custom-checkbox-icon {
@@ -241,7 +270,8 @@ textarea.form-control {
   height: 24px;
 }
 
-.checkbox-btn {
+.checkbox-btn,
+.arrow-btn {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -249,9 +279,11 @@ textarea.form-control {
   height: 32px;
   border-radius: 50%;
   transition: background-color 0.1s ease;
+}
 
+.checkbox-btn {
   &:hover {
-    background-color: #eeeeee;
+    background-color: $color-dark-gray;
 
     img {
       filter: brightness(0) invert(54%) sepia(85%) saturate(1312%) hue-rotate(167deg)
@@ -265,25 +297,33 @@ textarea.form-control {
 }
 
 .arrow-btn {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  transition: background-color 0.1s ease;
-
   &:hover {
-    background-color: #eeeeee;
+    background-color: $color-dark-gray;
+  }
+}
+.selected-avatars {
+  display: flex;
+  align-items: center;
+  margin-top: 8px;
+  min-height: 42px;
+}
+
+.stacked-avatar {
+  margin-left: -10px;
+  border: 2px solid $color-white;
+
+  &:first-child {
+    margin-left: 0;
   }
 }
 
-.selected-avatars {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 8px;
-  min-height: 42px;
+.more-avatar {
+  margin-left: -10px;
+  background-color: $color-dark;
+  color: $color-white;
+  font-size: 13px;
+  font-weight: 700;
+  border: 2px solid $color-white;
 }
 
 .priority-buttons {
@@ -296,35 +336,39 @@ textarea.form-control {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 16px 10px;
+  padding: 14px 10px;
   border-radius: 10px;
   border: none;
-  background-color: #ffffff;
-  box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.1);
+  background-color: $color-white;
+  box-shadow: 0 0 4px rgba($color-black, 0.1);
   cursor: pointer;
   flex: 1;
   font-size: 16px;
-  color: #000000;
+  color: $color-black;
   font-family: inherit;
+  transition: all 0.1s ease;
+}
+.btn-priority:not(.active):hover {
+  box-shadow: 0 4px 8px rgba($color-black, 0.15);
 }
 
 .btn-priority.active.urgent {
-  background-color: #d32f00;
-  color: #ffffff;
+  background-color: $color-urgent;
+  color: $color-white;
   box-shadow: none;
   font-weight: 700;
 }
 
 .btn-priority.active.medium {
-  background-color: #a15c00;
-  color: #ffffff;
+  background-color: $color-medium;
+  color: $color-white;
   box-shadow: none;
   font-weight: 700;
 }
 
 .btn-priority.active.low {
-  background-color: #367a00;
-  color: #ffffff;
+  background-color: $color-low;
+  color: $color-white;
   box-shadow: none;
   font-weight: 700;
 }
@@ -341,11 +385,7 @@ textarea.form-control {
 
 .required-note {
   font-size: 16px;
-  color: #000000;
-}
-
-.required-note .required {
-  color: #ff8190;
+  color: $color-black;
 }
 
 .error-message {
@@ -363,22 +403,23 @@ textarea.form-control {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  padding: 16px;
+  gap: 12px;
+  padding-inline: 10px;
+  padding-block: 8px;
   border-radius: 10px;
-  border: 1px solid #2a3647;
+  border: 1px solid $color-dark;
   background-color: transparent;
-  color: #2a3647;
+  color: $color-dark;
   cursor: pointer;
   font-size: 16px;
   font-family: inherit;
   transition: all 0.1s ease-in-out;
 
   &:hover {
-    border-color: #29abe2;
-    color: #29abe2;
-    background-color: #ffffff;
-    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+    border-color: $color-primary;
+    color: $color-primary;
+    background-color: $color-white;
+    box-shadow: 0 4px 4px rgba($color-black, 0.1);
 
     img {
       filter: invert(54%) sepia(85%) saturate(1312%) hue-rotate(167deg) brightness(95%)
@@ -391,64 +432,20 @@ textarea.form-control {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  padding: 16px;
+  gap: 8px;
+  padding-inline: 10px;
   border-radius: 10px;
   border: none;
-  background-color: #2a3647;
-  color: #ffffff;
+  background-color: $color-dark;
+  color: $color-white;
   cursor: pointer;
   font-size: 16px;
   font-family: inherit;
   transition: all 0.1s ease-in-out;
 
   &:hover {
-    background-color: #29abe2;
-    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
-  }
-}
-
-
-@media (max-width: 1024px) {
-  .page-body {
-    flex-direction: column;
-    gap: 40px;
-    margin-bottom: 80px;
-  }
-  .divider {
-    width: 100%;
-    height: 1px;
-  }
-  .column {
-    max-width: 100%;
-  }
-  .add-task-page {
-    padding: 20px 20px 110px 20px;
-  }
-}
-
-@media (max-width: 600px) {
-  .page-header h2 {
-    font-size: 40px;
-  }
-
-  .page-body {
-    margin-bottom: 40px;
-  }
-
-  .page-footer {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 30px;
-  }
-  .actions {
-    width: 100%;
-    flex-direction: column;
-    gap: 16px;
-  }
-  .btn-cancel,
-  .btn-create {
-    width: 100%;
+    background-color: $color-primary;
+    box-shadow: 0 4px 4px rgba($color-black, 0.1);
   }
 }
 
@@ -474,14 +471,14 @@ textarea.form-control {
   gap: 8px;
 
   .check-icon {
-    filter: brightness(0) invert(18%) sepia(11%) saturate(1485%) hue-rotate(174deg) brightness(97%)
-      contrast(88%);
+    filter: brightness(0) invert(18%) sepia(11%) saturate(1485%) hue-rotate(174deg)
+      brightness(97%) contrast(88%);
   }
 
   .action-divider {
     width: 1px;
     height: 24px;
-    background-color: #d1d1d1;
+    background-color: $color-gray;
   }
 }
 
@@ -499,7 +496,7 @@ textarea.form-control {
   font-size: 14px;
   padding: 4px 8px;
   border-radius: 8px;
-  background-color: #f9f9f9;
+  background-color: $color-bg;
 }
 
 .subtask-list-actions {
@@ -511,7 +508,7 @@ textarea.form-control {
 .icon-divider-small {
   width: 1px;
   height: 16px;
-  background-color: #d1d1d1;
+  background-color: $color-gray;
 }
 
 .subtask-btn {
@@ -525,7 +522,7 @@ textarea.form-control {
   transition: background-color 0.1s ease;
 
   &:hover {
-    background-color: #eeeeee;
+    background-color: $color-dark-gray;
 
     img {
       filter: brightness(0) invert(54%) sepia(85%) saturate(1312%) hue-rotate(167deg)
@@ -534,21 +531,78 @@ textarea.form-control {
   }
 
   img {
-    width: 16px;
-    height: 16px;
+    width: 12px;
+    height: 12px;
     transition: filter 0.1s ease;
   }
 }
+
+.success-message {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba($color-black, 0.15);
+  z-index: 100;
+}
+
+@media (max-width: 1024px) {
+  .page-body {
+    flex-direction: column;
+    gap: 40px;
+    margin-bottom: 80px;
+  }
+
+  .divider {
+    width: 100%;
+    height: 1px;
+  }
+
+  .column {
+    max-width: 100%;
+  }
+
+  .add-task-page {
+    padding: 20px 20px 110px;
+  }
+}
+
+@media (max-width: 600px) {
+  .page-header h2 {
+    font-size: 40px;
+  }
+
+  .page-body {
+    margin-bottom: 40px;
+  }
+
+  .page-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 30px;
+  }
+
+  .actions {
+    width: 100%;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .btn-cancel,
+  .btn-create {
+    width: 100%;
+  }
+}
+
 @media (max-width: 375px) {
   .priority-buttons {
     gap: 6px;
   }
 
   .btn-priority {
-    display: flex;
     font-size: 12px;
     padding: 12px 4px;
     gap: 4px;
   }
 }
-

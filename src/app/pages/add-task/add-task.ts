@@ -23,7 +23,8 @@ export class AddTask implements OnInit {
   dropdownOpen = false;
   categoryDropdownOpen = false;
   selectedContacts: any[] = [];
-  selectedPriority: string = 'medium';
+  selectedPriority = 'medium';
+  contactSearch = '';
 
   title = '';
   description = '';
@@ -35,8 +36,8 @@ export class AddTask implements OnInit {
   errorMessage = '';
   isSubmitted = false;
 
-  @Input() targetCategory: string = 'category-0';
-  @Input() asOverlay: boolean = false;
+  @Input() targetCategory = 'category-0';
+  @Input() asOverlay = false;
   @Output() closeOverlay = new EventEmitter<void>();
 
   async ngOnInit() {
@@ -53,9 +54,21 @@ export class AddTask implements OnInit {
     this.contacts = dbContacts.map((c: any) => ({
       id: c.id,
       name: c.name,
-      color: this.userBadgeService.getColor(c),
+      color: this.userBadgeService.getColor(c.id),
       initials: c.initials || this.userBadgeService.getInitials(c.name),
     }));
+  }
+
+  get filteredContacts() {
+    const query = this.contactSearch.toLowerCase().trim();
+
+    if (!query) {
+      return this.contacts;
+    }
+
+    return this.contacts.filter((contact) =>
+      contact.name.toLowerCase().includes(query)
+    );
   }
 
   toggleDropdown() {
@@ -101,6 +114,7 @@ export class AddTask implements OnInit {
     this.selectedPriority = 'medium';
     this.dropdownOpen = false;
     this.categoryDropdownOpen = false;
+    this.contactSearch = '';
     this.newSubtaskText = '';
     this.newSubtasks = [];
     this.errorMessage = '';
@@ -125,25 +139,24 @@ export class AddTask implements OnInit {
 
     this.errorMessage = '';
 
- const newTask = {
-  title: this.title,
-  description: this.description,
-  category: this.targetCategory,
-  type: this.taskType,
-  dueDate: this.dueDate,
-  due_date: this.dueDate,
-  priority: this.selectedPriority,
-  assignedTo: this.selectedContacts.map((c) => c.id),
-  assignedToNames: this.selectedContacts.map((c) => c.name),
-  subtasks: this.newSubtasks.map((subtask) => ({
-    subtaskText: subtask.subtaskText,
-    completed: subtask.completed,
-  })),
-  status: 'todo',
-};
+    const newTask = {
+      title: this.title,
+      description: this.description,
+      category: this.targetCategory,
+      type: this.taskType,
+      dueDate: this.dueDate,
+      due_date: this.dueDate,
+      priority: this.selectedPriority,
+      assignedTo: this.selectedContacts.map((c) => c.id),
+      assignedToNames: this.selectedContacts.map((c) => c.name),
+      subtasks: this.newSubtasks.map((subtask) => ({
+        subtaskText: subtask.subtaskText,
+        completed: subtask.completed,
+      })),
+      status: 'todo',
+    };
 
-
-await this.tasksService.setTasks(newTask);
+    await this.tasksService.setTasks(newTask);
 
     this.showSuccessMessage = true;
 

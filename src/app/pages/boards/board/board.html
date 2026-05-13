@@ -58,12 +58,26 @@
 
           <div class="task-assignment">
             <div class="avatar-stack">
-              @for (user of task.assignedToNames; track $index) {
+              @for (user of task.assignedToNames.slice(0, 3); track $index) {
               <div class="badge" [style.background-color]="userBadgeService.getColor(task.assignedTo[$index])">
                 {{ userBadgeService.getInitials(user) }}
               </div>
               }
+              @if (task.assignedToNames.length > 3) {
+              <div class="badge more-badge">
+                +{{ task.assignedToNames.length - 3 }}
+              </div>
+              }
             </div>
+
+            <!-- @for (contact of selectedContacts.slice(0, 4); track contact.id) {
+            <div class="avatar stacked-avatar" [style.backgroundColor]="contact.color">
+              {{ contact.initials }}
+            </div>
+            } -->
+
+
+
             <!-- Prio-Icon außerhalb der Avatar-Schleife -->
             <app-svg-db name="cappa-{{task.priority}}"></app-svg-db>
           </div>

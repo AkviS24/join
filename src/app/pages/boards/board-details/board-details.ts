@@ -21,4 +21,8 @@ export class BoardDetails {
     const date = new Date(dateStr);
     return date.toLocaleDateString('en-EN');
   }
+
+  deleteTasks(id: number) {
+    this.taskService.deleteData(id);
+  }
 }

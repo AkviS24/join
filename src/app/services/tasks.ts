@@ -94,6 +94,10 @@ export class Tasks {
     await this.getTasks();
   }
 
+  async deleteData(id: number) {
+    await this.supabase.from('tasks').delete().eq('id', id).select();
+  }
+
   async updateTasksStatus(id: number, newStatus: string) {
     const { error } = await this.supabase
       .from('tasks')

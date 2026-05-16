@@ -45,7 +45,7 @@
     </div>
 
     <div class="detail-footer">
-      <button class="action-btn delete">
+      <button (click)="deleteTasks(task.id)" class="action-btn delete">
         <app-svg-db name="delete"></app-svg-db> Delete
       </button>
       <div class="divider"></div>

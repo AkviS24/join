@@ -62,6 +62,31 @@ section {
   user-select: none;
   cursor: grab;
   transition: all 0.2s ease-in-out;
+  margin: 0 0 16px 0;
+  padding: 16px;
+  justify-content: flex-start;
+  background-color: $color-white;
+  border-radius: 10px;
+  box-shadow: 0 0 12px 1px rgba(0, 0, 0, 0.1);
+
+  .type-badge {
+    padding: 6px;
+    margin-bottom: 8px;
+    width: auto;
+    display: inline-block;
+    border-radius: 5px;
+    color: $color-white;
+  }
+
+  .task-title {
+    font-weight: 700;
+  }
+
+  .task-description,
+  .task-title {
+    @include line-clamp(2);
+    margin: 4px 0;
+  }
 }
 
 .task-card:active {
@@ -129,34 +154,34 @@ app-svg-db:hover {
   color: $color-primary;
 }
 
-.task-card {
-  margin: 0 0 16px 0;
-  padding: 16px;
-  justify-content: flex-start;
-  background-color: $color-white;
-  border-radius: 10px;
-  box-shadow: 0 0 12px 1px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
+// .task-card {
+//   margin: 0 0 16px 0;
+//   padding: 16px;
+//   justify-content: flex-start;
+//   background-color: $color-white;
+//   border-radius: 10px;
+//   box-shadow: 0 0 12px 1px rgba(0, 0, 0, 0.1);
+//   cursor: pointer;
 
-  .type-badge {
-    padding: 6px;
-    margin-bottom: 8px;
-    width: auto;
-    display: inline-block;
-    border-radius: 5px;
-    color: $color-white;
-  }
+//   .type-badge {
+//     padding: 6px;
+//     margin-bottom: 8px;
+//     width: auto;
+//     display: inline-block;
+//     border-radius: 5px;
+//     color: $color-white;
+//   }
 
-  .task-title {
-    font-weight: 700;
-  }
+//   .task-title {
+//     font-weight: 700;
+//   }
 
-  .task-description,
-  .task-title {
-    @include line-clamp(2);
-    margin: 4px 0;
-  }
-}
+//   .task-description,
+//   .task-title {
+//     @include line-clamp(2);
+//     margin: 4px 0;
+//   }
+// }
 
 .user-story {
   background-color: $color-blue;
@@ -279,13 +304,11 @@ app-svg-db:hover {
     flex-shrink: 0;
   }
 
-}
-
-@media (max-width: 1200px) {
   section {
     padding: 32px;
     min-height: calc(100vh - $header-height - $footer-height);
   }
+
 }
 
 @media (max-width: 960px) {

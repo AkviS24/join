@@ -61,10 +61,11 @@ section {
 .task-card {
   user-select: none;
   cursor: grab;
+  transition: all 0.2s ease-in-out;
 }
 
 .task-card:active {
-  cursor: grabbing;
+  transform: rotate(5deg);
 }
 
 .search-wrapper {
@@ -277,6 +278,7 @@ app-svg-db:hover {
     width: 200px;
     flex-shrink: 0;
   }
+
 }
 
 @media (max-width: 1200px) {

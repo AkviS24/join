@@ -24,5 +24,6 @@ export class BoardDetails {
 
   deleteTasks(id: number) {
     this.taskService.deleteData(id);
+    this.boardTS.closeDetails();
   }
 }

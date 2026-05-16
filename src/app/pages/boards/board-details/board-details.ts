@@ -26,4 +26,21 @@ export class BoardDetails {
     this.taskService.deleteData(id);
     this.boardTS.closeDetails();
   }
+
+  updateTasks(id: number, demoData: {
+    title: string,
+    description: string,
+    category: string,
+    type: string,
+    dueDate: string,
+    due_date: string,
+    priority: string;
+    assignedTo: string[];
+    assignedToNames: string[];
+    subtasks: { subtaskText: string; completed: boolean }[];
+    status: string;
+  }) {
+    this.taskService.getupdateTasks(id, demoData);
+    this.boardTS.closeDetails();
+  }
 }

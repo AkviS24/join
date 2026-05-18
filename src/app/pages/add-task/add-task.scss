@@ -2,8 +2,8 @@
 @use '../../../styles/abstracts/mixins' as *;
 
 .add-task-page {
-  min-height: 100vh;
-  padding: 40px 64px;
+  min-height: 90vh;
+  padding: 40px 64px 140px;
   width: 100%;
   max-width: 1000px;
   box-sizing: border-box;
@@ -38,10 +38,15 @@
 
 .page-header {
   margin-bottom: 32px;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background-color: $color-white;
+  padding-bottom: 8px;
 }
 
 .page-header h2 {
-  font-size: 64px;
+  font-size: 61px;
   font-weight: 700;
   margin: 0;
   color: $color-black;
@@ -399,9 +404,16 @@ textarea.form-control {
 }
 
 .page-footer {
+  position: sticky;
+  bottom: 0;
+  z-index: 20;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 12px;
+  padding: 16px 0 0;
+  background-color: $color-white;
 }
 
 .required-note {
@@ -599,12 +611,13 @@ textarea.form-control {
   }
 
   .page-footer {
-    align-items: flex-start;
-    gap: 30px;
+    align-items: stretch;
+    gap: 12px;
   }
 
   .actions {
     width: 100%;
+    flex-direction: column;
     gap: 16px;
   }
 

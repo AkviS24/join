@@ -23,7 +23,7 @@
       <div class="column-header">
         <h3>{{section.label}}</h3>
         @if (section.id !== 'done') {
-        <button (click)="$event.stopPropagation(); openAddTask()">
+        <button (click)="$event.stopPropagation(); openAddTask(section.id)">
           <app-svg-db name="plus-button"></app-svg-db>
         </button>
         }
@@ -102,12 +102,8 @@
 
 @if (addTask) {
 <div class="dialog-overlay" (click)="closeAddTask()">
-  <app-add-task
-    [asOverlay]="true"
-    [editTask]="editingTask()"
-    (click)="$event.stopPropagation()"
-    (close)="closeAddTask()"
-  >
+  <app-add-task [initialStatus]="currentAddTaskStatus" [asOverlay]="true" [editTask]="editingTask()"
+    (click)="$event.stopPropagation()" (close)="closeAddTask()">
   </app-add-task>
 </div>
 }

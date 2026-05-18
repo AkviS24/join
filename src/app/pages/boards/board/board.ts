@@ -25,6 +25,7 @@ export class Board implements OnInit {
   selectedTaskId = signal<number | null>(null);
   editingTask = signal<any | null>(null);
   searchQuery = signal('');
+  currentAddTaskStatus = 'todo';
 
   async ngOnInit() {
     await this.taskService.getTasks();
@@ -118,13 +119,15 @@ export class Board implements OnInit {
     return window.innerWidth <= 1200 ? 'horizontal' : 'vertical';
   }
 
-  openAddTask() {
+  openAddTask(status: string = 'todo') {
     this.editingTask.set(null);
     this.addTask = true;
+    this.currentAddTaskStatus = status;
   }
 
   closeAddTask() {
     this.editingTask.set(null);
     this.addTask = false;
+    this.currentAddTaskStatus = "todo";
   }
 }

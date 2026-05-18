@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, SimpleChanges, inject, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnChanges, SimpleChanges, inject, Input, Output, EventEmitter, booleanAttribute } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Supabase } from '../../services/supabase';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -35,6 +35,10 @@ type EditableTask = {
   styleUrl: './add-task.scss',
 })
 export class AddTask implements OnInit, OnChanges {
+  // constructor() {
+  //   export let addAwaitFeedback: boolean;
+  //   export let addInProgress: boolean;
+  // }
   supabaseService = inject(Supabase);
   tasksService = inject(Tasks);
   userBadgeService = inject(UserBadge);
@@ -58,9 +62,18 @@ export class AddTask implements OnInit, OnChanges {
   errorMessage = '';
   isSubmitted = false;
 
+  addAwaitFeedback = false;
+  addInProgress = false;
+
+
+
+
   @Input() targetCategory = 'category-0';
   @Input() asOverlay = false;
   @Input() editTask: EditableTask | null = null;
+
+  @Input() initialStatus = 'todo';
+
   @Output('close') closeOverlay = new EventEmitter<void>();
 
   get isEditMode() {
@@ -248,7 +261,9 @@ export class AddTask implements OnInit, OnChanges {
 
     this.errorMessage = '';
 
-    await this.tasksService.setTasks(this.getTaskPayload('todo'));
+    const taskStatus = this.initialStatus ? this.initialStatus : 'todo';
+
+    await this.tasksService.setTasks(this.getTaskPayload(taskStatus));
 
     this.showSuccessMessage = true;
 

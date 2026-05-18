@@ -1,7 +1,7 @@
-<section class="add-task-page">
+<section class="add-task-page" (click)="closeDropdowns()">
   <div class="page-container">
     <header class="page-header">
-      <h2>Add Task</h2>
+      <h2>{{ isEditMode ? 'Edit Task' : 'Add Task' }}</h2>
     </header>
 
     <div class="page-body">
@@ -90,7 +90,7 @@
         <div class="form-group">
           <label>Assigned to</label>
 
-          <div class="custom-select-wrapper" (click)="toggleDropdown()">
+          <div class="custom-select-wrapper" (click)="toggleDropdown($event)">
             <div
               class="form-control select-display"
               [class.has-value]="selectedContacts.length > 0"
@@ -169,7 +169,7 @@
         <div class="form-group">
           <label>Category<span class="required">*</span></label>
 
-          <div class="custom-select-wrapper" (click)="toggleCategoryDropdown()">
+          <div class="custom-select-wrapper" (click)="toggleCategoryDropdown($event)">
             <div
               class="form-control select-display"
               [class.has-value]="taskType"
@@ -274,12 +274,12 @@
       </div>
 
       <div class="actions">
-        <button class="btn-cancel" (click)="clearForm()">
-          Clear <img src="icons/img/cancle.svg" alt="Clear" />
+        <button class="btn-cancel" (click)="isEditMode ? cancelAction() : clearForm()">
+          {{ isEditMode ? 'Cancel' : 'Clear' }} <img src="icons/img/cancle.svg" alt="Clear" />
         </button>
 
-        <button class="btn-create" (click)="createTask()">
-          Create Task <img src="icons/img/check.svg" alt="Create" />
+        <button class="btn-create" (click)="submitTask()">
+          {{ isEditMode ? 'Save Task' : 'Create Task' }} <img src="icons/img/check.svg" alt="Create" />
         </button>
       </div>
     </footer>

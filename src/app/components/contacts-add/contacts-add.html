@@ -32,10 +32,10 @@
           @if (nameCtrl.invalid && (nameCtrl.dirty || nameCtrl.touched)) {
           <div class="error-msg">
             @if (nameCtrl.errors?.['required']) {
-            <span>Name ist ein Pflichtfeld.</span>
+            <span>Name is required.</span>
             }
             @if (nameCtrl.errors?.['pattern']) {
-            <span>Der Name darf keine Zahlen enthalten.</span>
+            <span>The name must not contain numbers.</span>
             }
           </div>
           }
@@ -49,10 +49,10 @@
           @if (emailCtrl.invalid && (emailCtrl.dirty || emailCtrl.touched)) {
           <div class="error-msg">
             @if (emailCtrl.errors?.['required']) {
-            <span>Email ist ein Pflichtfeld.</span>
+            <span>Email is required.</span>
             }
             @if (emailCtrl.errors?.['pattern']) {
-            <span>Bitte eine gültige E-Mail-Adresse eingeben.</span>
+            <span>Please enter a valid email address.</span>
             }
           </div>
           }
@@ -66,10 +66,10 @@
           @if (phoneCtrl.invalid && (phoneCtrl.dirty || phoneCtrl.touched)) {
           <div class="error-msg">
             @if (phoneCtrl.errors?.['required']) {
-            <span>Telefonnummer ist ein Pflichtfeld.</span>
+            <span>Phone number is required.</span>
             }
             @if (phoneCtrl.errors?.['pattern']) {
-            <span>Nur Zahlen und ein optionales '+' am Anfang.</span>
+            <span>Use numbers only, with an optional '+' at the beginning.</span>
             }
           </div>
           }

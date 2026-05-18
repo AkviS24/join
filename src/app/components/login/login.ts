@@ -24,6 +24,8 @@ export class Login implements OnInit {
   acceptTerms = false;
   isPasswordVisible = false;
   isConfirmPasswordVisible = false;
+  private readonly emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  private readonly passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
 
   constructor(
     private router: Router,
@@ -40,14 +42,14 @@ export class Login implements OnInit {
 
     this.route.queryParams.subscribe((params) => {
       if (params['logout'] === 'success') {
-        this.successMessage = 'Erfolgreich abgemeldet.';
+        this.successMessage = 'Successfully logged out.';
 
         setTimeout(() => {
           this.successMessage = '';
         }, 3000);
       } else if (params['logout'] === 'inactivity') {
         this.errorMessage =
-          'Du wurdest aus Sicherheitsgründen wegen Inaktivität automatisch abgemeldet.';
+          'You were automatically logged out for security reasons due to inactivity.';
 
         setTimeout(() => {
           this.errorMessage = '';
@@ -76,6 +78,10 @@ export class Login implements OnInit {
     this.isConfirmPasswordVisible = !this.isConfirmPasswordVisible;
   }
 
+  disableAutofill(event: Event) {
+    (event.target as HTMLInputElement).removeAttribute('readonly');
+  }
+
   backToLogin() {
     this.isSignUpMode = false;
     this.errorMessage = '';
@@ -88,45 +94,64 @@ export class Login implements OnInit {
   }
 
   isFormValid(): boolean {
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    // Mind. 8 Zeichen, 1 Kleinbuchstabe, 1 Großbuchstabe, 1 Zahl, 1 Sonderzeichen
-    const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
-
+    // At least 8 characters, 1 lowercase letter, 1 uppercase letter, 1 number, 1 special character.
     return (
       this.name.trim().length >= 3 &&
-      emailPattern.test(this.email) &&
-      passwordPattern.test(this.password) &&
+      this.emailPattern.test(this.email) &&
+      this.passwordPattern.test(this.password) &&
       this.password === this.confirmPassword &&
       this.acceptTerms
     );
   }
 
+  getInputState(field: 'name' | 'email' | 'password' | 'confirmPassword'): string {
+    const value = this[field].trim();
+
+    if (!value) return '';
+
+    if (field === 'name' && this.isSignUpMode && value.length < 3) return 'has-error';
+    if (field === 'email' && !this.emailPattern.test(value)) return 'has-error';
+    if (field === 'password' && this.isSignUpMode && !this.passwordPattern.test(value)) {
+      return 'has-error';
+    }
+    if (
+      field === 'confirmPassword' &&
+      this.isSignUpMode &&
+      this.password &&
+      value !== this.password
+    ) {
+      return 'has-error';
+    }
+    if (!this.isSignUpMode && this.errorMessage.startsWith('Login failed')) {
+      return 'has-error';
+    }
+
+    return 'has-value';
+  }
+
   getSignUpHint(): string {
-    // Zeige keinen Fehler an, wenn das Formular noch komplett leer ist
     if (!this.name && !this.email && !this.password && !this.confirmPassword) {
       return '';
     }
 
     if (this.name.trim().length < 3) {
-      return 'Der Name muss mindestens 3 Zeichen lang sein.';
+      return 'The name must be at least 3 characters long.';
     }
 
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailPattern.test(this.email)) {
-      return 'Bitte eine gültige E-Mail-Adresse eingeben.';
+    if (!this.emailPattern.test(this.email)) {
+      return 'Please enter a valid email address.';
     }
 
-    const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
-    if (!passwordPattern.test(this.password)) {
-      return 'Das Passwort muss mind. 8 Zeichen lang sein, Groß- und Kleinbuchstaben, eine Zahl und ein Sonderzeichen enthalten.';
+    if (!this.passwordPattern.test(this.password)) {
+      return 'The password must be at least 8 characters long and include uppercase and lowercase letters, a number, and a special character.';
     }
 
     if (this.password !== this.confirmPassword) {
-      return 'Die Passwörter stimmen nicht überein.';
+      return 'The passwords do not match.';
     }
 
     if (!this.acceptTerms) {
-      return 'Bitte akzeptiere die Privacy Policy, um fortzufahren.';
+      return 'Please accept the Privacy Policy to continue.';
     }
 
     return '';
@@ -139,12 +164,12 @@ export class Login implements OnInit {
     if (!this.isFormValid()) {
       this.errorMessage =
         this.getSignUpHint() ||
-        'Bitte fülle alle Felder korrekt aus und akzeptiere die Privacy Policy.';
+        'Please fill in all fields correctly and accept the Privacy Policy.';
       return;
     }
 
     if (this.password !== this.confirmPassword) {
-      this.errorMessage = 'Die Passwörter stimmen nicht überein!';
+      this.errorMessage = 'The passwords do not match!';
       return;
     }
 
@@ -160,22 +185,22 @@ export class Login implements OnInit {
         return;
       }
 
-      // Speichere den neuen Benutzer zusätzlich in der demoDB-Tabelle
+      
       await this.supabaseService.setDemoData({
         name: this.name.trim() || '',
         email: this.email,
         phone: 0,
         password: this.password,
       });
-      // Aktualisiert die globale Kontaktliste (Signal) sofort
+      
       await this.supabaseService.getDemoData();
 
-      this.successMessage = 'Erfolgreich registriert! Logge ein...';
+      this.successMessage = 'Successfully registered! Logging in...';
       setTimeout(async () => {
         await this.loginUser();
       }, 1500);
     } catch (e: any) {
-      this.errorMessage = 'Ein unerwarteter Fehler ist aufgetreten: ' + (e.message || e);
+      this.errorMessage = 'An unexpected error occurred: ' + (e.message || e);
       console.error('Registration error', e);
     }
   }
@@ -185,14 +210,13 @@ export class Login implements OnInit {
     this.successMessage = '';
 
     if (!this.email || !this.password) {
-      this.errorMessage = 'Bitte E-Mail und Passwort eingeben.';
+      this.errorMessage = 'Please enter email and password.';
       return;
     }
 
-    // E-Mail-Format überprüfen
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailPattern.test(this.email)) {
-      this.errorMessage = 'Bitte eine gültige E-Mail-Adresse eingeben.';
+   
+    if (!this.emailPattern.test(this.email)) {
+      this.errorMessage = 'Please enter a valid email address.';
       return;
     }
 
@@ -204,22 +228,22 @@ export class Login implements OnInit {
 
       if (error) {
         if (error.message === 'Email not confirmed') {
-          this.errorMessage = 'Bitte bestätige zuerst deine E-Mail (Posteingang prüfen)!';
+          this.errorMessage = 'Please confirm your email first. Check your inbox!';
         } else {
-          this.errorMessage = 'Login fehlgeschlagen: ' + error.message;
+          this.errorMessage = 'Login failed: ' + error.message;
         }
         return;
       }
 
       if (data.user) {
-        // "Remember me" - Logik ausführen
+    
         if (this.rememberMe) {
           localStorage.setItem('rememberedEmail', this.email);
         } else {
           localStorage.removeItem('rememberedEmail');
         }
 
-        // Den Namen aus den Metadaten laden, die wir beim Signup gespeichert haben
+      
         const userName = data.user.user_metadata?.['name'] || 'User';
         const userInitial = userName
           .split(' ')
@@ -232,7 +256,7 @@ export class Login implements OnInit {
         this.router.navigate(['/summary'], { queryParams: { name: userName } });
       }
     } catch (e) {
-      this.errorMessage = 'Es gab ein Problem beim Login.';
+      this.errorMessage = 'There was a problem logging in.';
       console.error('Login error', e);
     }
   }
@@ -241,7 +265,7 @@ export class Login implements OnInit {
     this.errorMessage = '';
     this.successMessage = '';
 
-    // Direkter Login ohne Datenbank-Abfrage
+    
     localStorage.setItem('userInitial', 'G');
     localStorage.setItem('userName', 'Guest');
     this.router.navigate(['/summary']);

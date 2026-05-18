@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnChanges, SimpleChanges, inject, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Supabase } from '../../services/supabase';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -6,13 +6,35 @@ import { FormsModule } from '@angular/forms';
 import { UserBadge } from '../../services/userbadge';
 import { Tasks } from '../../services/tasks';
 
+type EditableSubtask = {
+  subtaskText?: string;
+  title?: string;
+  completed?: boolean;
+  done?: boolean;
+};
+
+type EditableTask = {
+  id: number;
+  title: string;
+  description: string;
+  category?: string;
+  type: string;
+  dueDate?: string;
+  due_date?: string;
+  priority: string;
+  assignedTo?: number[];
+  assignedToNames?: string[];
+  subtasks?: EditableSubtask[];
+  status?: string;
+};
+
 @Component({
   selector: 'app-add-task',
   imports: [CommonModule, FormsModule],
   templateUrl: './add-task.html',
   styleUrl: './add-task.scss',
 })
-export class AddTask implements OnInit {
+export class AddTask implements OnInit, OnChanges {
   supabaseService = inject(Supabase);
   tasksService = inject(Tasks);
   userBadgeService = inject(UserBadge);
@@ -38,7 +60,18 @@ export class AddTask implements OnInit {
 
   @Input() targetCategory = 'category-0';
   @Input() asOverlay = false;
-  @Output() closeOverlay = new EventEmitter<void>();
+  @Input() editTask: EditableTask | null = null;
+  @Output('close') closeOverlay = new EventEmitter<void>();
+
+  get isEditMode() {
+    return Boolean(this.editTask);
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['editTask'] && this.contacts.length > 0) {
+      this.fillFormFromEditTask();
+    }
+  }
 
   async ngOnInit() {
     this.route.queryParams.subscribe((params) => {
@@ -57,6 +90,8 @@ export class AddTask implements OnInit {
       color: this.userBadgeService.getColor(c.id),
       initials: c.initials || this.userBadgeService.getInitials(c.name),
     }));
+
+    this.fillFormFromEditTask();
   }
 
   get filteredContacts() {
@@ -71,7 +106,14 @@ export class AddTask implements OnInit {
     );
   }
 
-  toggleDropdown() {
+  closeDropdowns() {
+    this.dropdownOpen = false;
+    this.categoryDropdownOpen = false;
+  }
+
+  toggleDropdown(event: Event) {
+    event.stopPropagation();
+    this.categoryDropdownOpen = false;
     this.dropdownOpen = !this.dropdownOpen;
   }
 
@@ -91,7 +133,9 @@ export class AddTask implements OnInit {
     return this.selectedContacts.some((c) => c.id === contact.id);
   }
 
-  toggleCategoryDropdown() {
+  toggleCategoryDropdown(event: Event) {
+    event.stopPropagation();
+    this.dropdownOpen = false;
     this.categoryDropdownOpen = !this.categoryDropdownOpen;
   }
 
@@ -103,6 +147,46 @@ export class AddTask implements OnInit {
 
   selectPriority(priority: string) {
     this.selectedPriority = priority;
+  }
+
+  private getSubtaskText(subtask: EditableSubtask) {
+    return subtask.subtaskText || subtask.title || '';
+  }
+
+  private isSubtaskCompleted(subtask: EditableSubtask) {
+    return Boolean(subtask.completed ?? subtask.done);
+  }
+
+  private fillFormFromEditTask() {
+    if (!this.editTask) return;
+
+    this.title = this.editTask.title || '';
+    this.description = this.editTask.description || '';
+    this.dueDate = this.editTask.due_date || this.editTask.dueDate || '';
+    this.taskType = this.editTask.type || '';
+    this.targetCategory = this.editTask.category || this.targetCategory;
+    this.selectedPriority = this.editTask.priority || 'medium';
+    this.newSubtaskText = '';
+    this.newSubtasks = (this.editTask.subtasks || []).map((subtask) => ({
+      subtaskText: this.getSubtaskText(subtask),
+      completed: this.isSubtaskCompleted(subtask),
+    }));
+    this.selectedContacts = (this.editTask.assignedTo || []).map((id, index) => {
+      const existingContact = this.contacts.find((contact) => contact.id === id);
+
+      if (existingContact) return existingContact;
+
+      const name = this.editTask?.assignedToNames?.[index] || '';
+
+      return {
+        id,
+        name,
+        color: this.userBadgeService.getColor(id),
+        initials: this.userBadgeService.getInitials(name),
+      };
+    });
+    this.errorMessage = '';
+    this.isSubmitted = false;
   }
 
   clearForm() {
@@ -123,23 +207,11 @@ export class AddTask implements OnInit {
 
   cancelAction() {
     this.clearForm();
-
-    if (this.asOverlay) {
-      this.closeOverlay.emit();
-    }
+    this.closeOverlay.emit();
   }
 
-  async createTask() {
-    this.isSubmitted = true;
-
-    if (!this.title || !this.dueDate || !this.taskType) {
-      this.errorMessage = 'Please fill in all required fields (*)!';
-      return;
-    }
-
-    this.errorMessage = '';
-
-    const newTask = {
+  private getTaskPayload(status: string) {
+    return {
       title: this.title,
       description: this.description,
       category: this.targetCategory,
@@ -153,10 +225,30 @@ export class AddTask implements OnInit {
         subtaskText: subtask.subtaskText,
         completed: subtask.completed,
       })),
-      status: 'todo',
+      status,
     };
+  }
 
-    await this.tasksService.setTasks(newTask);
+  async submitTask() {
+    if (this.isEditMode) {
+      await this.updateTask();
+      return;
+    }
+
+    await this.createTask();
+  }
+
+  async createTask() {
+    this.isSubmitted = true;
+
+    if (!this.title || !this.dueDate || !this.taskType) {
+      this.errorMessage = 'Please fill in all required fields (*)!';
+      return;
+    }
+
+    this.errorMessage = '';
+
+    await this.tasksService.setTasks(this.getTaskPayload('todo'));
 
     this.showSuccessMessage = true;
 
@@ -167,6 +259,34 @@ export class AddTask implements OnInit {
       if (!this.asOverlay) {
         this.router.navigate(['/board']);
       }
+    }, 1500);
+  }
+
+  async updateTask() {
+    this.isSubmitted = true;
+
+    if (!this.editTask || !this.title || !this.dueDate || !this.taskType) {
+      this.errorMessage = 'Please fill in all required fields (*)!';
+      return;
+    }
+
+    this.errorMessage = '';
+
+    const result = await this.tasksService.getupdateTasks(
+      this.editTask.id,
+      this.getTaskPayload(this.editTask.status || 'todo')
+    );
+
+    if (result?.error) {
+      this.errorMessage = 'Task could not be saved.';
+      return;
+    }
+
+    this.showSuccessMessage = true;
+
+    setTimeout(() => {
+      this.showSuccessMessage = false;
+      this.closeOverlay.emit();
     }, 1500);
   }
 

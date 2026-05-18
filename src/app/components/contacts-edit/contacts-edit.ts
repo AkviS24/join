@@ -60,9 +60,9 @@ export class ContactsEdit implements OnInit {
       phoneNum,
       this.contactPassword
     );
-    await this.demoDB.getDemoData(); // Liste sofort aktualisieren
+    await this.demoDB.getDemoData(); // Update the list immediately.
 
     this.isSaving = false;
-    this.close(); // Fenster schließen
+    this.close(); // Close the window.
   }
 }

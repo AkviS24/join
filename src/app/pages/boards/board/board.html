@@ -36,7 +36,7 @@
 
           <div class="drag-placeholder" *cdkDragPlaceholder></div>
 
-          <p class="type-badge" [class]="task.type === 'userStory' ? 'user-story' : 'technical-task'">
+          <p [class]="'type-badge ' + getTaskTypeClass(task.type)">
             {{formatType(task.type)}}
           </p>
           <p class="task-title">{{ task.title }}</p>
@@ -78,7 +78,7 @@
 
 
 
-            <!-- Prio-Icon außerhalb der Avatar-Schleife -->
+            <!-- Priority icon outside the avatar loop -->
             <app-svg-db name="cappa-{{task.priority}}"></app-svg-db>
           </div>
         </div>
@@ -102,7 +102,12 @@
 
 @if (addTask) {
 <div class="dialog-overlay" (click)="closeAddTask()">
-  <app-add-task (click)="$event.stopPropagation()" (close)="closeAddTask()">
+  <app-add-task
+    [asOverlay]="true"
+    [editTask]="editingTask()"
+    (click)="$event.stopPropagation()"
+    (close)="closeAddTask()"
+  >
   </app-add-task>
 </div>
 }

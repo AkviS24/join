@@ -1,56 +1,87 @@
 @if (boardTS.selectedTask(); as task) {
   <div class="detail-card">
     <div class="detail-header">
-      <p class="type-badge" [class]="task.type">{{ boardTS.formatType(task.type) }}</p>
-      <button (click)="boardTS.closeDetails()"><app-svg-db name="cancel"></app-svg-db></button>
+      <p [class]="'type-badge ' + getTaskTypeClass(task.type)">
+        {{ boardTS.formatType(task.type) }}
+      </p>
+      <button class="close-btn" type="button" (click)="boardTS.closeDetails()">
+        <app-svg-db name="cancel"></app-svg-db>
+      </button>
     </div>
 
-    <h1>{{ task.title }}</h1>
-    <p class="description">{{ task.description }}</p>
+    <div class="detail-content">
+      <h1>{{ task.title }}</h1>
+      <p class="description">{{ task.description }}</p>
 
-    <div class="info-row">
-      <span class="label">Due date:</span>
-      <span class="value">{{ formatDate(task.due_date) }}</span>
-    </div>
-
-    <div class="info-row">
-      <span class="label">Priority:</span>
-      <div class="value prio-badge">
-        {{ task.priority }} 
-        <app-svg-db name="prio-{{task.priority}}"></app-svg-db>
-      </div>
-    </div>
-
-    <div class="assignment-section">
-      <p class="label">Assigned To:</p>
-      @for (name of task.assignedToNames; track $index) {
-        <div class="user-row">
-          <div class="initials-circle" 
-               [style.background-color]="userBadgeService.getColor(task.assignedTo[$index])">
-            {{ userBadgeService.getInitials(name) }}
-          </div>
-          <span>{{ name }}</span>
+      <div class="info-group">
+        <div class="info-row">
+          <span class="label">Due date:</span>
+          <span class="value">{{ formatDate(task.due_date) }}</span>
         </div>
-      }
+
+        <div class="info-row">
+          <span class="label">Priority:</span>
+          <div class="value prio-badge">
+            {{ task.priority }}
+            <app-svg-db name="cappa-{{task.priority}}"></app-svg-db>
+          </div>
+        </div>
+      </div>
+
+      <div class="assignment-section">
+        <p class="label">Assigned To:</p>
+        <div class="user-list">
+          @for (name of task.assignedToNames; track $index) {
+            <div class="user-row">
+              <div
+                class="initials-circle"
+                [style.background-color]="userBadgeService.getColor(task.assignedTo[$index])"
+              >
+                {{ userBadgeService.getInitials(name) }}
+              </div>
+              <span>{{ name }}</span>
+            </div>
+          } @empty {
+            <p class="empty-text">No assigned contacts</p>
+          }
+        </div>
+      </div>
     </div>
 
     <div class="subtask-section">
       <p class="label">Subtasks</p>
-      <!-- @for (sub of task.subtasks; track sub.id) {
-        <label class="subtask-item">
-          <input type="checkbox" [checked]="sub.done">
-          {{ sub.title }}
-        </label>
-      } -->
+
+      <div class="subtask-list">
+        @for (subtask of task.subtasks; track $index) {
+          <label class="subtask-item" [class.completed]="isSubtaskCompleted(subtask)">
+            <input
+              type="checkbox"
+              [checked]="isSubtaskCompleted(subtask)"
+              (change)="toggleSubtask(task, $index, $event)"
+            />
+            <span class="custom-checkbox"></span>
+            <span class="subtask-text">{{ getSubtaskText(subtask) }}</span>
+          </label>
+        } @empty {
+          <p class="empty-text">No subtasks</p>
+        }
+      </div>
     </div>
 
     <div class="detail-footer">
-      <button (click)="deleteTasks(task.id)" class="action-btn delete">
-        <app-svg-db name="delete"></app-svg-db> Delete
+      <button
+        type="button"
+        (click)="deleteTasks(task.id)"
+        class="action-btn delete"
+        [disabled]="isDeleting"
+      >
+        <app-svg-db name="delete"></app-svg-db>
+        <span>{{ isDeleting ? 'Deleting...' : 'Delete' }}</span>
       </button>
       <div class="divider"></div>
-      <button class="action-btn edit">
-        <app-svg-db name="edit"></app-svg-db> Edit
+      <button type="button" class="action-btn edit" (click)="startEdit(task)">
+        <app-svg-db name="edit"></app-svg-db>
+        <span>Edit</span>
       </button>
     </div>
   </div>

@@ -4,9 +4,7 @@ import { AddTask } from './pages/add-task/add-task';
 import { Board } from './pages/boards/board/board';
 import { Contacts } from './pages/contacts/contacts/contacts';
 import { Login } from './components/login/login';
-import { PrivacyPolice } from './pages/privacy-policy/privacyPolicy';
-import { LegalNotice } from './pages/legal-notice/legalNotice';
-import { Discription } from './components/discription/discription';
+import { Info } from './pages/info/info';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -16,7 +14,6 @@ export const routes: Routes = [
   { path: 'board', component: Board },
   { path: 'contacts', component: Contacts },
   { path: 'login', component: Login },
-  { path: 'privacy-police', component: PrivacyPolice },
-  { path: 'legal-notice', component: LegalNotice },
-  { path: 'help', component: Discription },
+  { path: 'info',redirectTo: 'info/legal',pathMatch: 'full'},
+  {path: 'info/:view',component: Info},
 ];

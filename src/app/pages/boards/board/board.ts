@@ -23,6 +23,7 @@ export class Board implements OnInit {
   showDetails = false;
   addTask = false;
   selectedTaskId = signal<number | null>(null);
+  editingTask = signal<any | null>(null);
   searchQuery = signal('');
 
   async ngOnInit() {
@@ -87,6 +88,10 @@ export class Board implements OnInit {
     return result.charAt(0).toUpperCase() + result.slice(1);
   }
 
+  getTaskTypeClass(type: string): string {
+    return type.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase().replace(/\s+/g, '-');
+  }
+
   getDoneSubtasksCount(task: any): number {
     if (!task.subtasks) return 0;
 
@@ -96,6 +101,12 @@ export class Board implements OnInit {
   openTaskDetails(id: number) {
     this.selectedTaskId.set(id);
     this.showDetails = true;
+  }
+
+  openEditTask(task: any) {
+    this.editingTask.set(task);
+    this.closeDetails();
+    this.addTask = true;
   }
 
   closeDetails() {
@@ -108,11 +119,12 @@ export class Board implements OnInit {
   }
 
   openAddTask() {
+    this.editingTask.set(null);
     this.addTask = true;
-    console.log("hallo task");
   }
 
   closeAddTask() {
+    this.editingTask.set(null);
     this.addTask = false;
   }
 }

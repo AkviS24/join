@@ -25,10 +25,10 @@ export class Supabase {
 
   selectedUser = signal<any | null>(null);
 
-  // HINWEIS:
-  // Das ist erstmal nur eine lokale Fake-Speicherung für Tasks.
-  // Die Daten bleiben nur solange erhalten, bis du die Seite neu lädst.
-  // Später kann diese Signal-Liste durch Supabase ersetzt werden.
+  // NOTE:
+  // This is only temporary local fake storage for tasks.
+  // The data only stays available until the page is reloaded.
+  // Later, this signal list can be replaced with Supabase.
   tasks = signal<any[]>([]);
 
   constructor() {
@@ -93,7 +93,7 @@ export class Supabase {
       .select();
 
     if (error) {
-      console.error('Fehler beim Speichern der Demo-Daten:', error);
+      console.error('Error saving demo data:', error);
       return;
     }
 
@@ -101,9 +101,9 @@ export class Supabase {
       this.selectedUser.set(data[0]);
     }
 
-    // HINWEIS:
-    // Du musst hier kein getDemoData() aufrufen,
-    // Realtime erledigt das!
+    // NOTE:
+    // No getDemoData() call is needed here.
+    // Realtime handles that.
   }
 
   async getupdateDemoData(
@@ -128,15 +128,15 @@ export class Supabase {
     this.selectedUser.set(user);
   }
 
-  // HINWEIS:
-  // Diese Methode ersetzt erstmal die echte Datenbank-Speicherung.
-  // Sie speichert Tasks nur lokal im Angular-Signal.
-  // Dadurch kannst du AddTask testen, ohne eine Supabase-Tabelle für Tasks zu haben.
+  // NOTE:
+  // This method temporarily replaces real database storage.
+  // It stores tasks locally in the Angular signal.
+  // This lets you test AddTask without a Supabase tasks table.
   async insertTask(task: any) {
     this.tasks.update((currentTasks) => [...currentTasks, task]);
 
-    console.log('Fake Task gespeichert:', task);
-    console.log('Alle Fake Tasks:', this.tasks());
+    console.log('Fake task saved:', task);
+    console.log('All fake tasks:', this.tasks());
 
     return task;
   }

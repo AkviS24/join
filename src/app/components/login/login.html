@@ -16,7 +16,7 @@
     </div>
   </header>
   <div class="login-page">
-    <div class="login-box">
+    <div class="login-box" [class.signup-box]="isSignUpMode">
       @if (isSignUpMode) {
         <img
           class="back-arrow"
@@ -29,40 +29,48 @@
         <h1 class="loginH1">{{ isSignUpMode ? 'Sign up' : 'Log in' }}</h1>
         <div class="horizontalH1Underline"></div>
       </div>
-      <form (ngSubmit)="isSignUpMode ? registerUser() : loginUser()">
+      <form autocomplete="off" (ngSubmit)="isSignUpMode ? registerUser() : loginUser()">
         @if (isSignUpMode) {
-          <div class="loginNameBox loginInputField">
+          <div class="loginNameBox loginInputField" [ngClass]="getInputState('name')">
             <input
               type="text"
               id="sign_up_name"
               name="name"
               [(ngModel)]="name"
               placeholder="Name"
-              type="text"
+              autocomplete="off"
+              readonly
+              (focus)="disableAutofill($event)"
               required
             />
             <div class="mailIcon"><img src="icons/img/perso.svg" alt="user" /></div>
           </div>
         }
-        <div class="loginEmailBox loginInputField">
+        <div class="loginEmailBox loginInputField" [ngClass]="getInputState('email')">
           <input
             type="email"
             id="loginEmailInput"
             name="email"
             [(ngModel)]="email"
             placeholder="Email"
+            autocomplete="off"
+            readonly
+            (focus)="disableAutofill($event)"
             required
           />
           <div class="mailIcon"><img src="icons/img/mail.svg" alt="letter" /></div>
         </div>
 
-        <div class="loginPasswordBox loginInputField">
+        <div class="loginPasswordBox loginInputField" [ngClass]="getInputState('password')">
           <input
             [type]="isPasswordVisible ? 'text' : 'password'"
             id="loginPasswordInput"
             name="password"
             [(ngModel)]="password"
             placeholder="Password"
+            autocomplete="new-password"
+            readonly
+            (focus)="disableAutofill($event)"
             required
           />
           <div class="mailIcon">
@@ -82,13 +90,19 @@
         </div>
 
         @if (isSignUpMode) {
-          <div class="loginConfirmPasswordBox loginInputField">
+          <div
+            class="loginConfirmPasswordBox loginInputField"
+            [ngClass]="getInputState('confirmPassword')"
+          >
             <input
               [type]="isConfirmPasswordVisible ? 'text' : 'password'"
               id="loginConfirmPasswordInput"
               name="confirmPassword"
               [(ngModel)]="confirmPassword"
               placeholder="Confirm Password"
+              autocomplete="new-password"
+              readonly
+              (focus)="disableAutofill($event)"
               required
             />
             <div class="mailIcon">
@@ -119,7 +133,7 @@
             />
             <label for="accept_terms"
               >I accept the
-              <a class="pp-inbox-link" routerLink="/privacy-police">Privacy Policy</a></label
+              <a class="pp-inbox-link" routerLink="/info/privacy">Privacy Policy</a></label
             >
           </div>
 
@@ -127,6 +141,20 @@
             {{ getSignUpHint() }}
           </div>
         }
+
+        <div class="login-alert-slot">
+          @if (errorMessage) {
+            <div class="login-alert-message login-alert-message--error">
+              {{ errorMessage }}
+            </div>
+          }
+
+          @if (successMessage) {
+            <div class="login-alert-message login-alert-message--success">
+              {{ successMessage }}
+            </div>
+          }
+        </div>
 
         <div class="loginButtonsBox">
           @if (isSignUpMode) {
@@ -139,14 +167,6 @@
           }
         </div>
       </form>
-      <div class="message-placeholder">
-        @if (errorMessage) {
-          <span style="color: red">{{ errorMessage }}</span>
-        }
-        @if (successMessage) {
-          <span style="color: #20d86e">{{ successMessage }}</span>
-        }
-      </div>
     </div>
   </div>
   <div class="signUpField-mobile" [class.fade-out]="isSignUpMode">
@@ -156,7 +176,7 @@
     </button>
   </div>
   <div class="loginFooter">
-    <div class="privacyPolicy" routerLink="/privacy-police"><span>Privacy policy</span></div>
-    <div class="legalNotice" routerLink="/legal-notice"><span>Legal notice</span></div>
+    <div class="privacyPolicy" routerLink="/info/privacy"><span>Privacy Policy</span></div>
+    <div class="legalNotice" routerLink="/info/legal"><span>Legal notice</span></div>
   </div>
 </div>

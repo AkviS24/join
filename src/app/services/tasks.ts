@@ -2,6 +2,20 @@ import { Injectable, signal } from '@angular/core';
 import { createClient, RealtimeChannel } from '@supabase/supabase-js';
 import { environment } from '../../environments/environment';
 
+type TaskPayload = {
+  title: string;
+  description: string;
+  category: string;
+  type: string;
+  dueDate: string;
+  due_date: string;
+  priority: string;
+  assignedTo: number[];
+  assignedToNames: string[];
+  subtasks: { subtaskText: string; completed: boolean }[];
+  status: string;
+};
+
 @Injectable({
   providedIn: 'root',
 })
@@ -27,7 +41,7 @@ export class Tasks {
           table: 'tasks',
         },
         (payload) => {
-          console.log('Realtime Change erhalten:', payload);
+          console.log('Realtime change received:', payload);
           this.getTasks();
         }
       )
@@ -71,19 +85,7 @@ export class Tasks {
     this.demoTasks.set(tasks);
   }
 
-  async setTasks(demoData: {
-    title: string;
-    description: string;
-    category: string;
-    type: string;
-    dueDate: string;
-    due_date: string;
-    priority: string;
-    assignedTo: string[];
-    assignedToNames: string[];
-    subtasks: { subtaskText: string; completed: boolean }[];
-    status: string;
-  }) {
+  async setTasks(demoData: TaskPayload) {
     const { data, error } = await this.supabase.from('tasks').insert([demoData]).select();
 
     if (error) {
@@ -114,19 +116,7 @@ export class Tasks {
 
   async getupdateTasks(
     id: number,
-    demoData: {
-      title: string;
-      description: string;
-      category: string;
-      type: string;
-      dueDate: string;
-      due_date: string;
-      priority: string;
-      assignedTo: string[];
-      assignedToNames: string[];
-      subtasks: { subtaskText: string; completed: boolean }[];
-      status: string;
-    }
+    demoData: TaskPayload
   ) {
     const { data, error } = await this.supabase
       .from('tasks')
@@ -136,9 +126,10 @@ export class Tasks {
 
     if (error) {
       console.error('Error updating task:', error);
-      return;
+      return { data: null, error };
     }
 
     await this.getTasks();
+    return { data, error: null };
   }
 }

@@ -8,12 +8,10 @@
 }
 
 .app-content {
-  // padding-inline: 96px;
-  // padding-top: 110px;
   background: $color-bg;
   width: 100%;
   max-width: 100%;
-  // min-height: 100vh;
+  
 }
 
 @media (max-width: 960px) {
@@ -26,9 +24,6 @@
   .app-content {
     width: auto;
     max-width: 100%;
-    // padding-inline: 24px;
-    // padding-top: 48px;
-    // padding-bottom: 104px;
     overflow-x: hidden;
   }
 

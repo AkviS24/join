@@ -1,5 +1,6 @@
 @use '../../../../styles/abstracts/variables' as *;
 @use '../../../../styles/abstracts/mixins' as *;
+@use '../../../../styles/abstracts/keyframes' as *;
 
 .detail-card {
   width: min(525px, calc(100vw - 32px));
@@ -7,7 +8,6 @@
   max-width: 525px;
   max-height: 931px;
   padding: 48px 40px 40px;
-  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -15,6 +15,8 @@
   border-radius: 30px;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.16);
   color: $color-dark;
+  transform: translateX(100%);
+  animation: slideInRight 0.2s ease-out forwards;
 }
 
 .detail-header {
@@ -199,7 +201,7 @@
 .assignment-section {
   margin-bottom: 24px;
 
-  > .label {
+  >.label {
     margin: 0 0 16px;
     color: $color-dark;
     font-size: 20px;
@@ -240,7 +242,7 @@
   flex: 0 0 auto;
   margin-top: 20px;
 
-  > .label {
+  >.label {
     margin: 0 0 12px;
     color: $color-dark;
     font-size: 20px;
@@ -347,7 +349,7 @@
     cursor: pointer;
   }
 
-  input:checked + .custom-checkbox {
+  input:checked+.custom-checkbox {
     background-color: $color-dark;
     border-color: $color-dark;
 
@@ -448,8 +450,8 @@
 
   .description,
   .info-row,
-  .assignment-section > .label,
-  .subtask-section > .label {
+  .assignment-section>.label,
+  .subtask-section>.label {
     font-size: 18px;
   }
 

@@ -62,13 +62,9 @@ export class Board implements OnInit {
   ]);
 
   toDoTasks = computed(() => this.filterTasks('todo'));
-
   inProgressTasks = computed(() => this.filterTasks('inProgress'));
-
   awaitFeedbackTasks = computed(() => this.filterTasks('awaitFeedback'));
-
   doneTasks = computed(() => this.filterTasks('done'));
-
   selectedTask = computed(() =>
     this.taskService.demoTasks().find((t) => t.id === this.selectedTaskId())
   );

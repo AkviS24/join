@@ -20,7 +20,7 @@ export class Board implements OnInit {
   taskService = inject(Tasks);
   userBadgeService = inject(UserBadge);
   showDetails = false;
-  addTask = false;
+  addingTask = false;
   selectedTaskId = signal<number | null>(null);
   editingTask = signal<any | null>(null);
   searchQuery = signal('');
@@ -94,12 +94,12 @@ export class Board implements OnInit {
   openEditTask(task: any) {
     this.editingTask.set(task);
     this.closeDetails();
-    this.addTask = true;
+    this.addingTask = true;
   }
 
   openAddTask(status: string = 'todo') {
     this.editingTask.set(null);
-    this.addTask = true;
+    this.addingTask = true;
     this.currentAddTaskStatus = status;
   }
 
@@ -110,7 +110,7 @@ export class Board implements OnInit {
 
   closeAddTask() {
     this.editingTask.set(null);
-    this.addTask = false;
+    this.addingTask = false;
     this.currentAddTaskStatus = "todo";
   }
 

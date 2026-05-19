@@ -1,5 +1,9 @@
 <section class="add-task-page" (click)="closeDropdowns()">
-  <ng-content select=".close-btn"></ng-content>
+  @if (isEditMode || addingTaskInBoard) {
+      <button class="close-btn" (click)="cancelAction()">
+        <app-svg-db name="cancel"></app-svg-db>
+      </button>
+  }
   <div class="page-container">
     <header class="page-header">
       <h2>{{ isEditMode ? 'Edit Task' : 'Add Task' }}</h2>
@@ -225,9 +229,9 @@
 
     <footer class="page-footer">
       <div class="actions">
-        <button type="button" class="btn-cancel" (click)="isEditMode ? cancelAction() : clearForm()">
-          {{ isEditMode ? 'Cancel' : 'Clear' }}
-          <!-- <img src="icons/img/cancle.svg" alt="Clear" /> -->
+        <button type="button" class="btn-cancel"
+          (click)="(isEditMode || addingTaskInBoard) ? cancelAction() : clearForm()">
+          {{ (isEditMode || addingTaskInBoard) ? 'Cancel' : 'Clear' }}
           <app-svg-db name="cancel"></app-svg-db>
         </button>
 

@@ -36,10 +36,6 @@ type EditableTask = {
   styleUrl: './add-task.scss',
 })
 export class AddTask implements OnInit, OnChanges {
-  // constructor() {
-  //   export let addAwaitFeedback: boolean;
-  //   export let addInProgress: boolean;
-  // }
   supabaseService = inject(Supabase);
   tasksService = inject(Tasks);
   userBadgeService = inject(UserBadge);
@@ -58,22 +54,18 @@ export class AddTask implements OnInit, OnChanges {
   dueDate = '';
   taskType = '';
   newSubtaskText = '';
+  errorMessage = '';
   newSubtasks: { subtaskText: string; completed: boolean }[] = [];
   showSuccessMessage = false;
-  errorMessage = '';
   isSubmitted = false;
-
   addAwaitFeedback = false;
   addInProgress = false;
-
-
-
 
   @Input() targetCategory = 'category-0';
   @Input() asOverlay = false;
   @Input() editTask: EditableTask | null = null;
-
   @Input() initialStatus = 'todo';
+  @Input() addingTaskInBoard = false;
 
   @Output('close') closeOverlay = new EventEmitter<void>();
 

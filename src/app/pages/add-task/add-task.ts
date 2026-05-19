@@ -1,4 +1,13 @@
-import { Component, OnInit, OnChanges, SimpleChanges, inject, Input, Output, EventEmitter, booleanAttribute } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnChanges,
+  SimpleChanges,
+  inject,
+  Input,
+  Output,
+  EventEmitter,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Supabase } from '../../services/supabase';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -35,10 +44,6 @@ type EditableTask = {
   styleUrl: './add-task.scss',
 })
 export class AddTask implements OnInit, OnChanges {
-  // constructor() {
-  //   export let addAwaitFeedback: boolean;
-  //   export let addInProgress: boolean;
-  // }
   supabaseService = inject(Supabase);
   tasksService = inject(Tasks);
   userBadgeService = inject(UserBadge);
@@ -58,6 +63,9 @@ export class AddTask implements OnInit, OnChanges {
   taskType = '';
   newSubtaskText = '';
   newSubtasks: { subtaskText: string; completed: boolean }[] = [];
+
+  editingSubtaskIndex: number | null = null;
+
   showSuccessMessage = false;
   errorMessage = '';
   isSubmitted = false;
@@ -65,13 +73,9 @@ export class AddTask implements OnInit, OnChanges {
   addAwaitFeedback = false;
   addInProgress = false;
 
-
-
-
   @Input() targetCategory = 'category-0';
   @Input() asOverlay = false;
   @Input() editTask: EditableTask | null = null;
-
   @Input() initialStatus = 'todo';
 
   @Output('close') closeOverlay = new EventEmitter<void>();
@@ -180,10 +184,13 @@ export class AddTask implements OnInit, OnChanges {
     this.targetCategory = this.editTask.category || this.targetCategory;
     this.selectedPriority = this.editTask.priority || 'medium';
     this.newSubtaskText = '';
+    this.editingSubtaskIndex = null;
+
     this.newSubtasks = (this.editTask.subtasks || []).map((subtask) => ({
       subtaskText: this.getSubtaskText(subtask),
       completed: this.isSubtaskCompleted(subtask),
     }));
+
     this.selectedContacts = (this.editTask.assignedTo || []).map((id, index) => {
       const existingContact = this.contacts.find((contact) => contact.id === id);
 
@@ -198,6 +205,7 @@ export class AddTask implements OnInit, OnChanges {
         initials: this.userBadgeService.getInitials(name),
       };
     });
+
     this.errorMessage = '';
     this.isSubmitted = false;
   }
@@ -214,6 +222,7 @@ export class AddTask implements OnInit, OnChanges {
     this.contactSearch = '';
     this.newSubtaskText = '';
     this.newSubtasks = [];
+    this.editingSubtaskIndex = null;
     this.errorMessage = '';
     this.isSubmitted = false;
   }
@@ -320,12 +329,23 @@ export class AddTask implements OnInit, OnChanges {
     }
   }
 
+  startEditSubtask(index: number) {
+    this.editingSubtaskIndex = index;
+  }
+
+  saveEditSubtask() {
+    this.editingSubtaskIndex = null;
+  }
+
   editNewSubtask(index: number) {
-    this.newSubtaskText = this.newSubtasks[index].subtaskText;
-    this.newSubtasks.splice(index, 1);
+    this.startEditSubtask(index);
   }
 
   removeNewSubtask(index: number) {
     this.newSubtasks.splice(index, 1);
+
+    if (this.editingSubtaskIndex === index) {
+      this.editingSubtaskIndex = null;
+    }
   }
 }

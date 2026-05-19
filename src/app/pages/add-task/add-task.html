@@ -170,22 +170,24 @@
               }
             </div>
 
-            <div class="selected-avatars">
-              @for (contact of selectedContacts.slice(0, 4); track contact.id) {
-                <div
-                  class="avatar stacked-avatar"
-                  [style.backgroundColor]="contact.color"
-                >
-                  {{ contact.initials }}
-                </div>
-              }
+            @if (selectedContacts.length > 0) {
+              <div class="selected-avatars">
+                @for (contact of selectedContacts.slice(0, 4); track contact.id) {
+                  <div
+                    class="avatar stacked-avatar"
+                    [style.backgroundColor]="contact.color"
+                  >
+                    {{ contact.initials }}
+                  </div>
+                }
 
-              @if (selectedContacts.length > 4) {
-                <div class="avatar more-avatar">
-                  +{{ selectedContacts.length - 4 }}
-                </div>
-              }
-            </div>
+                @if (selectedContacts.length > 4) {
+                  <div class="avatar more-avatar">
+                    +{{ selectedContacts.length - 4 }}
+                  </div>
+                }
+              </div>
+            }
           </div>
 
           <div class="form-group">
@@ -261,11 +263,7 @@
                 <div class="action-divider"></div>
 
                 <div class="subtask-btn" (click)="addSubtask()">
-                  <img
-                    src="icons/img/check.svg"
-                    alt="Add"
-                    class="check-icon"
-                  />
+                  <img src="icons/img/check.svg" alt="Add" class="check-icon" />
                 </div>
               </div>
             </div>
@@ -273,22 +271,56 @@
             @if (newSubtasks.length > 0) {
               <div class="new-subtasks-list">
                 @for (subtask of newSubtasks; track $index) {
-                  <div class="new-subtask-item">
-                    <span>• {{ subtask.subtaskText }}</span>
+                  <div
+                    class="new-subtask-item"
+                    [class.editing]="editingSubtaskIndex === $index"
+                  >
+                    <span class="subtask-dot">•</span>
+
+                    @if (editingSubtaskIndex === $index) {
+                      <input
+                        class="subtask-edit-input"
+                        [(ngModel)]="subtask.subtaskText"
+                        (keyup.enter)="saveEditSubtask()"
+                      />
+                    } @else {
+                      <span class="subtask-text">{{ subtask.subtaskText }}</span>
+                    }
 
                     <div class="subtask-list-actions">
-                      <div class="subtask-btn" (click)="editNewSubtask($index)">
-                        <img src="icons/img/pen.svg" alt="Edit" />
-                      </div>
+                      @if (editingSubtaskIndex === $index) {
+                        <div
+                          class="subtask-btn"
+                          (click)="removeNewSubtask($index)"
+                        >
+                          <img src="icons/img/delete.svg" alt="Delete" />
+                        </div>
 
-                      <div class="icon-divider-small"></div>
+                        <div
+                          class="subtask-btn"
+                          (click)="saveEditSubtask()"
+                        >
+                          <img
+                            src="icons/img/check.svg"
+                            alt="Save"
+                            class="check-icon"
+                          />
+                        </div>
+                      } @else {
+                        <div
+                          class="subtask-btn"
+                          (click)="startEditSubtask($index)"
+                        >
+                          <img src="icons/img/pen.svg" alt="Edit" />
+                        </div>
 
-                      <div
-                        class="subtask-btn"
-                        (click)="removeNewSubtask($index)"
-                      >
-                        <img src="icons/img/delete.svg" alt="Delete" />
-                      </div>
+                        <div
+                          class="subtask-btn"
+                          (click)="removeNewSubtask($index)"
+                        >
+                          <img src="icons/img/delete.svg" alt="Delete" />
+                        </div>
+                      }
                     </div>
                   </div>
                 }

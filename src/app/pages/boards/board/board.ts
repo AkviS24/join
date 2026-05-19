@@ -19,7 +19,6 @@ import { AddTask } from "../../add-task/add-task";
 export class Board implements OnInit {
   taskService = inject(Tasks);
   userBadgeService = inject(UserBadge);
-
   showDetails = false;
   addTask = false;
   selectedTaskId = signal<number | null>(null);
@@ -41,19 +40,6 @@ export class Board implements OnInit {
     }
   }
 
-  private filterTasks(status: string) {
-    const query = this.searchQuery().toLowerCase().trim();
-
-    return this.taskService.demoTasks().filter((t) => {
-      const matchesStatus = t.status === status;
-      const matchesSearch =
-        t.title.toLowerCase().includes(query) ||
-        t.description.toLowerCase().includes(query);
-
-      return matchesStatus && matchesSearch;
-    });
-  }
-
   boardSections = computed(() => [
     { id: 'todo', label: 'To Do', tasks: this.toDoTasks() },
     { id: 'inProgress', label: 'In Progress', tasks: this.inProgressTasks() },
@@ -69,6 +55,19 @@ export class Board implements OnInit {
     this.taskService.demoTasks().find((t) => t.id === this.selectedTaskId())
   );
 
+  private filterTasks(status: string) {
+    const query = this.searchQuery().toLowerCase().trim();
+
+    return this.taskService.demoTasks().filter((t) => {
+      const matchesStatus = t.status === status;
+      const matchesSearch =
+        t.title.toLowerCase().includes(query) ||
+        t.description.toLowerCase().includes(query);
+
+      return matchesStatus && matchesSearch;
+    });
+  }
+
   async drop(event: CdkDragDrop<any[]>, newStatus: string) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
@@ -78,20 +77,12 @@ export class Board implements OnInit {
     }
   }
 
-  formatType(type: string): string {
-    if (!type) return '';
-
-    const result = type.replace(/([A-Z])/g, ' $1');
-    return result.charAt(0).toUpperCase() + result.slice(1);
-  }
-
   getTaskTypeClass(type: string): string {
     return type.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase().replace(/\s+/g, '-');
   }
 
   getDoneSubtasksCount(task: any): number {
     if (!task.subtasks) return 0;
-
     return task.subtasks.filter((s: any) => s.completed).length;
   }
 
@@ -106,19 +97,15 @@ export class Board implements OnInit {
     this.addTask = true;
   }
 
-  closeDetails() {
-    this.selectedTaskId.set(null);
-    this.showDetails = false;
-  }
-
-  getOrientation() {
-    return window.innerWidth <= 1200 ? 'horizontal' : 'vertical';
-  }
-
   openAddTask(status: string = 'todo') {
     this.editingTask.set(null);
     this.addTask = true;
     this.currentAddTaskStatus = status;
+  }
+
+  closeDetails() {
+    this.selectedTaskId.set(null);
+    this.showDetails = false;
   }
 
   closeAddTask() {
@@ -126,4 +113,9 @@ export class Board implements OnInit {
     this.addTask = false;
     this.currentAddTaskStatus = "todo";
   }
+
+  getOrientation() {
+    return window.innerWidth <= 1200 ? 'horizontal' : 'vertical';
+  }
+
 }

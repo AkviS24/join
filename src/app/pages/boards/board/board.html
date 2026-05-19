@@ -37,7 +37,7 @@
           <div class="drag-placeholder" *cdkDragPlaceholder></div>
 
           <p [class]="'type-badge ' + getTaskTypeClass(task.type)">
-            {{formatType(task.type)}}
+            {{(task.type)}}
           </p>
           <p class="task-title">{{ task.title }}</p>
           <p class="task-description">{{ task.description }}</p>

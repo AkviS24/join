@@ -2,6 +2,8 @@
 @use '../../../../styles/abstracts/mixins' as *;
 @use '../../../../styles/abstracts/keyframes' as *;
 
+@import 'drag-and-drop';
+
 section {
   padding: 64px 64px 32px 64px;
   min-height: calc(100vh - $header-height);
@@ -9,15 +11,11 @@ section {
 
 .board-header {
   display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
   align-items: center;
   gap: 16px;
   max-width: calc(1440px - $sidebar-width);
 
   .header-top-row {
-    display: flex;
-    align-items: center;
     display: contents;
     gap: 30px;
   }
@@ -28,45 +26,15 @@ section {
   }
 }
 
-.drag-placeholder {
-  background: rgba(0, 0, 0, 0.05);
-  border: dashed 6px #ccc;
-  min-height: 225px;
-  min-width: 225px;
-  margin-bottom: 15px;
-  border-radius: 15px;
-  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-}
-
-.cdk-drag-preview {
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15), 0 6px 6px rgba(0, 0, 0, 0.1);
-  border-radius: 15px;
-  background-color: white;
-  display: flex;
-  flex-direction: column;
-  padding: 16px;
-  transform: rotate(3deg);
-  cursor: grabbing;
-}
-
-.cdk-drop-list-dragging .task-card:not(.cdk-drag-placeholder) {
-  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-}
-
-.cdk-drag-animating {
-  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-}
-
 .task-card-wrapper {
   flex: 1;
 }
 
 .task-card {
-  user-select: none;
-  cursor: grab;
-  transition: all 0.0.5s ease-in-out;
   margin: 0 0 16px 0;
   padding: 16px;
+  min-width: 225px;
+  min-height: 225px;
   justify-content: flex-start;
   background-color: $color-white;
   border-radius: 10px;
@@ -118,16 +86,6 @@ section {
     background-color: $color-gray;
     margin: 0 8px;
   }
-
-  .search-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    @include flex-center;
-    border-radius: 50%;
-
-  }
 }
 
 .board-layout {
@@ -147,9 +105,7 @@ section {
 }
 
 .column-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  @include flex-between;
   margin: 16px 0;
 }
 
@@ -166,9 +122,7 @@ app-svg-db:hover {
 }
 
 .task-assignment {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  @include flex-between;
 }
 
 .avatar-stack {
@@ -178,12 +132,8 @@ app-svg-db:hover {
 }
 
 .badge {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  @include circle(32px);
+  @include flex-center;
   color: white;
   font-size: 12px;
   font-weight: bold;
@@ -203,7 +153,6 @@ app-svg-db:hover {
 .empty-msg {
   text-align: center;
   color: $color-light-gray;
-  font-style: italic;
   padding: 12px;
   margin-bottom: 16px;
   background-color: $color-dark-gray;
@@ -217,9 +166,7 @@ app-svg-db:hover {
   left: 0;
   width: 100%;
   height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  @include flex-center;
   z-index: 999;
   animation: fadeInBackdrop 0.2s ease-out forwards;
 }
@@ -273,8 +220,6 @@ app-svg-db:hover {
   .task-card {
     margin: 0 16px 0 0;
     max-width: 250px;
-    min-width: 225px;
-    width: 200px;
     flex-shrink: 0;
   }
 
@@ -298,8 +243,8 @@ app-svg-db:hover {
 
     .header-top-row {
       display: flex;
-      width: 100%;
       justify-content: space-between;
+      width: 100%;
       order: 1;
     }
 
@@ -322,5 +267,9 @@ app-svg-db:hover {
 @media (max-width: $bp-mobile) {
   section {
     padding: 16px;
+  }
+
+  .search-wrapper {
+    max-width: none;
   }
 }

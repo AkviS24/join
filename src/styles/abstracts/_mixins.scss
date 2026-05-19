@@ -16,6 +16,13 @@
   justify-content: space-around;
 }
 
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 @mixin circle($size) {
   width: $size;
   height: $size;

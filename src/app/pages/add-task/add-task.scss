@@ -12,7 +12,9 @@
 .page-container {
   width: 100%;
   max-width: 1116px;
-  margin: 0 auto;
+  background-color: $color-bg;
+  margin-left: 0;
+  margin-right: auto;
 }
 
 :host-context(.dialog-overlay) {
@@ -34,12 +36,6 @@
   max-width: 100%;
 }
 
-.page-container {
-  width: 100%;
-  max-width: 1116px;
-  background-color: $color-bg;
-  margin: 0 auto;
-}
 
 .page-header {
   margin-bottom: 32px;

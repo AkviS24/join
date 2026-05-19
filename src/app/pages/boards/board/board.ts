@@ -7,7 +7,7 @@ import { BoardDetails } from '../board-details/board-details';
 import { FormsModule } from '@angular/forms';
 import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
 import { AddTask } from "../../add-task/add-task";
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-board',

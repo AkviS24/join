@@ -1,12 +1,14 @@
 <header class="header">
- <img class="header__logo" src="images/join-header.png" alt="Join Logo">
- 
+  <div class="header__inner">
+    <img class="header__logo" src="images/join-header.png" alt="Join Logo" />
 
-  <p class="header__title">Kanban Project Management Tool</p>
-  @if (isLoggedIn) {
-    <div class="header__actions">
-      <img class="header__help" src="icons/help.png" alt="Help" routerLink="/info/help" />
-      <app-user-avatar></app-user-avatar>
-    </div>
-  }
+    <p class="header__title">Kanban Project Management Tool</p>
+
+    @if (isLoggedIn) {
+      <div class="header__actions">
+        <img class="header__help" src="icons/help.png" alt="Help" routerLink="/info/help" />
+        <app-user-avatar></app-user-avatar>
+      </div>
+    }
+  </div>
 </header>

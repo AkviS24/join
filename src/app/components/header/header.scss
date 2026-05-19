@@ -2,11 +2,19 @@
 @use '../../../styles/abstracts/mixins' as *;
 
 .header {
-  height: 96px;
+  height: $header-height;
   background: $color-white;
-  @include flex-between;
   box-shadow: 0 4px 4px rgba($color-black, 0.08);
   position: relative;
+  z-index: 10;
+}
+
+.header__inner {
+  height: 100%;
+  width: 100%;
+  max-width: 1200px;
+  padding-inline: 140px 0;
+  @include flex-between;
 }
 
 .header__logo {
@@ -17,8 +25,6 @@
 
 .header__title {
   font-size: 20px;
- position: absolute;
- left: 116px;
   color: $color-black;
   white-space: nowrap;
 }
@@ -27,8 +33,8 @@
   display: flex;
   align-items: center;
   gap: 16px;
-  position: absolute;
-  right: 24px;
+  flex-shrink: 0;
+  padding-right: 20px;
 }
 
 .header__help {
@@ -40,34 +46,28 @@
     transform: scale(1.15);
   }
 }
-@media (max-width: 980px) {
-
-.header__title {
-left:64px;
-
-  }
-}
 
 
-@media (max-width: $bp-tablet) {
+
+@media (max-width: 960px) {
   .header {
     height: $header-height-mobile;
-    margin-left: 0;
-    width: 100%; ;
+  }
+
+  .header__inner {
+    max-width: none;
+    padding-inline: 16px 10px;
+  }
+  .header__actions {
+    padding-right: 0;
   }
 
   .header__logo {
     display: block;
-    margin-left: 16px;
-  }
-
-  .header__actions {
-    right: 0px;
   }
 
   .header__title,
   .header__help {
     display: none;
-
   }
 }

@@ -47,13 +47,21 @@
 }
 
 .page-scroll {
-  @include flex-between;
+  display: flex;
   flex-direction: column;
+  justify-content: space-between;
   flex: 1;
   min-height: 0;
-  overflow-y: auto;
   background-color: $color-bg;
   padding-bottom: 24px;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 .page-body {

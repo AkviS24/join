@@ -1,11 +1,25 @@
 @use '../../../styles/abstracts/variables' as *;
 @use '../../../styles/abstracts/mixins' as *;
+@use '../../../styles/abstracts/keyframes' as *;
 
 .add-task-page {
   height: calc(100dvh - $header-height);
   width: 100%;
   background-color: $color-bg;
   overflow: hidden;
+  animation: slideInRight 0.3s ease-out forwards;
+}
+
+:host-context(.dialog-overlay.closing) {
+  .add-task-page {
+    animation: slideOutRight 0.3s ease-out forwards;
+  }
+}
+
+:host-context(.dialog-overlay) {
+  .add-task-page {
+    border-radius: 30px;
+  }
 }
 
 .page-container {
@@ -16,7 +30,6 @@
   background-color: $color-bg;
   display: flex;
   flex-direction: column;
-  box-sizing: border-box;
 }
 
 .page-header {

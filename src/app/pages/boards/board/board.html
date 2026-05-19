@@ -85,14 +85,14 @@
 </section>
 
 @if (showDetails) {
-<div class="dialog-overlay" (click)="closeDetails()">
-  <app-board-details (click)="$event.stopPropagation()" (close)="closeDetails()">
+<div [class.closing]="isClosingDetails" class="dialog-overlay" (click)="closeDetails()">
+  <app-board-details (click)="$event.stopPropagation()">
   </app-board-details>
 </div>
 }
 
 @if (addingTask) {
-<div class="dialog-overlay" (click)="closeAddTask()">
+<div class="dialog-overlay" [class.closing]="isClosingAddTask" (click)="closeAddTask()">
   <app-add-task [initialStatus]="currentAddTaskStatus" [addingTaskInBoard]="addingTask" [asOverlay]="true" [editTask]="editingTask()"
     (click)="$event.stopPropagation()" (close)="closeAddTask()">
     <button class="close-btn" (click)="closeAddTask()">

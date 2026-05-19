@@ -123,6 +123,7 @@ app-svg-db:hover {
 
 .task-assignment {
   @include flex-between;
+  min-height: 42px;
 }
 
 .avatar-stack {
@@ -169,19 +170,23 @@ app-svg-db:hover {
   @include flex-center;
   z-index: 999;
   animation: fadeInBackdrop 0.2s ease-out forwards;
+
+  &.closing {
+    animation: fadeOutBackdrop 0.2s ease-out forwards;
+    pointer-events: none;
+  }
 }
 
 app-add-task {
   position: relative;
-  border-radius: 30px;
-  overflow: hidden;
+  // border-radius: 30px;
 
-    app-svg-db {
+  app-svg-db {
 
-      &:hover {
-        color: $color-dark;
-      }
+    &:hover {
+      color: $color-dark;
     }
+  }
 }
 
 

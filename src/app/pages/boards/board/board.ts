@@ -21,6 +21,8 @@ export class Board implements OnInit {
   userBadgeService = inject(UserBadge);
   showDetails = false;
   addingTask = false;
+  isClosingDetails = false;
+  isClosingAddTask = false;
   selectedTaskId = signal<number | null>(null);
   editingTask = signal<any | null>(null);
   searchQuery = signal('');
@@ -104,14 +106,22 @@ export class Board implements OnInit {
   }
 
   closeDetails() {
-    this.selectedTaskId.set(null);
-    this.showDetails = false;
+    this.isClosingDetails = true;
+
+    setTimeout(() => {
+      this.showDetails = false;
+      this.isClosingDetails = false;
+    }, 200);
   }
 
   closeAddTask() {
-    this.editingTask.set(null);
-    this.addingTask = false;
-    this.currentAddTaskStatus = "todo";
+    this.isClosingAddTask = true;
+    setTimeout(() => {
+      this.editingTask.set(null);
+      this.currentAddTaskStatus = "todo";
+      this.addingTask = false;
+      this.isClosingAddTask = false;
+    }, 200);
   }
 
   getOrientation() {

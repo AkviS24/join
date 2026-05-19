@@ -34,6 +34,18 @@
     }
 }
 
+@keyframes fadeOutBackdrop {
+    from {
+        background-color: rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(2px);
+    }
+
+    to {
+        background-color: rgba(0, 0, 0, 0);
+        backdrop-filter: blur(0px);
+    }
+}
+
 @keyframes fadeIn {
     from {
         opacity: 0;

@@ -44,6 +44,15 @@ export class BoardDetails {
     return date.toLocaleDateString('en-EN');
   }
 
+  formatType(type: string) {
+    if (!type) return '';
+
+    return type
+      .replace(/([a-z])([A-Z])/g, '$1 $2')
+      .replace(/-/g, ' ')
+      .replace(/\b\w/g, (char) => char.toUpperCase());
+  }
+
   getTaskTypeClass(type: string) {
     return type.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase().replace(/\s+/g, '-');
   }
@@ -63,6 +72,7 @@ export class BoardDetails {
   async toggleSubtask(task: DetailTask, index: number, event: Event) {
     const input = event.target as HTMLInputElement;
     const previousSubtasks = task.subtasks ? [...task.subtasks] : [];
+
     const subtasks = previousSubtasks.map((subtask, subtaskIndex) => {
       if (subtaskIndex !== index) return subtask;
 

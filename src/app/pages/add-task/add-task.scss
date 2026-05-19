@@ -23,7 +23,6 @@
   flex-shrink: 0;
   margin-bottom: 32px;
   background-color: $color-bg;
-  
 }
 
 .page-header h2 {
@@ -118,10 +117,6 @@
   font-size: 14px;
 }
 
-.textarea-wrapper {
-  position: relative;
-}
-
 textarea.form-control {
   height: 120px;
   min-height: 80px;
@@ -141,8 +136,7 @@ textarea.form-control {
 
     &::-webkit-calendar-picker-indicator {
       position: absolute;
-      right: 0;
-      top: 0;
+      inset: 0 0 0 auto;
       width: 40px;
       height: 100%;
       opacity: 0;
@@ -400,8 +394,8 @@ textarea.form-control {
   cursor: pointer;
 
   img {
-    width: 12px;
-    height: 12px;
+    width: 14px;
+    height: 14px;
     display: block;
     opacity: 1;
     visibility: visible;
@@ -409,7 +403,6 @@ textarea.form-control {
   }
 }
 
-.subtask-actions .subtask-btn:last-child img,
 .check-icon {
   opacity: 1 !important;
   visibility: visible !important;
@@ -424,25 +417,69 @@ textarea.form-control {
 }
 
 .new-subtask-item {
-  display: flex;
-  justify-content: space-between;
+  min-height: 32px;
+  display: grid;
+  grid-template-columns: 16px 1fr auto;
   align-items: center;
-  font-size: 14px;
+  gap: 8px;
   padding: 4px 8px;
-  border-radius: 8px;
-  background-color: $color-bg;
+  border-radius: 10px;
+  color: $color-black;
+  font-size: 16px;
+  background-color: transparent;
+
+  .subtask-list-actions {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  &:hover {
+    background-color: $color-white;
+
+    .subtask-list-actions {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+
+  &.editing {
+    background-color: $color-white;
+    border-bottom: 1px solid $color-primary;
+    border-radius: 0;
+
+    .subtask-list-actions {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+}
+
+.subtask-dot {
+  line-height: 1;
+}
+
+.subtask-text {
+  overflow-wrap: anywhere;
+}
+
+.subtask-edit-input {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: $color-black;
+  font: inherit;
 }
 
 .subtask-list-actions {
   display: flex;
   align-items: center;
   gap: 8px;
+  transition: opacity 125ms ease-in-out;
 }
 
 .icon-divider-small {
-  width: 1px;
-  height: 16px;
-  background-color: $color-gray;
+  display: none;
 }
 
 .required-note {
@@ -456,7 +493,6 @@ textarea.form-control {
 .page-footer {
   flex-shrink: 0;
   height: 72px;
-  z-index: 20;
   display: flex;
   justify-content: flex-end;
   align-items: center;

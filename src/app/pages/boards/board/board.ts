@@ -7,6 +7,7 @@ import { BoardDetails } from '../board-details/board-details';
 import { FormsModule } from '@angular/forms';
 import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
 import { AddTask } from "../../add-task/add-task";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-board',
@@ -19,6 +20,7 @@ import { AddTask } from "../../add-task/add-task";
 export class Board implements OnInit {
   taskService = inject(Tasks);
   userBadgeService = inject(UserBadge);
+  router = inject(Router);
   showDetails = false;
   addingTask = false;
   isClosingDetails = false;
@@ -100,9 +102,13 @@ export class Board implements OnInit {
   }
 
   openAddTask(status: string = 'todo') {
-    this.editingTask.set(null);
-    this.addingTask = true;
-    this.currentAddTaskStatus = status;
+    if (this.isMobileWidth()) {
+      this.router.navigate(['/add-task']);
+    } else {
+      this.editingTask.set(null);
+      this.addingTask = true;
+      this.currentAddTaskStatus = status;
+    }
   }
 
   closeDetails() {
@@ -128,4 +134,7 @@ export class Board implements OnInit {
     return window.innerWidth <= 1200 ? 'horizontal' : 'vertical';
   }
 
+  isMobileWidth() {
+    return window.innerWidth <= 480 ? true : false;
+  }
 }

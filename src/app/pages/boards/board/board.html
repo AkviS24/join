@@ -93,8 +93,8 @@
 
 @if (addingTask) {
 <div class="dialog-overlay" [class.closing]="isClosingAddTask" (click)="closeAddTask()">
-  <app-add-task [initialStatus]="currentAddTaskStatus" [addingTaskInBoard]="addingTask" [asOverlay]="true" [editTask]="editingTask()"
-    (click)="$event.stopPropagation()" (close)="closeAddTask()">
+  <app-add-task [initialStatus]="currentAddTaskStatus" [addingTaskInBoard]="addingTask" [asOverlay]="true"
+    [editTask]="editingTask()" (click)="$event.stopPropagation()" (close)="closeAddTask()">
     <button class="close-btn" (click)="closeAddTask()">
       <app-svg-db name="cancel"></app-svg-db>
     </button>

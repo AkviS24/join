@@ -2,45 +2,28 @@
 @use '../../../styles/abstracts/mixins' as *;
 
 .add-task-page {
-  min-height: 90vh;
+  height: calc(100dvh - $header-height);
   width: 100%;
-  box-sizing: border-box;
   background-color: $color-bg;
+  overflow: hidden;
 }
 
 .page-container {
   width: 100%;
   max-width: 1116px;
-    padding:  60px 60px 64px;
+  height: 100%;
+  padding: 60px 60px 24px;
   background-color: $color-bg;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
 }
-
-:host-context(.dialog-overlay) {
-  width: min(1116px, calc(100vw - 32px));
-  max-height: calc(100vh - 32px);
-  display: block;
-}
-
-:host-context(.dialog-overlay) .add-task-page {
-  min-height: 0;
-  max-width: none;
-  max-height: calc(100vh - 32px);
-  overflow-y: auto;
-  border-radius: 30px;
-  box-shadow: 0 0 8px rgba($color-black, 0.16);
-}
-
-:host-context(.dialog-overlay) .page-container {
-  max-width: 100%;
-}
-
 
 .page-header {
+  flex-shrink: 0;
   margin-bottom: 32px;
-  position: sticky;
-  top: 0;
   background-color: $color-bg;
-  padding-bottom: 8px;
+  
 }
 
 .page-header h2 {
@@ -50,11 +33,17 @@
   color: $color-black;
 }
 
+.page-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  background-color: $color-bg;
+  padding-bottom: 24px;
+}
+
 .page-body {
   display: flex;
-  justify-content: space-between;
   gap: 43px;
-  margin-bottom: 64px;
 }
 
 .column {
@@ -74,11 +63,9 @@
 
 .divider {
   width: 1px;
+  height: 470px;
   background-color: $color-gray;
   flex-shrink: 0;
-  align-self: stretch;
-  margin-top: -2px;
-  margin-bottom: -40px;
 }
 
 .form-group {
@@ -92,23 +79,23 @@
   color: $color-dark;
 }
 
+.required,
 .form-group label .required,
 .required-note .required {
   color: #ff8190;
 }
 
 .form-control {
+  width: 100%;
+  box-sizing: border-box;
   background-color: $color-white;
   border: 1px solid $color-gray;
   border-radius: 10px;
   padding: 12px 16px;
   font-size: 16px;
   color: $color-black;
-  width: 100%;
-  box-sizing: border-box;
   outline: none;
   font-family: inherit;
-  transition: border-color 0.1s ease-in-out;
 
   &:focus,
   &.has-value {
@@ -125,21 +112,23 @@
   }
 }
 
+.field-error-text,
+.error-message {
+  color: #ff8190;
+  font-size: 14px;
+}
+
 .textarea-wrapper {
   position: relative;
 }
 
 textarea.form-control {
   height: 120px;
+  min-height: 80px;
+  max-height: 220px;
   padding: 18px 16px;
   resize: vertical;
-}
-
-.resize-icon {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  pointer-events: none;
+  overflow: auto;
 }
 
 .input-with-icon {
@@ -149,7 +138,6 @@ textarea.form-control {
 
   input {
     padding-right: 40px;
-    position: relative;
 
     &::-webkit-calendar-picker-indicator {
       position: absolute;
@@ -157,8 +145,6 @@ textarea.form-control {
       top: 0;
       width: 40px;
       height: 100%;
-      margin: 0;
-      padding: 0;
       opacity: 0;
       cursor: pointer;
     }
@@ -175,20 +161,19 @@ textarea.form-control {
   position: relative;
   width: 100%;
   cursor: pointer;
+
+  &:has(.dropdown-list) .select-display {
+    border-color: $color-primary;
+  }
 }
 
 .select-display {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  cursor: pointer;
 
-  img {
-    transition: transform 0.2s ease;
-
-    &.rotated {
-      transform: rotate(180deg);
-    }
+  img.rotated {
+    transform: rotate(180deg);
   }
 }
 
@@ -197,12 +182,12 @@ textarea.form-control {
   top: calc(100% + 4px);
   left: 0;
   width: 100%;
+  max-height: 240px;
+  overflow-y: auto;
+  z-index: 30;
   background-color: $color-white;
   border: 1px solid $color-gray;
   border-radius: 10px;
-  max-height: 240px;
-  overflow-y: auto;
-  z-index: 10;
   box-shadow: 0 0 4px rgba($color-black, 0.1);
   display: flex;
   flex-direction: column;
@@ -214,7 +199,6 @@ textarea.form-control {
   padding: 8px 16px;
   background-color: $color-white;
   border-bottom: 1px solid $color-dark-gray;
-  cursor: default;
 }
 
 .contact-search-input {
@@ -239,7 +223,6 @@ textarea.form-control {
   padding: 7px 16px;
   cursor: pointer;
   border-radius: 10px;
-  transition: background-color 0.2s ease;
 
   &:hover {
     background-color: $color-bg;
@@ -255,14 +238,6 @@ textarea.form-control {
 
     .custom-checkbox-icon {
       filter: brightness(0) invert(1);
-    }
-
-    .checkbox-btn:hover {
-      background-color: rgba($color-white, 0.1);
-
-      img {
-        filter: brightness(0) invert(1);
-      }
     }
   }
 }
@@ -287,7 +262,6 @@ textarea.form-control {
   align-items: center;
   color: $color-white;
   font-size: 14px;
-  font-weight: 400;
   border: 2px solid $color-white;
   flex-shrink: 0;
 }
@@ -298,46 +272,40 @@ textarea.form-control {
 }
 
 .checkbox-btn,
-.arrow-btn {
+.arrow-btn,
+.subtask-btn {
   display: flex;
   justify-content: center;
   align-items: center;
+  border-radius: 50%;
+}
+
+.checkbox-btn,
+.arrow-btn {
   width: 32px;
   height: 32px;
-  border-radius: 50%;
-  transition: background-color 0.1s ease;
 }
 
-.checkbox-btn {
-  &:hover {
-    background-color: $color-dark-gray;
-
-    img {
-      filter: brightness(0) invert(54%) sepia(85%) saturate(1312%) hue-rotate(167deg)
-        brightness(95%) contrast(92%);
-    }
-  }
-
-  img {
-    transition: filter 0.1s ease;
-  }
+.checkbox-btn:hover,
+.arrow-btn:hover,
+.subtask-btn:hover {
+  background-color: $color-dark-gray;
 }
 
-.arrow-btn {
-  &:hover {
-    background-color: $color-dark-gray;
-  }
-}
 .selected-avatars {
   display: flex;
   align-items: center;
+  min-height: 0;
+  margin-top: 0;
+}
+
+.selected-avatars:has(.avatar) {
   margin-top: 8px;
   min-height: 42px;
 }
 
 .stacked-avatar {
   margin-left: -10px;
-  border: 2px solid $color-white;
 
   &:first-child {
     margin-left: 0;
@@ -347,10 +315,8 @@ textarea.form-control {
 .more-avatar {
   margin-left: -10px;
   background-color: $color-dark;
-  color: $color-white;
   font-size: 13px;
   font-weight: 700;
-  border: 2px solid $color-white;
 }
 
 .priority-buttons {
@@ -373,115 +339,31 @@ textarea.form-control {
   font-size: 16px;
   color: $color-black;
   font-family: inherit;
-  transition: all 0.1s ease;
 }
+
 .btn-priority:not(.active):hover {
   box-shadow: 0 4px 8px rgba($color-black, 0.15);
 }
 
+.btn-priority.active {
+  color: $color-white;
+  font-weight: 700;
+
+  img {
+    filter: brightness(0) invert(1);
+  }
+}
+
 .btn-priority.active.urgent {
   background-color: $color-urgent;
-  color: $color-white;
-  box-shadow: none;
-  font-weight: 700;
 }
 
 .btn-priority.active.medium {
   background-color: $color-medium;
-  color: $color-white;
-  box-shadow: none;
-  font-weight: 700;
 }
 
 .btn-priority.active.low {
   background-color: $color-low;
-  color: $color-white;
-  box-shadow: none;
-  font-weight: 700;
-}
-
-.btn-priority.active img {
-  filter: brightness(0) invert(1);
-}
-
-.page-footer {
-  position: sticky;
-  bottom: 0;
-  z-index: 20;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-end;
-  gap: 12px;
-  padding: 16px 0 0;
-  background-color: $color-bg;
-}
-
-.required-note {
-  font-size: 16px;
-  color: $color-black;
-}
-
-.error-message {
-  color: #ff8190;
-  font-size: 14px;
-  margin-top: 8px;
-}
-
-.actions {
-  display: flex;
-  gap: 25px;
-  margin-bottom: 32px;
-}
-
-.btn-cancel {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  padding-inline: 10px;
-  padding-block: 8px;
-  border-radius: 10px;
-  border: 1px solid $color-dark;
-  background-color: transparent;
-  color: $color-dark;
-  cursor: pointer;
-  font-size: 16px;
-  font-family: inherit;
-  transition: all 0.1s ease-in-out;
-
-  &:hover {
-    border-color: $color-primary;
-    color: $color-primary;
-    background-color: $color-white;
-    box-shadow: 0 4px 4px rgba($color-black, 0.1);
-
-    img {
-      filter: invert(54%) sepia(85%) saturate(1312%) hue-rotate(167deg) brightness(95%)
-        contrast(92%);
-    }
-  }
-}
-
-.btn-create {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding-inline: 10px;
-  border-radius: 10px;
-  border: none;
-  background-color: $color-dark;
-  color: $color-white;
-  cursor: pointer;
-  font-size: 16px;
-  font-family: inherit;
-  transition: all 0.1s ease-in-out;
-
-  &:hover {
-    background-color: $color-primary;
-    box-shadow: 0 4px 4px rgba($color-black, 0.1);
-  }
 }
 
 .subtask-wrapper {
@@ -505,16 +387,33 @@ textarea.form-control {
   align-items: center;
   gap: 8px;
 
-  .check-icon {
-    filter: brightness(0) invert(18%) sepia(11%) saturate(1485%) hue-rotate(174deg)
-      brightness(97%) contrast(88%);
-  }
-
   .action-divider {
     width: 1px;
     height: 24px;
     background-color: $color-gray;
   }
+}
+
+.subtask-btn {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+
+  img {
+    width: 12px;
+    height: 12px;
+    display: block;
+    opacity: 1;
+    visibility: visible;
+    filter: brightness(0);
+  }
+}
+
+.subtask-actions .subtask-btn:last-child img,
+.check-icon {
+  opacity: 1 !important;
+  visibility: visible !important;
+  filter: brightness(0) !important;
 }
 
 .new-subtasks-list {
@@ -546,29 +445,74 @@ textarea.form-control {
   background-color: $color-gray;
 }
 
-.subtask-btn {
+.required-note {
+  font-size: 16px;
+  color: $color-black;
+  line-height: 1;
+  margin-top: 32px;
+  align-self: flex-start;
+}
+
+.page-footer {
+  flex-shrink: 0;
+  height: 72px;
+  z-index: 20;
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
+  background-color: $color-bg;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 25px;
+  flex-shrink: 0;
+}
+
+.btn-cancel,
+.btn-create {
+  height: 56px;
+  border-radius: 10px;
   cursor: pointer;
-  transition: background-color 0.1s ease;
+  font-size: 20px;
+  font-family: inherit;
+  white-space: nowrap;
+}
+
+.btn-cancel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding-inline: 20px;
+  border: 1px solid $color-dark;
+  background-color: transparent;
+  color: $color-dark;
 
   &:hover {
-    background-color: $color-dark-gray;
-
-    img {
-      filter: brightness(0) invert(54%) sepia(85%) saturate(1312%) hue-rotate(167deg)
-        brightness(95%) contrast(92%);
-    }
+    border-color: $color-primary;
+    color: $color-primary;
+    background-color: $color-white;
+    box-shadow: 0 4px 4px rgba($color-black, 0.1);
   }
+}
 
-  img {
-    width: 12px;
-    height: 12px;
-    transition: filter 0.1s ease;
+.btn-create {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding-inline: 24px;
+  border: none;
+  background-color: $color-dark;
+  color: $color-white;
+  font-weight: 700;
+
+  &:hover {
+    background-color: $color-primary;
+    box-shadow: 0 4px 4px rgba($color-black, 0.1);
   }
 }
 
@@ -583,10 +527,25 @@ textarea.form-control {
 }
 
 @media (max-width: 1024px) {
+  .add-task-page {
+    height: calc(100dvh - $header-height-mobile - $footer-height);
+  }
+
+  .page-container {
+    padding: 44px 20px 16px;
+  }
+
+  .page-header {
+    margin-bottom: 24px;
+  }
+
+  .page-header h2 {
+    font-size: 40px;
+  }
+
   .page-body {
     flex-direction: column;
-    gap: 40px;
-    margin-bottom: 80px;
+    gap: 32px;
   }
 
   .divider {
@@ -596,49 +555,61 @@ textarea.form-control {
   .column {
     max-width: 100%;
   }
-  .page-container {
-    padding-bottom: 144px;
-}
-}
-@media (max-width: 600px) {
-  .page-header h2 {
-    font-size: 40px;
-  }
-
-.page-container {
-    padding:  44px 20px 84px;
-}
-  .page-body {
-    margin-bottom: 40px;
-  }
 
   .page-footer {
-    align-items: stretch;
-    gap: 12px;
+    height: 72px;
   }
 
   .actions {
-    width: 100%;
-    flex-direction: column;
     gap: 16px;
   }
 
   .btn-cancel,
   .btn-create {
-    width: 100%;
-    height: 40px;
+    width: auto;
+    height: 56px;
+    font-size: 20px;
   }
 }
 
-
-@media (max-width: 375px) {
-  .priority-buttons {
-    gap: 6px;
+@media (max-width: 480px) {
+  .btn-cancel,
+  .btn-create {
+    height: 56px;
+    font-size: 20px;
   }
 
+  .btn-cancel {
+    padding-inline: 20px;
+  }
+
+  .btn-create {
+    padding-inline: 24px;
+  }
+}
+
+@media (max-width: 375px) {
   .btn-priority {
     font-size: 12px;
     padding: 12px 4px;
     gap: 4px;
+  }
+
+  .actions {
+    gap: 8px;
+  }
+
+  .btn-cancel,
+  .btn-create {
+    height: 48px;
+    font-size: 16px;
+  }
+
+  .btn-cancel {
+    padding-inline: 14px;
+  }
+
+  .btn-create {
+    padding-inline: 18px;
   }
 }

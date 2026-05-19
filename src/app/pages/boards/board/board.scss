@@ -171,6 +171,11 @@ app-svg-db:hover {
   animation: fadeInBackdrop 0.2s ease-out forwards;
 }
 
+app-add-task {
+  border-radius: 30px;
+  overflow: hidden;
+}
+
 .subtask-preview {
   margin: 16px 0;
 }

@@ -1,4 +1,5 @@
 <section class="add-task-page" (click)="closeDropdowns()">
+  <ng-content select=".close-btn"></ng-content>
   <div class="page-container">
     <header class="page-header">
       <h2>{{ isEditMode ? 'Edit Task' : 'Add Task' }}</h2>
@@ -12,18 +13,11 @@
               Title<span class="required">*</span>
             </label>
 
-            <input
-              id="task-title"
-              type="text"
-              class="form-control"
-              placeholder="Enter a title"
-              [(ngModel)]="title"
-              [class.has-value]="title"
-              [class.error]="isSubmitted && !title"
-            />
+            <input id="task-title" type="text" class="form-control" placeholder="Enter a title" [(ngModel)]="title"
+              [class.has-value]="title" [class.error]="isSubmitted && !title" />
 
             @if (isSubmitted && !title) {
-              <span class="field-error-text">This field is required</span>
+            <span class="field-error-text">This field is required</span>
             }
           </div>
 
@@ -31,13 +25,8 @@
             <label for="task-description">Description</label>
 
             <div class="textarea-wrapper">
-              <textarea
-                id="task-description"
-                class="form-control"
-                placeholder="Enter a Description"
-                [(ngModel)]="description"
-                [class.has-value]="description"
-              ></textarea>
+              <textarea id="task-description" class="form-control" placeholder="Enter a Description"
+                [(ngModel)]="description" [class.has-value]="description"></textarea>
             </div>
           </div>
 
@@ -47,19 +36,13 @@
             </label>
 
             <div class="input-with-icon">
-              <input
-                id="task-due-date"
-                type="date"
-                class="form-control"
-                [(ngModel)]="dueDate"
-                [class.has-value]="dueDate"
-                [class.error]="isSubmitted && !dueDate"
-              />
+              <input id="task-due-date" type="date" class="form-control" [(ngModel)]="dueDate"
+                [class.has-value]="dueDate" [class.error]="isSubmitted && !dueDate" />
               <img src="icons/img/calendar.svg" alt="Calendar" />
             </div>
 
             @if (isSubmitted && !dueDate) {
-              <span class="field-error-text">This field is required</span>
+            <span class="field-error-text">This field is required</span>
             }
           </div>
         </div>
@@ -71,32 +54,20 @@
             <label>Priority</label>
 
             <div class="priority-buttons">
-              <button
-                type="button"
-                class="btn-priority urgent"
-                [class.active]="selectedPriority === 'urgent'"
-                (click)="selectPriority('urgent')"
-              >
+              <button type="button" class="btn-priority urgent" [class.active]="selectedPriority === 'urgent'"
+                (click)="selectPriority('urgent')">
                 Urgent
                 <img src="icons/img/high2.svg" alt="Urgent" />
               </button>
 
-              <button
-                type="button"
-                class="btn-priority medium"
-                [class.active]="selectedPriority === 'medium'"
-                (click)="selectPriority('medium')"
-              >
+              <button type="button" class="btn-priority medium" [class.active]="selectedPriority === 'medium'"
+                (click)="selectPriority('medium')">
                 Medium
                 <img src="icons/img/medium.svg" alt="Medium" />
               </button>
 
-              <button
-                type="button"
-                class="btn-priority low"
-                [class.active]="selectedPriority === 'low'"
-                (click)="selectPriority('low')"
-              >
+              <button type="button" class="btn-priority low" [class.active]="selectedPriority === 'low'"
+                (click)="selectPriority('low')">
                 Low
                 <img src="icons/img/low2.svg" alt="Low" />
               </button>
@@ -107,83 +78,56 @@
             <label>Assigned to</label>
 
             <div class="custom-select-wrapper" (click)="toggleDropdown($event)">
-              <div
-                class="form-control select-display"
-                [class.has-value]="selectedContacts.length > 0"
-              >
+              <div class="form-control select-display" [class.has-value]="selectedContacts.length > 0">
                 <span>Select contacts to assign</span>
 
                 <div class="arrow-btn">
-                  <img
-                    src="icons/img/pic.svg"
-                    alt="Dropdown"
-                    [class.rotated]="dropdownOpen"
-                  />
+                  <img src="icons/img/pic.svg" alt="Dropdown" [class.rotated]="dropdownOpen" />
                 </div>
               </div>
 
               @if (dropdownOpen) {
-                <div class="dropdown-list">
-                  <div
-                    class="contact-search-wrapper"
-                    (click)="$event.stopPropagation()"
-                  >
-                    <input
-                      type="text"
-                      class="contact-search-input"
-                      placeholder="Search contacts"
-                      [(ngModel)]="contactSearch"
-                    />
+              <div class="dropdown-list">
+                <div class="contact-search-wrapper" (click)="$event.stopPropagation()">
+                  <input type="text" class="contact-search-input" placeholder="Search contacts"
+                    [(ngModel)]="contactSearch" />
+                </div>
+
+                @for (contact of filteredContacts; track contact.id) {
+                <div class="dropdown-item" [class.selected]="isSelected(contact)"
+                  (click)="toggleContact(contact, $event)">
+                  <div class="contact-info">
+                    <div class="avatar" [style.backgroundColor]="contact.color">
+                      {{ contact.initials }}
+                    </div>
+
+                    <span>{{ contact.name }}</span>
                   </div>
 
-                  @for (contact of filteredContacts; track contact.id) {
-                    <div
-                      class="dropdown-item"
-                      [class.selected]="isSelected(contact)"
-                      (click)="toggleContact(contact, $event)"
-                    >
-                      <div class="contact-info">
-                        <div
-                          class="avatar"
-                          [style.backgroundColor]="contact.color"
-                        >
-                          {{ contact.initials }}
-                        </div>
-
-                        <span>{{ contact.name }}</span>
-                      </div>
-
-                      <div class="checkbox-btn">
-                        <img
-                          [src]="
+                  <div class="checkbox-btn">
+                    <img [src]="
                             isSelected(contact)
                               ? 'icons/img/cb1.svg'
                               : 'icons/img/cb0.svg'
-                          "
-                          alt="Checkbox"
-                          class="custom-checkbox-icon"
-                        />
-                      </div>
-                    </div>
-                  }
+                          " alt="Checkbox" class="custom-checkbox-icon" />
+                  </div>
                 </div>
+                }
+              </div>
               }
             </div>
 
             <div class="selected-avatars">
               @for (contact of selectedContacts.slice(0, 4); track contact.id) {
-                <div
-                  class="avatar stacked-avatar"
-                  [style.backgroundColor]="contact.color"
-                >
-                  {{ contact.initials }}
-                </div>
+              <div class="avatar stacked-avatar" [style.backgroundColor]="contact.color">
+                {{ contact.initials }}
+              </div>
               }
 
               @if (selectedContacts.length > 4) {
-                <div class="avatar more-avatar">
-                  +{{ selectedContacts.length - 4 }}
-                </div>
+              <div class="avatar more-avatar">
+                +{{ selectedContacts.length - 4 }}
+              </div>
               }
             </div>
           </div>
@@ -193,49 +137,33 @@
               Category<span class="required">*</span>
             </label>
 
-            <div
-              class="custom-select-wrapper"
-              (click)="toggleCategoryDropdown($event)"
-            >
-              <div
-                class="form-control select-display"
-                [class.has-value]="taskType"
-                [class.error]="isSubmitted && !taskType"
-              >
+            <div class="custom-select-wrapper" (click)="toggleCategoryDropdown($event)">
+              <div class="form-control select-display" [class.has-value]="taskType"
+                [class.error]="isSubmitted && !taskType">
                 <span>
                   {{ taskType ? taskType : 'Select task category' }}
                 </span>
 
                 <div class="arrow-btn">
-                  <img
-                    src="icons/img/pic.svg"
-                    alt="Dropdown"
-                    [class.rotated]="categoryDropdownOpen"
-                  />
+                  <img src="icons/img/pic.svg" alt="Dropdown" [class.rotated]="categoryDropdownOpen" />
                 </div>
               </div>
 
               @if (categoryDropdownOpen) {
-                <div class="dropdown-list">
-                  <div
-                    class="dropdown-item"
-                    (click)="selectCategory('Technical Task', $event)"
-                  >
-                    <span>Technical Task</span>
-                  </div>
-
-                  <div
-                    class="dropdown-item"
-                    (click)="selectCategory('User Story', $event)"
-                  >
-                    <span>User Story</span>
-                  </div>
+              <div class="dropdown-list">
+                <div class="dropdown-item" (click)="selectCategory('Technical Task', $event)">
+                  <span>Technical Task</span>
                 </div>
+
+                <div class="dropdown-item" (click)="selectCategory('User Story', $event)">
+                  <span>User Story</span>
+                </div>
+              </div>
               }
             </div>
 
             @if (isSubmitted && !taskType) {
-              <span class="field-error-text">This field is required</span>
+            <span class="field-error-text">This field is required</span>
             }
           </div>
 
@@ -243,15 +171,8 @@
             <label for="task-subtask">Subtasks</label>
 
             <div class="subtask-wrapper">
-              <input
-                id="task-subtask"
-                type="text"
-                class="form-control"
-                placeholder="Add new subtask"
-                [(ngModel)]="newSubtaskText"
-                [class.has-value]="newSubtaskText"
-                (keyup.enter)="addSubtask()"
-              />
+              <input id="task-subtask" type="text" class="form-control" placeholder="Add new subtask"
+                [(ngModel)]="newSubtaskText" [class.has-value]="newSubtaskText" (keyup.enter)="addSubtask()" />
 
               <div class="subtask-actions">
                 <div class="subtask-btn" (click)="clearSubtaskInput()">
@@ -261,38 +182,31 @@
                 <div class="action-divider"></div>
 
                 <div class="subtask-btn" (click)="addSubtask()">
-                  <img
-                    src="icons/img/check.svg"
-                    alt="Add"
-                    class="check-icon"
-                  />
+                  <img src="icons/img/check.svg" alt="Add" class="check-icon" />
                 </div>
               </div>
             </div>
 
             @if (newSubtasks.length > 0) {
-              <div class="new-subtasks-list">
-                @for (subtask of newSubtasks; track $index) {
-                  <div class="new-subtask-item">
-                    <span>• {{ subtask.subtaskText }}</span>
+            <div class="new-subtasks-list">
+              @for (subtask of newSubtasks; track $index) {
+              <div class="new-subtask-item">
+                <span>• {{ subtask.subtaskText }}</span>
 
-                    <div class="subtask-list-actions">
-                      <div class="subtask-btn" (click)="editNewSubtask($index)">
-                        <img src="icons/img/pen.svg" alt="Edit" />
-                      </div>
-
-                      <div class="icon-divider-small"></div>
-
-                      <div
-                        class="subtask-btn"
-                        (click)="removeNewSubtask($index)"
-                      >
-                        <img src="icons/img/delete.svg" alt="Delete" />
-                      </div>
-                    </div>
+                <div class="subtask-list-actions">
+                  <div class="subtask-btn" (click)="editNewSubtask($index)">
+                    <img src="icons/img/pen.svg" alt="Edit" />
                   </div>
-                }
+
+                  <div class="icon-divider-small"></div>
+
+                  <div class="subtask-btn" (click)="removeNewSubtask($index)">
+                    <img src="icons/img/delete.svg" alt="Delete" />
+                  </div>
+                </div>
               </div>
+              }
+            </div>
             }
           </div>
         </div>
@@ -303,28 +217,21 @@
       </div>
 
       @if (errorMessage) {
-        <div class="error-message">
-          {{ errorMessage }}
-        </div>
+      <div class="error-message">
+        {{ errorMessage }}
+      </div>
       }
     </div>
 
     <footer class="page-footer">
       <div class="actions">
-        <button
-          type="button"
-          class="btn-cancel"
-          (click)="isEditMode ? cancelAction() : clearForm()"
-        >
+        <button type="button" class="btn-cancel" (click)="isEditMode ? cancelAction() : clearForm()">
           {{ isEditMode ? 'Cancel' : 'Clear' }}
-          <img src="icons/img/cancle.svg" alt="Clear" />
+          <!-- <img src="icons/img/cancle.svg" alt="Clear" /> -->
+          <app-svg-db name="cancel"></app-svg-db>
         </button>
 
-        <button
-          type="button"
-          class="btn-create"
-          (click)="submitTask()"
-        >
+        <button type="button" class="btn-create" (click)="submitTask()">
           {{ isEditMode ? 'Save Task' : 'Create Task' }}
           <img src="icons/img/check.svg" alt="Create" />
         </button>
@@ -333,11 +240,8 @@
   </div>
 
   @if (showSuccessMessage) {
-    <div class="success-message">
-      <img
-        src="icons/img/tasksucces.svg"
-        alt="Task successfully created"
-      />
-    </div>
+  <div class="success-message">
+    <img src="icons/img/tasksucces.svg" alt="Task successfully created" />
+  </div>
   }
 </section>

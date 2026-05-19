@@ -95,6 +95,9 @@
 <div class="dialog-overlay" (click)="closeAddTask()">
   <app-add-task [initialStatus]="currentAddTaskStatus" [asOverlay]="true" [editTask]="editingTask()"
     (click)="$event.stopPropagation()" (close)="closeAddTask()">
+    <button class="close-btn" (click)="closeAddTask()">
+      <app-svg-db name="cancel"></app-svg-db>
+    </button>
   </app-add-task>
 </div>
 }

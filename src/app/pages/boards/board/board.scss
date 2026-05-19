@@ -172,9 +172,32 @@ app-svg-db:hover {
 }
 
 app-add-task {
+  position: relative;
   border-radius: 30px;
   overflow: hidden;
+
+  .close-btn {
+    position: absolute;
+    @include flex-center;
+    top: 32px;
+    right: 32px;
+    z-index: 99;
+    padding: 8px;
+    border-radius: 50%;
+
+    &:hover {
+      background-color: $color-dark-gray;
+    }
+
+    app-svg-db {
+
+      &:hover {
+        color: $color-dark;
+      }
+    }
+  }
 }
+
 
 .subtask-preview {
   margin: 16px 0;

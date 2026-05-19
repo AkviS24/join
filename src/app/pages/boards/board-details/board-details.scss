@@ -342,15 +342,6 @@
     background-color: $color-dark-gray;
     font-size: 16.1px;
     transform: translateY(-1px);
-
-    input:checked+.custom-checkbox {
-      background-color: $color-dark-gray;
-
-      &::after {
-        border-left: none;
-        border-bottom: none;
-      }
-    }
   }
 
   input {

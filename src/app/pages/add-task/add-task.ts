@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { UserBadge } from '../../services/userbadge';
 import { Tasks } from '../../services/tasks';
+import { SvgDb } from "../../shared/svg-db/svg-db";
 
 type EditableSubtask = {
   subtaskText?: string;
@@ -30,7 +31,7 @@ type EditableTask = {
 
 @Component({
   selector: 'app-add-task',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, SvgDb],
   templateUrl: './add-task.html',
   styleUrl: './add-task.scss',
 })

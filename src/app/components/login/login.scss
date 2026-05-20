@@ -84,7 +84,7 @@
 }
 
 .loginH1 {
-  font-size: 48px;
+  font-size: 61px;
   font-weight: 700;
   margin: 0;
   padding-bottom: 5px;
@@ -322,6 +322,45 @@
   height: 100%;
   background-color: #f0f0f0;
   z-index: 999;
+}
+
+.mobile-start-animation {
+  display: none;
+}
+
+@media (max-width: 480px) {
+  #logo {
+    display: none;
+  }
+
+  .blue-overlay {
+    background-color: #2a3647;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  .mobile-start-animation {
+    display: block;
+    width: 100vw;
+    height: 100dvh;
+    object-fit: cover;
+    animation: mobileStartFade 1.2s ease-in-out forwards;
+  }
+
+  @keyframes mobileStartFade {
+    0%,
+    72% {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    100% {
+      opacity: 0;
+      transform: scale(1.03);
+    }
+  }
 }
 
 @include signup.styles;

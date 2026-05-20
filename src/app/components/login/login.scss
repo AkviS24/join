@@ -96,12 +96,11 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
-  gap: 24px;
 }
 
 .horizontalH1Underline {
-  width: 80px;
-  height: 2px;
+  width: 150px;
+  height: 3px;
   border-radius: 3px;
   background-color: $color-primary;
 }
@@ -117,6 +116,7 @@
   border: 1px solid $color-black;
   border-radius: 10px;
   padding: 0 21px;
+  margin: 12px 0;
   gap: 16px;
   background-color: white;
   transition: border-color 0.1s ease;
@@ -200,9 +200,7 @@
   color: #ff3333;
 }
 
-.login-alert-message--success {
-  color: #20d86e;
-}
+
 
 .loginButtons {
   border: none;
@@ -265,7 +263,7 @@
 .legalNotice {
   font-size: 16px;
   font-weight: 400;
-  color: $color-gray;
+  color: $color-dark;
   transition: transform 0.5s ease;
 }
 
@@ -335,30 +333,74 @@
 
   .blue-overlay {
     background-color: #2a3647;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
   }
 
   .mobile-start-animation {
     display: block;
-    width: 100vw;
-    height: 100dvh;
-    object-fit: cover;
-    animation: mobileStartFade 1.2s ease-in-out forwards;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 274px;
+    height: auto;
+    transform: translate(-50%, -50%);
+    animation:
+      mobileMoveLogo 0.8s ease-in-out 0.8s forwards,
+      mobileResizeLogo 0.8s ease-in-out 0.8s forwards;
   }
 
-  @keyframes mobileStartFade {
-    0%,
-    72% {
-      opacity: 1;
-      transform: scale(1);
+  @keyframes mobileMoveLogo {
+    0% {
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
     }
 
     100% {
-      opacity: 0;
-      transform: scale(1.03);
+      top: 48px;
+      left: 24px;
+      transform: translate(0, 0);
+    }
+  }
+
+  @keyframes mobileResizeLogo {
+    0% {
+      width: 274px;
+    }
+
+    100% {
+      width: 64px;
+      height: auto;
+    }
+  }
+}
+
+@media (max-width: 375px) {
+  .mobile-start-animation {
+    width: 180px;
+  }
+
+  @keyframes mobileMoveLogo {
+    0% {
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    100% {
+      top: 30px;
+      left: 20px;
+      transform: translate(0, 0);
+    }
+  }
+
+  @keyframes mobileResizeLogo {
+    0% {
+      width: 180px;
+    }
+
+    100% {
+      width: 50px;
+      height: auto;
     }
   }
 }

@@ -5,9 +5,11 @@
   </button>
   }
   <div class="page-container">
+    @if (!isEditMode) {
     <header class="page-header">
-      <h2>{{ isEditMode ? 'Edit Task' : 'Add Task' }}</h2>
+      <h2>Add Task</h2>
     </header>
+    }
 
     <div class="page-scroll">
       <div class="page-body">
@@ -229,14 +231,16 @@
 
     <footer class="page-footer">
       <div class="actions">
+        @if (!isEditMode) {
         <button type="button" class="btn-cancel"
           (click)="(isEditMode || addingTaskInBoard) ? cancelAction() : clearForm()">
           {{ (isEditMode || addingTaskInBoard) ? 'Cancel' : 'Clear' }}
           <app-svg-db name="cancel"></app-svg-db>
         </button>
+        }
 
         <button type="button" class="btn-create" (click)="submitTask()">
-          {{ isEditMode ? 'Save Task' : 'Create Task' }}
+          {{ isEditMode ? 'OK' : 'Create Task' }}
           <img src="icons/img/check.svg" alt="Create" />
         </button>
       </div>

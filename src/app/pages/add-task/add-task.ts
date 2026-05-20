@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, SimpleChanges, inject, Input, Output, EventEmitter, booleanAttribute } from '@angular/core';
+import { ChangeDetectorRef, Component, DestroyRef, OnInit, OnChanges, SimpleChanges, inject, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Supabase } from '../../services/supabase';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -41,6 +41,8 @@ export class AddTask implements OnInit, OnChanges {
   userBadgeService = inject(UserBadge);
   route = inject(ActivatedRoute);
   router = inject(Router);
+  private changeDetectorRef = inject(ChangeDetectorRef);
+  private destroyRef = inject(DestroyRef);
 
   contacts: any[] = [];
   dropdownOpen = false;
@@ -75,7 +77,7 @@ export class AddTask implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['editTask'] && this.contacts.length > 0) {
+    if (changes['editTask']) {
       this.fillFormFromEditTask();
     }
   }
@@ -100,6 +102,10 @@ export class AddTask implements OnInit, OnChanges {
     }));
 
     this.fillFormFromEditTask();
+
+    if (!this.destroyRef.destroyed) {
+      this.changeDetectorRef.detectChanges();
+    }
   }
 
   getTodayDate() {

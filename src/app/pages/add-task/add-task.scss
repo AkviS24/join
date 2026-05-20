@@ -16,6 +16,10 @@
 }
 
 :host-context(.dialog-overlay) {
+  display: block;
+  width: calc(100% - 32px);
+  max-width: 1116px;
+
   .add-task-page {
     animation: slideInRight 0.3s ease-out forwards;
     border-radius: 30px;

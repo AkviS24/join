@@ -48,6 +48,7 @@ export class AddTask implements OnInit, OnChanges {
   selectedContacts: any[] = [];
   selectedPriority = 'medium';
   contactSearch = '';
+  minDate = '';
 
   title = '';
   description = '';
@@ -80,6 +81,7 @@ export class AddTask implements OnInit, OnChanges {
   }
 
   async ngOnInit() {
+    this.getTodayDate();
     this.route.queryParams.subscribe((params) => {
       if (params['category']) {
         this.targetCategory = params['category'];
@@ -98,6 +100,10 @@ export class AddTask implements OnInit, OnChanges {
     }));
 
     this.fillFormFromEditTask();
+  }
+
+  getTodayDate() {
+    this.minDate = new Date().toISOString().split('T')[0];
   }
 
   get filteredContacts() {

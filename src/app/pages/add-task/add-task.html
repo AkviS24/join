@@ -1,8 +1,8 @@
 <section class="add-task-page" (click)="closeDropdowns()">
   @if (isEditMode || addingTaskInBoard) {
-      <button class="close-btn" (click)="cancelAction()">
-        <app-svg-db name="cancel"></app-svg-db>
-      </button>
+  <button class="close-btn" (click)="cancelAction()">
+    <app-svg-db name="cancel"></app-svg-db>
+  </button>
   }
   <div class="page-container">
     <header class="page-header">
@@ -40,7 +40,7 @@
             </label>
 
             <div class="input-with-icon">
-              <input id="task-due-date" type="date" class="form-control" [(ngModel)]="dueDate"
+              <input id="task-due-date" type="date" class="form-control" [(ngModel)]="dueDate" [min]="minDate"
                 [class.has-value]="dueDate" [class.error]="isSubmitted && !dueDate" />
               <img src="icons/img/calendar.svg" alt="Calendar" />
             </div>

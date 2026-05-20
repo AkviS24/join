@@ -19,13 +19,23 @@
   }
 
   .login-box.signup-box {
-    width: min(598px, calc(100vw - 32px));
+    width: min(620px, calc(100vw - 32px));
     height: min(630px, calc(100vh - 120px));
-    max-width: 598px;
-    max-height: 630px;
+    max-width: 620px;
+    max-height: 600px;
     justify-content: center;
-    padding: 48px 88px;
     gap: 16px;
+    margin-top: 100px;
+  }
+
+  .login-box.signup-box .loginInputField {
+    width: min(476px, 100%);
+    max-width: 476px;
+  }
+
+  .login-box.signup-box .login-alert-message,
+  .login-box.signup-box .signup-hint {
+    max-width: 476px;
   }
 
   .back-arrow {
@@ -44,9 +54,7 @@
     }
   }
 
-  .login-box.signup-box form {
-    gap: 16px;
-  }
+ 
 
   .signUpButton {
     color: #fff;

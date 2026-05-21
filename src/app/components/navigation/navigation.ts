@@ -25,4 +25,8 @@ export class Navigation implements OnInit {
   checkLoginState(): void {
     this.isLoggedIn = !!localStorage.getItem('userName');
   }
+
+  requestSummaryIntro(): void {
+    window.dispatchEvent(new Event('summaryIntroRequested'));
+  }
 }

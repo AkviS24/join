@@ -168,7 +168,7 @@
     &::before {
       content: '';
       position: absolute;
-      width: 72px;
+      width: 100px;
       height: 64px;
       border-radius: 12px;
       background-color: transparent;
@@ -184,4 +184,9 @@
       pointer-events: none;
     }
   }
+}
+
+.navigation__link.navigation__link--summary.navigation__link--active {
+  cursor: pointer;
+  pointer-events: auto;
 }

@@ -4,6 +4,8 @@
 @use './login-responsive' as responsive;
 
 .loginMainContainer {
+  --login-stage-width: min(100vw, #{$bp-desktop});
+  --login-stage-offset: calc((100vw - var(--login-stage-width)) / 2);
   z-index: 100;
   display: flex;
   justify-content: center;
@@ -32,15 +34,15 @@
 .loginHeader {
   position: fixed;
   top: 90px;
-  right: 86px;
+  right: calc(var(--login-stage-offset) + 86px);
   display: flex;
   justify-content: end;
-  width: 100vw;
+  width: var(--login-stage-width);
 }
 
 .joinLogoBlue {
   position: fixed;
-  left: 77px;
+  left: calc(var(--login-stage-offset) + 77px);
   top: 80px;
 }
 
@@ -217,8 +219,8 @@
   background-color: #2a3647;
 }
 
-.loginButtonUser:hover,
-.loginButtonUser:active {
+.loginButtonUser:not(:disabled):hover,
+.loginButtonUser:not(:disabled):active {
   background-color: $color-primary;
   color: $color-white;
   box-shadow: 0px 4px 4px 0px #00000040;
@@ -250,13 +252,15 @@
 .loginFooter {
   position: fixed;
   bottom: 26px;
-  width: 100%;
+  left: 50%;
+  width: var(--login-stage-width);
   height: 35px;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: row;
   gap: 16px;
+  transform: translateX(-50%);
 }
 
 .privacyPolicy,
@@ -297,7 +301,7 @@
   }
   100% {
     top: 80px;
-    left: 77px;
+    left: calc(var(--login-stage-offset) + 77px);
     transform: translate(0, 0);
   }
 }

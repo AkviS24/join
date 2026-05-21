@@ -1,42 +1,95 @@
 @media (max-width: 1250px) {
+  #dashboard-section {
+    min-height: calc(100vh - 96px);
+  }
+
+  .dashboard-container {
+    width: min(560px, 100%);
+    max-width: 560px;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .dashboard-container.dashboard-container--visible {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
   .dashboard-main {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 48px;
-  }
-  .rect-card {
-    width: 264px;
-    height: 150px;
-    justify-content: center;
-    gap: 18px;
+    gap: 0;
   }
 
-  .wide-card {
-    width: 560px;
-    height: 150px;
-    padding: 0 48px;
-    justify-content: space-between;
+  .greeting-section {
+    display: none;
   }
 
-  .square-card {
-    width: 168px;
-    height: 150px;
+  .summary-intro-active .summary-greeting-intro {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 13px;
+    align-items: center;
+    gap: 4px;
+    background-color: #f6f7f8;
+    pointer-events: none;
+    animation: summaryGreetingIntro 1800ms ease-in-out forwards;
   }
 
+  .summary-greeting-intro__text {
+    font-size: clamp(32px, 4vw, 47px);
+    font-weight: 400;
+    line-height: 1.2;
+    color: #2a3647;
+    margin: 0;
+    text-align: center;
+  }
 
+  .summary-greeting-intro__name {
+    font-size: clamp(40px, 6vw, 64px);
+    font-weight: 700;
+    line-height: 1.1;
+    color: #29abe2;
+    margin: 0;
+    text-align: center;
+  }
 
-  .header-subtitle {
-    font-size: 20px;
+}
+
+@media (max-width: 960px) {
+  #dashboard-section {
+    min-height: calc(100dvh - 160px);
   }
 }
 
-@media (max-width: 1020px) {
-  #dashboard-section {
-    padding: 120px 60px 60px 60px;
+@keyframes summaryGreetingIntro {
+  0% {
+    opacity: 0;
+    visibility: visible;
   }
+
+  18%,
+  72% {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .summary-greeting-intro {
+    animation-duration: 1ms;
+  }
+}
+
+@media (max-width: 768px) {
 
   .dashboard-header {
     flex-direction: column;
@@ -56,125 +109,13 @@
     order: 3;
   }
 
-  .greeting-section {
-    display: none;
-  }
+ 
 }
-
-@media (max-width: 870px) {
-  .dashboard-main {
-    gap: 32px;
-    align-items: flex-start;
-  }
-  .metrics-grid {
-    gap: 20px;
-  }
-  .metrics-row {
-    width: 480px;
-    max-width: 100%;
-  }
-  .rect-card {
-    width: 230px;
-    height: 130px;
-  }
-  .wide-card {
-    width: 100%;
-    height: 130px;
-    padding: 0 32px;
-  }
-  .square-card {
-    width: 148px;
-    height: 130px;
-  }
-  .card-divider {
-    height: 80px;
-  }
-  .metric-value {
-    font-size: 46px;
-  }
-  .metric-label {
-    font-size: 16px;
-  }
-  .icon-wrapper {
-    width: 52px;
-    height: 52px;
-  }
-  .icon-wrapper.urgent-icon {
-    width: 46px;
-    height: 46px;
-  }
-  .brand-title {
-    font-size: 54px;
-  }
-  .header-subtitle {
-    font-size: 20px;
-  }
-  .greeting-text {
-    font-size: 32px;
-  }
-  .greeting-name {
-    font-size: 42px;
-  }
-}
-
-@media (max-width: 780px) {
-
-
-  .dashboard-header{
-    scrollbar-width: none;
-    &::-webkit-scrollbar {
-      display: none;
-    }
-  }
-
-  .metrics-row {
-    width: 380px;
-  }
-  .rect-card {
-    width: 180px;
-    height: 110px;
-  }
-  .wide-card {
-    height: 110px;
-  }
-  .square-card {
-    width: 110px;
-    height: 110px;
-  }
-  .card-divider {
-    height: 60px;
-  }
-  .metric-value {
-    font-size: 38px;
-  }
-  .metric-label {
-    font-size: 14px;
-  }
-  .icon-wrapper {
-    width: 44px;
-    height: 44px;
-  }
-  .icon-wrapper.urgent-icon {
-    width: 40px;
-    height: 40px;
-  }
-  .brand-title {
-    font-size: 46px;
-  }
-  .header-subtitle {
-    font-size: 18px;
-  }
-  .greeting-text {
-    font-size: 28px;
-  }
-  .greeting-name {
-    font-size: 36px;
-  }
-}
-@media (max-width: 760px) {
+@media (max-width: 768px) {
  
   #dashboard-section {
-    padding: 114px 50px 60px 50px;
+    padding: 60px 20px 20px;
+    margin: 0px auto;
   }
 
   .dashboard-container {
@@ -192,16 +133,14 @@
     width: 100%;
   }
 
-  .greeting-section {
-    display: none;
-  }
+
 
   .metrics-grid {
     gap: 16px;
   }
 
   .metrics-row {
-    width: 380px;
+    max-width: 380px;
   }
 
   .rect-card {

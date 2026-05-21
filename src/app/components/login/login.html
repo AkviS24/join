@@ -164,9 +164,13 @@
 
         <div class="loginButtonsBox">
           @if (isSignUpMode) {
-            <button class="loginButtons loginButtonUser" type="submit">Sign up</button>
+            <button class="loginButtons loginButtonUser" type="submit" [disabled]="!isFormValid()">
+              Sign up
+            </button>
           } @else {
-            <button class="loginButtons loginButtonUser" type="submit">Log in</button>
+            <button class="loginButtons loginButtonUser" type="submit" [disabled]="!isLoginFormValid()">
+              Log in
+            </button>
             <button class="loginButtons loginButtonGuest" type="button" (click)="guestLogin()">
               Guest log in
             </button>

@@ -1,17 +1,20 @@
 import { Component, inject } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { Location } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
 
 type InfoView = 'legal' | 'privacy' | 'help';
 
 @Component({
   selector: 'app-info',
   standalone: true,
-  imports: [RouterLink],
+  imports: [],
   templateUrl: './info.html',
   styleUrls: ['./info.scss']
 })
 export class Info {
   private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly location = inject(Location);
 
  active: InfoView = 'legal';
 
@@ -24,6 +27,15 @@ export class Info {
 
   wechsleAnsicht(ansicht: InfoView) {
     this.active = ansicht;
+  }
+
+  goBack(): void {
+    if (window.history.length > 1) {
+      this.location.back();
+      return;
+    }
+
+    this.router.navigate(['/login']);
   }
 
   private isInfoView(view: string | null): view is InfoView {

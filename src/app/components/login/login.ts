@@ -94,14 +94,20 @@ export class Login implements OnInit {
   }
 
   isFormValid(): boolean {
+    const email = this.email.trim();
+
     // At least 8 characters, 1 lowercase letter, 1 uppercase letter, 1 number, 1 special character.
     return (
       this.name.trim().length >= 3 &&
-      this.emailPattern.test(this.email) &&
+      this.emailPattern.test(email) &&
       this.passwordPattern.test(this.password) &&
       this.password === this.confirmPassword &&
       this.acceptTerms
     );
+  }
+
+  isLoginFormValid(): boolean {
+    return this.emailPattern.test(this.email.trim()) && this.password.length > 0;
   }
 
   getInputState(field: 'name' | 'email' | 'password' | 'confirmPassword'): string {
@@ -209,14 +215,13 @@ export class Login implements OnInit {
     this.errorMessage = '';
     this.successMessage = '';
 
-    if (!this.email || !this.password) {
-      this.errorMessage = 'Please enter email and password.';
+    if (!this.emailPattern.test(this.email.trim())) {
+      this.errorMessage = 'Please enter a valid email address.';
       return;
     }
 
-   
-    if (!this.emailPattern.test(this.email)) {
-      this.errorMessage = 'Please enter a valid email address.';
+    if (!this.password) {
+      this.errorMessage = 'Please enter email and password.';
       return;
     }
 
@@ -252,6 +257,7 @@ export class Login implements OnInit {
 
         localStorage.setItem('userName', userName);
         localStorage.setItem('userInitial', userInitial);
+        localStorage.removeItem('joinIsGuest');
 
         this.router.navigate(['/summary'], { queryParams: { name: userName } });
       }
@@ -268,6 +274,7 @@ export class Login implements OnInit {
     
     localStorage.setItem('userInitial', 'G');
     localStorage.setItem('userName', 'Guest');
+    localStorage.setItem('joinIsGuest', 'true');
     this.router.navigate(['/summary']);
   }
 }

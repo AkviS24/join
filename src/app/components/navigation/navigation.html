@@ -4,7 +4,12 @@
 
   <div class="navigation__links">
     @if (isLoggedIn) {
-      <a class="navigation__link" routerLink="/summary" routerLinkActive="navigation__link--active">
+      <a
+        class="navigation__link navigation__link--summary"
+        routerLink="/summary"
+        routerLinkActive="navigation__link--active"
+        (click)="requestSummaryIntro()"
+      >
         <img src="icons/summary.png" alt="Summary" />
         <span>Summary</span>
       </a>

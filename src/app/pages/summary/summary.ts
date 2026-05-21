@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, inject, computed } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, inject, computed, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { Tasks } from '../../services/tasks';
 
@@ -64,11 +64,16 @@ export class Summary implements OnInit, OnDestroy {
   greetingText: string = 'Good morning,';
   userName: string = '';
   isGuestUser: boolean = false;
+  showGreetingIntro = signal(true);
+  dashboardVisible = signal(false);
+  private greetingIntroTimer: ReturnType<typeof setTimeout> | null = null;
 
   async ngOnInit() {
-    this.isGuestUser = localStorage.getItem('joinIsGuest') === 'true';
-    this.userName = this.isGuestUser ? '' : localStorage.getItem('userName') || '';
+    const storedUserName = localStorage.getItem('userName') || '';
+    this.isGuestUser = localStorage.getItem('joinIsGuest') === 'true' || storedUserName === 'Guest';
+    this.userName = this.isGuestUser ? '' : storedUserName;
     this.setGreeting();
+    this.playGreetingIntro();
     this.startGreetingTimer();
     await this.loadTasks();
   }
@@ -78,6 +83,20 @@ export class Summary implements OnInit, OnDestroy {
       clearInterval(this.greetingTimer);
       this.greetingTimer = null;
     }
+
+    if (this.greetingIntroTimer) {
+      clearTimeout(this.greetingIntroTimer);
+      this.greetingIntroTimer = null;
+    }
+
+    this.dashboardVisible.set(false);
+    this.showGreetingIntro.set(true);
+  }
+
+  @HostListener('window:summaryIntroRequested')
+  onSummaryIntroRequested(): void {
+    this.setGreeting();
+    this.playGreetingIntro();
   }
 
   setGreeting(): void {
@@ -93,6 +112,28 @@ export class Summary implements OnInit, OnDestroy {
 
   private startGreetingTimer(): void {
     this.greetingTimer = setInterval(() => this.setGreeting(), 60_000);
+  }
+
+  private playGreetingIntro(): void {
+    if (!window.matchMedia('(max-width: 1250px)').matches) {
+      this.showGreetingIntro.set(false);
+      this.dashboardVisible.set(true);
+      return;
+    }
+
+    if (this.greetingIntroTimer) {
+      clearTimeout(this.greetingIntroTimer);
+      this.greetingIntroTimer = null;
+    }
+
+    this.showGreetingIntro.set(true);
+    this.dashboardVisible.set(false);
+
+    this.greetingIntroTimer = setTimeout(() => {
+      this.showGreetingIntro.set(false);
+      this.dashboardVisible.set(true);
+      this.greetingIntroTimer = null;
+    }, 1800);
   }
 
   async loadTasks() {

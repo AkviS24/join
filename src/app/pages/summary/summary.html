@@ -1,5 +1,14 @@
-<section id="dashboard-section">
-  <div class="dashboard-container">
+<section id="dashboard-section" [class.summary-intro-active]="showGreetingIntro()">
+  @if (showGreetingIntro()) {
+    <div class="summary-greeting-intro" aria-hidden="true">
+      <p class="summary-greeting-intro__text">{{ greetingText }}</p>
+      @if (userName) {
+        <h1 class="summary-greeting-intro__name">{{ userName }}</h1>
+      }
+    </div>
+  }
+
+  <div class="dashboard-container" [class.dashboard-container--visible]="dashboardVisible()">
     <header class="dashboard-header">
       <h2 class="brand-title">Join 360</h2>
       <div class="header-divider"></div>

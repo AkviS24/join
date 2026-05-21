@@ -1,6 +1,6 @@
-import { Injectable, signal } from '@angular/core';
-import { createClient, RealtimeChannel } from '@supabase/supabase-js';
-import { environment } from '../../environments/environment';
+import { Injectable, inject, signal } from '@angular/core';
+import { RealtimeChannel } from '@supabase/supabase-js';
+import { Supabase } from './supabase';
 
 type TaskPayload = {
   title: string;
@@ -20,9 +20,8 @@ type TaskPayload = {
   providedIn: 'root',
 })
 export class Tasks {
-  supabaseUrl = environment.supabaseUrl;
-  supabaseKey = environment.supabaseKey;
-  supabase = createClient(this.supabaseUrl, this.supabaseKey);
+  private readonly supabaseService = inject(Supabase);
+  supabase = this.supabaseService.supabase;
   private channel?: RealtimeChannel | undefined;
 
   constructor() {

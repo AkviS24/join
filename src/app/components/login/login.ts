@@ -201,10 +201,12 @@ export class Login implements OnInit {
       
       await this.supabaseService.getDemoData();
 
-      this.successMessage = 'Successfully registered! Logging in...';
-      setTimeout(async () => {
-        await this.loginUser();
-      }, 1500);
+      this.successMessage = 'Successfully registered! Please confirm your email, then log in.';
+      this.isSignUpMode = false;
+      this.name = '';
+      this.confirmPassword = '';
+      this.acceptTerms = false;
+      this.password = '';
     } catch (e: any) {
       this.errorMessage = 'An unexpected error occurred: ' + (e.message || e);
       console.error('Registration error', e);
@@ -227,7 +229,7 @@ export class Login implements OnInit {
 
     try {
       const { data, error } = await this.supabaseService.supabase.auth.signInWithPassword({
-        email: this.email,
+        email: this.email.trim(),
         password: this.password,
       });
 
@@ -243,17 +245,16 @@ export class Login implements OnInit {
       if (data.user) {
     
         if (this.rememberMe) {
-          localStorage.setItem('rememberedEmail', this.email);
+          localStorage.setItem('rememberedEmail', this.email.trim());
         } else {
           localStorage.removeItem('rememberedEmail');
         }
 
       
-        const userName = data.user.user_metadata?.['name'] || 'User';
-        const userInitial = userName
-          .split(' ')
-          .map((word: string) => word[0].toUpperCase())
-          .join('');
+        const metadataName = data.user.user_metadata?.['name'];
+        const userName =
+          typeof metadataName === 'string' && metadataName.trim() ? metadataName.trim() : 'User';
+        const userInitial = this.getUserInitial(userName);
 
         localStorage.setItem('userName', userName);
         localStorage.setItem('userInitial', userInitial);
@@ -276,5 +277,16 @@ export class Login implements OnInit {
     localStorage.setItem('userName', 'Guest');
     localStorage.setItem('joinIsGuest', 'true');
     this.router.navigate(['/summary']);
+  }
+
+  private getUserInitial(name: string): string {
+    const initials = name
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean)
+      .map((word) => word.charAt(0).toUpperCase())
+      .join('');
+
+    return initials || 'U';
   }
 }

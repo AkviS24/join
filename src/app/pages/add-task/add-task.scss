@@ -289,11 +289,6 @@ textarea.form-control {
 .selected-avatars {
   display: flex;
   align-items: center;
-  min-height: 0;
-  margin-top: 0;
-}
-
-.selected-avatars:has(.avatar) {
   margin-top: 8px;
   min-height: 42px;
 }
@@ -374,39 +369,55 @@ textarea.form-control {
 
 .subtask-actions {
   position: absolute;
-  right: 16px;
+  right: 12px;
   top: 50%;
   transform: translateY(-50%);
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 125ms ease-in-out;
 
   .action-divider {
     width: 1px;
-    height: 24px;
+    height: 20px;
     background-color: $color-gray;
   }
+}
+
+.subtask-wrapper:focus-within .subtask-actions,
+.subtask-wrapper input.has-value + .subtask-actions {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .subtask-btn {
   width: 24px;
   height: 24px;
+  border: none;
+  padding: 0;
+  background: transparent;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+
+  &:hover {
+    background-color: $color-dark-gray;
+  }
 
   img {
     width: 14px;
     height: 14px;
     display: block;
-    opacity: 1;
-    visibility: visible;
-    filter: brightness(0);
+    filter: brightness(0) saturate(0) opacity(0.75);
   }
 }
 
 .check-icon {
-  opacity: 1 !important;
-  visibility: visible !important;
-  filter: brightness(0) !important;
+  filter: brightness(0) saturate(0) opacity(0.75) !important;
 }
 
 .new-subtasks-list {
@@ -428,13 +439,8 @@ textarea.form-control {
   font-size: 16px;
   background-color: transparent;
 
-  .subtask-list-actions {
-    opacity: 0;
-    pointer-events: none;
-  }
-
   &:hover {
-    background-color: $color-white;
+    background-color: $color-gray;
 
     .subtask-list-actions {
       opacity: 1;
@@ -460,6 +466,7 @@ textarea.form-control {
 
 .subtask-text {
   overflow-wrap: anywhere;
+  cursor: pointer;
 }
 
 .subtask-edit-input {
@@ -474,12 +481,16 @@ textarea.form-control {
 .subtask-list-actions {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
+  opacity: 0;
+  pointer-events: none;
   transition: opacity 125ms ease-in-out;
 }
 
 .icon-divider-small {
-  display: none;
+  width: 1px;
+  height: 24px;
+  background-color: $color-black;
 }
 
 .required-note {

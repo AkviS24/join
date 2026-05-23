@@ -59,6 +59,7 @@ export class AddTask implements OnInit, OnChanges {
   newSubtaskText = '';
   errorMessage = '';
   newSubtasks: { subtaskText: string; completed: boolean }[] = [];
+  editingSubtaskIndex: number | null = null;
   showSuccessMessage = false;
   isSubmitted = false;
   addAwaitFeedback = false;
@@ -185,6 +186,7 @@ export class AddTask implements OnInit, OnChanges {
     this.targetCategory = this.editTask.category || this.targetCategory;
     this.selectedPriority = this.editTask.priority || 'medium';
     this.newSubtaskText = '';
+    this.editingSubtaskIndex = null;
     this.newSubtasks = (this.editTask.subtasks || []).map((subtask) => ({
       subtaskText: this.getSubtaskText(subtask),
       completed: this.isSubtaskCompleted(subtask),
@@ -218,6 +220,7 @@ export class AddTask implements OnInit, OnChanges {
     this.categoryDropdownOpen = false;
     this.contactSearch = '';
     this.newSubtaskText = '';
+    this.editingSubtaskIndex = null;
     this.newSubtasks = [];
     this.errorMessage = '';
     this.isSubmitted = false;
@@ -248,6 +251,10 @@ export class AddTask implements OnInit, OnChanges {
   }
 
   async submitTask() {
+    if (this.editingSubtaskIndex !== null) {
+      this.finishEditSubtask();
+    }
+
     if (this.isEditMode) {
       await this.updateTask();
       return;
@@ -315,22 +322,53 @@ export class AddTask implements OnInit, OnChanges {
   }
 
   addSubtask() {
-    if (this.newSubtaskText.trim()) {
-      this.newSubtasks.push({
-        subtaskText: this.newSubtaskText.trim(),
-        completed: false,
-      });
+    const subtaskText = this.newSubtaskText.trim();
 
-      this.newSubtaskText = '';
-    }
+    if (!subtaskText) return;
+
+    this.newSubtasks.push({
+      subtaskText,
+      completed: false,
+    });
+
+    this.newSubtaskText = '';
   }
 
-  editNewSubtask(index: number) {
-    this.newSubtaskText = this.newSubtasks[index].subtaskText;
-    this.newSubtasks.splice(index, 1);
+  editNewSubtask(index: number, input?: HTMLInputElement) {
+    this.editingSubtaskIndex = index;
+
+    setTimeout(() => {
+      input?.focus();
+      input?.select();
+    });
+  }
+
+  finishEditSubtask() {
+    if (this.editingSubtaskIndex === null) return;
+
+    const editedSubtask = this.newSubtasks[this.editingSubtaskIndex];
+
+    if (editedSubtask) {
+      editedSubtask.subtaskText = editedSubtask.subtaskText.trim();
+    }
+
+    this.editingSubtaskIndex = null;
+  }
+
+  getSubtaskInputWidth(text: string) {
+    return Math.max((text || '').length, 2);
   }
 
   removeNewSubtask(index: number) {
     this.newSubtasks.splice(index, 1);
+
+    if (this.editingSubtaskIndex === index) {
+      this.editingSubtaskIndex = null;
+      return;
+    }
+
+    if (this.editingSubtaskIndex !== null && this.editingSubtaskIndex > index) {
+      this.editingSubtaskIndex--;
+    }
   }
 }

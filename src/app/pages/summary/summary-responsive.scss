@@ -56,224 +56,145 @@
     margin: 0;
     text-align: center;
   }
-
 }
 
 @media (max-width: 960px) {
   #dashboard-section {
-    min-height: calc(100dvh - 160px);
-  }
-}
+    --dashboard-inline-padding: clamp(20px, calc(7.14vw - 8.57px), 60px);
+    --dashboard-fluid-width: clamp(330px, calc(41.07vw + 165.71px), 560px);
+    --dashboard-row-gap: clamp(12px, 2.92vw, 28px);
+    --dashboard-card-gap: clamp(10px, 2.92vw, 28px);
+    --dashboard-card-height: clamp(94px, calc(13.21vw + 41.14px), 168px);
+    --dashboard-radius: clamp(18px, 3.13vw, 30px);
 
-@keyframes summaryGreetingIntro {
-  0% {
-    opacity: 0;
-    visibility: visible;
-  }
-
-  18%,
-  72% {
-    opacity: 1;
-    visibility: visible;
-  }
-
-  100% {
-    opacity: 0;
-    visibility: hidden;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .summary-greeting-intro {
-    animation-duration: 1ms;
-  }
-}
-
-@media (max-width: 768px) {
-
-  .dashboard-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
-    text-align: left;
-    width: 100%;
-  }
-
-  .brand-title {
-    font-size: 54px;
-  }
-
-  .header-divider {
-    width: 90px;
-    height: 3px;
-    order: 3;
-  }
-
- 
-}
-@media (max-width: 768px) {
- 
-  #dashboard-section {
-    padding: 60px 20px 20px;
-    margin: 0px auto;
+    justify-content: center;
+    padding: clamp(60px, calc(8.93vw + 24.29px), 110px) var(--dashboard-inline-padding)
+      clamp(20px, calc(7.14vw - 8.57px), 60px);
   }
 
   .dashboard-container {
+    width: min(
+      var(--dashboard-fluid-width),
+      calc(100vw - var(--dashboard-inline-padding) - var(--dashboard-inline-padding))
+    );
+    max-width: none;
+    margin-inline: auto;
     align-items: flex-start;
   }
 
   .dashboard-main,
   .metrics-grid {
-    align-items: flex-start;
+    width: 100%;
+    align-items: stretch;
   }
 
   .dashboard-header {
-    align-items: flex-start;
-    text-align: left;
     width: 100%;
-  }
-
-
-
-  .metrics-grid {
-    gap: 16px;
-  }
-
-  .metrics-row {
-    max-width: 380px;
-  }
-
-  .rect-card {
-    width: 180px;
-    height: 110px;
-  }
-
-  .wide-card {
-    height: 110px;
-    padding: 0 32px;
-  }
-
-  .square-card {
-    width: 110px;
-    height: 110px;
-  }
-
-  .card-divider {
-    height: 60px;
-  }
-
-  .metric-value {
-    font-size: 38px;
-  }
-
-  .metric-label {
-    font-size: 14px;
-  }
-
-  .deadline-date {
-    font-size: 16px;
-  }
-
-  .deadline-label {
-    font-size: 13px;
-  }
-
-  .icon-wrapper {
-    width: 44px;
-    height: 44px;
-  }
-
-  .icon-wrapper.urgent-icon {
-    width: 40px;
-    height: 40px;
+    gap: clamp(16px, 3.13vw, 30px);
   }
 
   .brand-title {
-    font-size: 40px;
+    font-size: clamp(40px, 5.63vw, 54px);
   }
 
   .header-subtitle {
-    font-size: 18px;
+    font-size: clamp(16px, 2.5vw, 24px);
+  }
+
+  .metrics-grid {
+    gap: var(--dashboard-row-gap);
+  }
+
+  .metrics-row {
+    width: 100%;
+    max-width: none;
+    justify-content: flex-start;
+    gap: var(--dashboard-card-gap);
+  }
+
+  .rect-card {
+    flex: 1 1 0;
+    width: auto;
+    height: var(--dashboard-card-height);
+    gap: clamp(10px, 1.88vw, 18px);
+    border-radius: var(--dashboard-radius);
+  }
+
+  .wide-card {
+    width: 100%;
+    height: var(--dashboard-card-height);
+    padding-inline: clamp(16px, 5vw, 48px);
+    border-radius: var(--dashboard-radius);
+  }
+
+  .square-card {
+    flex: 1 1 0;
+    width: auto;
+    min-width: 0;
+    height: auto;
+    aspect-ratio: 1;
+    gap: clamp(6px, 1.35vw, 13px);
+    border-radius: var(--dashboard-radius);
+  }
+
+  .card-divider {
+    height: clamp(48px, 10.63vw, 102px);
+  }
+
+  .metric-value {
+    font-size: clamp(30px, 6.67vw, 64px);
+  }
+
+  .metric-label {
+    font-size: clamp(12px, 2.08vw, 20px);
+  }
+
+  .deadline-date {
+    font-size: clamp(14px, 2.08vw, 20px);
+  }
+
+  .deadline-label {
+    font-size: clamp(12px, 1.67vw, 16px);
+  }
+
+  .icon-wrapper {
+    width: clamp(36px, 7.19vw, 69px);
+    height: clamp(36px, 7.19vw, 69px);
+  }
+
+  .icon-wrapper.urgent-icon {
+    width: clamp(32px, 6.25vw, 60px);
+    height: clamp(32px, 6.25vw, 60px);
   }
 
   .urgent-left {
-    gap: 12px;
+    gap: clamp(12px, 1.88vw, 18px);
   }
 }
 
+@media (max-width: 768px) {
+  @media (max-width: 768px) {
+    .dashboard-container {
+      align-items: flex-start;
+    }
 
+    .dashboard-main,
+    .metrics-grid {
+      align-items: flex-start;
+    }
+    .dashboard-header {
+      width: 100%;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: clamp(10px, 2.08vw, 16px);
+      text-align: left;
+      width: 100%;
+    }
 
-@media (max-width: 400px) {
-
-
-  .dashboard-header {
-    gap: 10px;
-  }
-
-  .brand-title {
-    font-size: 40px;
-  }
-
-  .header-subtitle {
-    font-size: 16px;
-  }
-
-  .metrics-grid {
-    gap: 12px;
-  }
-
-  .metrics-row {
-    width: 100%;
-    max-width: 330px;
-    gap: 10px;
-  }
-
-  .rect-card {
-    width: calc(50% - 5px);
-    height: 94px;
-    gap: 10px;
-  }
-
-  .wide-card {
-    width: 100%;
-    height: 94px;
-    padding: 0 16px;
-  }
-
-  .square-card {
-    width: 31%;
-    min-width: 92px;
-    height: 94px;
-    gap: 6px;
-  }
-
-  .card-divider {
-    height: 48px;
-  }
-
-  .metric-value {
-    font-size: 30px;
-  }
-
-  .metric-label {
-    font-size: 12px;
-  }
-
-  .deadline-date {
-    font-size: 14px;
-  }
-
-  .deadline-label {
-    font-size: 12px;
-  }
-
-  .icon-wrapper {
-    width: 36px;
-    height: 36px;
-  }
-
-  .icon-wrapper.urgent-icon {
-    width: 32px;
-    height: 32px;
+    .header-divider {
+      width: 90px;
+      height: 3px;
+      order: 3;
+    }
   }
 }

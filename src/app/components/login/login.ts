@@ -24,8 +24,11 @@ export class Login implements OnInit {
   acceptTerms = false;
   isPasswordVisible = false;
   isConfirmPasswordVisible = false;
+  loginSubmitted = false;
   private readonly emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   private readonly passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+  private failedLoginEmail = '';
+  private failedLoginPassword = '';
 
   constructor(
     private router: Router,
@@ -41,20 +44,14 @@ export class Login implements OnInit {
     }
 
     this.route.queryParams.subscribe((params) => {
-      if (params['logout'] === 'success') {
-        this.successMessage = 'Successfully logged out.';
+      if (!params['logout']) return;
 
-        setTimeout(() => {
-          this.successMessage = '';
-        }, 3000);
-      } else if (params['logout'] === 'inactivity') {
-        this.errorMessage =
-          'You were automatically logged out for security reasons due to inactivity.';
-
-        setTimeout(() => {
-          this.errorMessage = '';
-        }, 5000);
-      }
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: { logout: null },
+        queryParamsHandling: 'merge',
+        replaceUrl: true,
+      });
     });
   }
 
@@ -68,6 +65,10 @@ export class Login implements OnInit {
 
   toggleSignUpMode() {
     this.isSignUpMode = true;
+    this.loginSubmitted = false;
+    this.errorMessage = '';
+    this.successMessage = '';
+    this.clearFailedLogin();
   }
 
   togglePasswordVisibility() {
@@ -82,10 +83,20 @@ export class Login implements OnInit {
     (event.target as HTMLInputElement).removeAttribute('readonly');
   }
 
+  updateEmail(value: string): void {
+    this.email = value;
+  }
+
+  updatePassword(value: string): void {
+    this.password = value;
+  }
+
   backToLogin() {
     this.isSignUpMode = false;
+    this.loginSubmitted = false;
     this.errorMessage = '';
     this.successMessage = '';
+    this.clearFailedLogin();
     this.name = '';
     this.confirmPassword = '';
     this.acceptTerms = false;
@@ -113,6 +124,11 @@ export class Login implements OnInit {
   getInputState(field: 'name' | 'email' | 'password' | 'confirmPassword'): string {
     const value = this[field].trim();
 
+    if (!this.isSignUpMode && this.loginSubmitted) {
+      if (field === 'email' && (!value || !this.emailPattern.test(value))) return 'has-error';
+      if (field === 'password' && !value) return 'has-error';
+    }
+
     if (!value) return '';
 
     if (field === 'name' && this.isSignUpMode && value.length < 3) return 'has-error';
@@ -128,7 +144,7 @@ export class Login implements OnInit {
     ) {
       return 'has-error';
     }
-    if (!this.isSignUpMode && this.errorMessage.startsWith('Login failed')) {
+    if (!this.isSignUpMode && this.isFailedLoginActive()) {
       return 'has-error';
     }
 
@@ -166,6 +182,8 @@ export class Login implements OnInit {
   async registerUser(): Promise<void> {
     this.errorMessage = '';
     this.successMessage = '';
+    this.loginSubmitted = false;
+    this.clearFailedLogin();
 
     if (!this.isFormValid()) {
       this.errorMessage =
@@ -214,31 +232,32 @@ export class Login implements OnInit {
   }
 
   async loginUser(): Promise<void> {
+    this.loginSubmitted = true;
     this.errorMessage = '';
     this.successMessage = '';
+    this.clearFailedLogin();
 
-    if (!this.emailPattern.test(this.email.trim())) {
-      this.errorMessage = 'Please enter a valid email address.';
+    const email = this.email.trim();
+
+    if (!email || !this.password) {
+      this.errorMessage = 'Please enter email and password.';
       return;
     }
 
-    if (!this.password) {
-      this.errorMessage = 'Please enter email and password.';
+    if (!this.emailPattern.test(email)) {
+      this.errorMessage = 'Please enter a valid email address.';
       return;
     }
 
     try {
       const { data, error } = await this.supabaseService.supabase.auth.signInWithPassword({
-        email: this.email.trim(),
+        email,
         password: this.password,
       });
 
       if (error) {
-        if (error.message === 'Email not confirmed') {
-          this.errorMessage = 'Please confirm your email first. Check your inbox!';
-        } else {
-          this.errorMessage = 'Login failed: ' + error.message;
-        }
+        this.setFailedLogin();
+        this.errorMessage = this.getLoginErrorMessage(error.message);
         return;
       }
 
@@ -271,6 +290,8 @@ export class Login implements OnInit {
   async guestLogin(): Promise<void> {
     this.errorMessage = '';
     this.successMessage = '';
+    this.loginSubmitted = false;
+    this.clearFailedLogin();
 
     
     localStorage.setItem('userInitial', 'G');
@@ -288,5 +309,59 @@ export class Login implements OnInit {
       .join('');
 
     return initials || 'U';
+  }
+
+  getVisibleErrorMessage(): string {
+    if (!this.errorMessage) return '';
+
+    if (!this.isSignUpMode && this.hasFailedLogin()) {
+      return this.isFailedLoginActive() ? this.errorMessage : '';
+    }
+
+    if (!this.isSignUpMode && this.errorMessage === 'Please enter a valid email address.') {
+      return this.emailPattern.test(this.email.trim()) ? '' : this.errorMessage;
+    }
+
+    if (!this.isSignUpMode && this.errorMessage === 'Please enter email and password.') {
+      return this.email.trim() && this.password ? '' : this.errorMessage;
+    }
+
+    return this.errorMessage;
+  }
+
+  private getLoginErrorMessage(message: string): string {
+    const normalizedMessage = message.toLowerCase();
+
+    if (message === 'Email not confirmed') {
+      return 'Please confirm your email first. Check your inbox!';
+    }
+
+    if (normalizedMessage.includes('invalid login credentials')) {
+      return 'Check your email and password. Please try again.';
+    }
+
+    return 'Login failed: ' + message;
+  }
+
+  private setFailedLogin() {
+    this.failedLoginEmail = this.email.trim();
+    this.failedLoginPassword = this.password;
+  }
+
+  private clearFailedLogin() {
+    this.failedLoginEmail = '';
+    this.failedLoginPassword = '';
+  }
+
+  private hasFailedLogin() {
+    return Boolean(this.failedLoginEmail || this.failedLoginPassword);
+  }
+
+  private isFailedLoginActive() {
+    return (
+      this.hasFailedLogin() &&
+      this.email.trim() === this.failedLoginEmail &&
+      this.password === this.failedLoginPassword
+    );
   }
 }

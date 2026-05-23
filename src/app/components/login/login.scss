@@ -6,6 +6,24 @@
 .loginMainContainer {
   --login-stage-width: min(100vw, #{$bp-desktop});
   --login-stage-offset: calc((100vw - var(--login-stage-width)) / 2);
+  --login-page-gutter: clamp(16px, 3.33vw, 32px);
+  --login-card-padding-block: clamp(24px, 5vw, 48px);
+  --login-card-padding-inline: clamp(16px, 10.42vw, 100px);
+  --login-card-gap: clamp(16px, 2.5vw, 24px);
+  --login-title-size: clamp(40px, 9.36cqw, 61px);
+  --login-underline-width: clamp(80px, 23.01cqw, 150px);
+  --login-input-height: clamp(44px, 7.36cqw, 48px);
+  --login-input-padding-inline: clamp(16px, 3.22cqw, 21px);
+  --login-input-font-size: clamp(15px, 2.91cqw, 19px);
+  --login-button-font-size: clamp(17px, 3.22cqw, 21px);
+  --login-button-height: clamp(44px, 7.36cqw, 48px);
+  --login-mobile-button-width: clamp(130px, 29.58vw, 180px);
+  --login-mobile-signup-gap: clamp(8px, 4.17vw, 32px);
+  --login-mobile-signup-margin: clamp(40px, 10.42vw, 80px);
+  --login-mobile-logo-top: clamp(30px, 10vw, 48px);
+  --login-mobile-logo-left: clamp(20px, 5vw, 38px);
+  --login-mobile-logo-width: clamp(50px, 13.33vw, 64px);
+  --login-mobile-logo-height: clamp(60px, 16.25vw, 78px);
   z-index: 100;
   display: flex;
   justify-content: center;
@@ -51,20 +69,22 @@
   justify-content: center;
   flex-direction: column;
   align-items: center;
+  width: 100%;
 }
 
 .login-box {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: min(652px, calc(100vw - 32px));
+  container-type: inline-size;
+  width: min(652px, calc(100vw - var(--login-page-gutter) - var(--login-page-gutter)));
   height: min(449px, calc(100vh - 160px));
   max-width: 652px;
   max-height: 449px;
   box-sizing: border-box;
   border-radius: 30px;
-  padding: 48px 100px;
-  gap: 24px;
+  padding: var(--login-card-padding-block) var(--login-card-padding-inline);
+  gap: var(--login-card-gap);
   box-shadow: 0px 0px 10px 5px #00000014;
   background-color: white;
   position: relative;
@@ -86,7 +106,7 @@
 }
 
 .loginH1 {
-  font-size: 61px;
+  font-size: var(--login-title-size);
   font-weight: 700;
   margin: 0;
   padding-bottom: 5px;
@@ -101,7 +121,7 @@
 }
 
 .horizontalH1Underline {
-  width: 150px;
+  width: var(--login-underline-width);
   height: 3px;
   border-radius: 3px;
   background-color: $color-primary;
@@ -113,11 +133,11 @@
   align-items: center;
   width: min(422px, 100%);
   max-width: 422px;
-  height: 48px;
+  height: var(--login-input-height);
   box-sizing: border-box;
   border: 1px solid $color-black;
   border-radius: 10px;
-  padding: 0 21px;
+  padding: 0 var(--login-input-padding-inline);
   margin: 12px 0;
   gap: 16px;
   background-color: white;
@@ -140,7 +160,7 @@
 
 .loginInputField input {
   border: none;
-  font-size: 19px;
+  font-size: var(--login-input-font-size);
   font-weight: 400;
   padding: 0;
   width: 100%;
@@ -209,7 +229,7 @@
   border-radius: 8px;
   padding: 15px 15px;
   gap: 10px;
-  font-size: 21px;
+  font-size: var(--login-button-font-size);
   font-weight: bold;
   cursor: pointer;
 }
@@ -239,7 +259,7 @@
   white-space: nowrap;
   font-family: 'Inter', sans-serif;
   font-weight: bold;
-  font-size: 21px;
+  font-size: var(--login-button-font-size);
 }
 
 .loginButtonGuest:hover {

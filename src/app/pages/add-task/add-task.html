@@ -196,11 +196,15 @@
             @if (newSubtasks.length > 0) {
             <div class="new-subtasks-list">
               @for (subtask of newSubtasks; track $index) {
-              <div class="new-subtask-item">
-                <span>• {{ subtask.subtaskText }}</span>
+              <div class="subtask-wrapper new-subtask-item" [class.editing]="editingSubtaskIndex === $index">
+                <input #subtaskInput type="text" class="form-control saved-subtask-input"
+                  [(ngModel)]="subtask.subtaskText" [readonly]="editingSubtaskIndex !== $index"
+                  [class.has-value]="subtask.subtaskText"
+                  [style.width.ch]="getSubtaskInputWidth(subtask.subtaskText)"
+                  (blur)="finishEditSubtask()" (keyup.enter)="finishEditSubtask()" />
 
-                <div class="subtask-list-actions">
-                  <div class="subtask-btn" (click)="editNewSubtask($index)">
+                <div class="subtask-actions saved-subtask-actions">
+                  <div class="subtask-btn" (click)="editNewSubtask($index, subtaskInput)">
                     <img src="icons/img/pen.svg" alt="Edit" />
                   </div>
 

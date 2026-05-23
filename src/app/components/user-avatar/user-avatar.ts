@@ -33,6 +33,6 @@ export class UserAvatar implements OnInit {
   async logout() {
     await this.demoDB.supabase.auth.signOut();
     localStorage.clear();
-    this.router.navigate(['/login'], { queryParams: { logout: 'success' } });
+    this.router.navigate(['/login']);
   }
 }

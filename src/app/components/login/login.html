@@ -57,7 +57,8 @@
             type="email"
             id="loginEmailInput"
             name="email"
-            [(ngModel)]="email"
+            [ngModel]="email"
+            (ngModelChange)="updateEmail($event)"
             placeholder="Email"
             autocomplete="off"
             readonly
@@ -72,7 +73,8 @@
             [type]="isPasswordVisible ? 'text' : 'password'"
             id="loginPasswordInput"
             name="password"
-            [(ngModel)]="password"
+            [ngModel]="password"
+            (ngModelChange)="updatePassword($event)"
             placeholder="Password"
             autocomplete="new-password"
             readonly
@@ -150,7 +152,11 @@
 
         <div class="login-alert-slot">
           @if (errorMessage) {
-            <div class="login-alert-message login-alert-message--error">
+            <div
+              class="login-alert-message login-alert-message--error"
+              role="alert"
+              aria-live="polite"
+            >
               {{ errorMessage }}
             </div>
           }
@@ -168,7 +174,7 @@
               Sign up
             </button>
           } @else {
-            <button class="loginButtons loginButtonUser" type="submit" [disabled]="!isLoginFormValid()">
+            <button class="loginButtons loginButtonUser" type="submit" formnovalidate>
               Log in
             </button>
             <button class="loginButtons loginButtonGuest" type="button" (click)="guestLogin()">

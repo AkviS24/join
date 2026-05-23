@@ -19,13 +19,13 @@
   }
 
   .login-box.signup-box {
-    width: min(620px, calc(100vw - 32px));
+    width: min(620px, calc(100vw - var(--login-page-gutter) - var(--login-page-gutter)));
     height: min(630px, calc(100vh - 120px));
     max-width: 620px;
     max-height: 600px;
     justify-content: center;
-    gap: 16px;
-    margin-top: 100px;
+    gap: clamp(12px, 1.67vw, 16px);
+    margin-top: clamp(48px, 10.42vw, 100px);
   }
 
   .login-box.signup-box .loginInputField {
@@ -40,8 +40,8 @@
 
   .back-arrow {
     position: absolute;
-    top: 48px;
-    left: 48px;
+    top: clamp(24px, 7.74cqw, 48px);
+    left: clamp(16px, 7.74cqw, 48px);
     width: 37px;
     height: 37px;
     cursor: pointer;

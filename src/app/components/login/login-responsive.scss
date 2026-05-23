@@ -1,19 +1,43 @@
 @mixin styles {
- 
-
   @media (max-width: 970px) {
+    .loginHeader {
+      top: clamp(30px, 5.16vw, 50px);
+      right: var(--login-page-gutter);
+      width: calc(100vw - var(--login-page-gutter) - var(--login-page-gutter));
+    }
+
+    .joinLogoBlue {
+      top: var(--login-mobile-logo-top);
+      left: var(--login-mobile-logo-left);
+    }
+
     .joinLogoBlue img {
-      width: 64px;
-      height: 78px;
+      width: var(--login-mobile-logo-width);
+      height: var(--login-mobile-logo-height);
+    }
+
+    @keyframes moveLogo {
+      0% {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      100% {
+        top: var(--login-mobile-logo-top);
+        left: var(--login-mobile-logo-left);
+        transform: translate(0, 0);
+      }
     }
 
     @keyframes resizeLogo {
       0% {
         width: 274px;
       }
+
       100% {
-        width: 64px;
-        height: 78px;
+        width: var(--login-mobile-logo-width);
+        height: var(--login-mobile-logo-height);
       }
     }
   }
@@ -27,21 +51,17 @@
     }
 
     .login-box {
-      padding: 24px 56px;
-      width: min(652px, calc(100vw - 32px));
+      width: min(652px, calc(100vw - var(--login-page-gutter) - var(--login-page-gutter)));
       height: auto;
-      min-height: 449px;
+      min-height: min(449px, calc(100vh - 220px));
       max-height: none;
     }
 
     .login-box.signup-box {
-      width: min(598px, calc(100vw - 32px));
+      width: min(598px, calc(100vw - var(--login-page-gutter) - var(--login-page-gutter)));
       height: auto;
+      min-height: 0;
       max-height: none;
-    }
-
-    .loginInputField {
-      width: min(422px, 100%);
     }
 
     .loginButtonsBox {
@@ -51,22 +71,12 @@
       align-items: center;
 
       button {
-        width: 180px;
-        height: 48px;
+        width: var(--login-mobile-button-width);
+        height: var(--login-button-height);
         gap: 10px;
-        padding: 10px 10px;
+        padding: 10px;
         text-align: center;
       }
-    }
-
-    .joinLogoBlue {
-      top: 37px;
-      left: 38px;
-    }
-
-    .joinLogoBlue img {
-      width: 64px;
-      height: 78px;
     }
 
     .signUpField {
@@ -78,101 +88,37 @@
       flex-direction: row;
       align-items: center;
       width: max-content;
-      gap: 32px;
+      gap: var(--login-mobile-signup-gap);
       padding: 5px;
-      margin-top: 80px;
+      margin-top: var(--login-mobile-signup-margin);
     }
 
     .signUpField-mobile span {
-      font-size: 20px;
+      font-size: clamp(14px, 2.6cqw, 20px);
       font-weight: 400;
     }
 
     .signUpButton-mobile {
       min-width: 66px;
       white-space: nowrap;
-      font-size: 16px;
-      padding: 8px 16px;
-    }
-
-    .back-arrow {
-      top: 24px;
-      left: 24px;
-    }
-
-    @keyframes moveLogo {
-      0% {
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-      }
-      100% {
-        top: 37px;
-        left: 38px;
-        transform: translate(0, 0);
-      }
-    }
-  }
-
-  @media (max-width: 550px) {
-    .login-box {
-      padding: 32px 16px;
-    }
-
-    .back-arrow {
-      top: 32px;
-      left: 16px;
+      font-size: clamp(12px, 2.1cqw, 16px);
+      padding: clamp(5px, 1.04vw, 8px) clamp(10px, 2.08vw, 16px);
     }
   }
 
   @media (max-width: 480px) {
-    .signUpField {
-      display: none;
-    }
-
-    .joinLogoBlue img {
-      width: 64px;
-      height: 78px;
-    }
-
-    .signUpField-mobile {
-      gap: 12px;
-      margin-top: 60px;
-    }
-
-    .signUpField-mobile span {
-      font-size: 16px;
-      font-weight: 400;
-    }
-
-    .signUpButton-mobile {
-      min-width: 66px;
-      white-space: nowrap;
-      font-size: 14px;
-      padding: 6px 12px;
-    }
-
-    .loginInputField {
-      width: min(422px, 100%);
-    }
-
     .loginButtonsBox {
-      flex-direction: column;
-      gap: 21px;
+      gap: clamp(16px, 4.38vw, 21px);
       justify-content: center;
       align-items: center;
     }
 
-    .login-box {
-      border-radius: 30px ;
-    }
-
     .loginButtons {
-      width: 180px;
-      font-size: 19px;
-      font-weight: 400;
+      width: var(--login-mobile-button-width);
+      height: var(--login-button-height);
       margin-left: 0;
       padding: 0;
+      text-align: center;
     }
 
     .loginButtonUser,
@@ -180,152 +126,9 @@
       margin-left: 0;
     }
 
-    .joinLogoBlue {
-      top: 48px;
-      left: 24px;
-    }
-
-    .loginInputField input {
-      border: none;
-      font-size: 16px;
-      font-weight: 400;
-      padding: 0;
-      width: 100%;
-    }
-
-    .horizontalH1Underline {
-      width: 88px;
-      height: 3
-    }
-
-    .loginH1 {
-      font-size: 48px;
-    }
-
-    .loginButtons {
-      width: 142px;
-      height: 48px;
-      font-size: 18px;
-      font-weight: 400;
-      margin-left: 0;
-      text-align: center;
-    }
-
-    @keyframes moveLogo {
-      0% {
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-      }
-      100% {
-        top: 48px;
-        left: 24px;
-        transform: translate(0, 0);
-      }
-    }
-
-    .signup-hint {
-      color: #ff3333;
-      font-size: 13px;
-      text-align: center;
-      max-width: 422px;
-      line-height: 1.2;
-      min-height: 32px;
-    }
-  }
-
- @media (max-width: 375px) {
-    .login-box {
-      padding: 24px 16px;
-      gap: 24px;
-    }
-
-    .loginH1 {
-      font-size: 40px;
-    }
-
-    .horizontalH1Underline {
-      width: 80px;
-      height: 3px;
-    }
-
-    .loginInputField {
-      width: min(422px, 100%);
-      padding: 0 16px;
-      gap: 16px;
-    }
-
-    .loginInputField input {
-      font-size: 15px;
-      width: 100%;
-    }
-
-    .loginButtonsBox {
-      gap: 16px;
-      margin-top: 16px;
-    }
-
-    .loginButtons {
-      width: 130px;
-      height: 44px;
-      font-size: 17px;
-    }
-
-    .signUpField-mobile {
-      gap: 8px;
-      margin-top: 40px;
-    }
-
-    .signUpField-mobile span {
-      font-size: 14px;
-    }
-
-    .signUpButton-mobile {
-      font-size: 12px;
-      padding: 5px 10px;
-    }
-
-    .joinLogoBlue {
-      top: 30px;
-      left: 20px;
-    }
-
-    .joinLogoBlue img {
-      width: 50px;
-      height: 60px;
-    }
-
     .privacyPolicy,
     .legalNotice {
-      font-size: 14px;
-    }
-
-    .back-arrow {
-      top: 24px;
-      left: 16px;
-    }
-
-    @keyframes moveLogo {
-      0% {
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-      }
-      100% {
-        top: 30px;
-        left: 20px;
-        transform: translate(0, 0);
-      }
-    }
-
-    @keyframes resizeLogo {
-      0% {
-        width: 180px;
-      }
-      100% {
-        width: 50px;
-        height: 60px;
-      }
+      font-size: clamp(14px, 2.9cqw, 16px);
     }
   }
 }

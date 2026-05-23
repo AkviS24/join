@@ -18,6 +18,7 @@ export class Supabase {
       name: string;
       email: string;
       phone: number;
+      auth_user_id?: string | null;
       loggedIn: boolean;
       password: string;
     }[]
@@ -85,7 +86,8 @@ export class Supabase {
     name: string;
     email: string;
     phone: number;
-    password: string;
+    password?: string;
+    auth_user_id?: string | null;
   }) {
     const { data, error } = await this.supabase
       .from('demoDB')
@@ -106,6 +108,25 @@ export class Supabase {
     // Realtime handles that.
   }
 
+  async importContacts(
+    contacts: {
+      name: string;
+      email: string;
+      phone: number;
+      password?: string;
+    }[]
+  ) {
+    const { data, error } = await this.supabase.from('demoDB').insert(contacts).select();
+
+    if (error) {
+      console.error('Error importing contacts:', error);
+      return { data: null, error };
+    }
+
+    await this.getDemoData();
+    return { data, error: null };
+  }
+
   async getupdateDemoData(
     id: number,
     name: string,
@@ -122,6 +143,26 @@ export class Supabase {
 
   async deleteData(id: number) {
     await this.supabase.from('demoDB').delete().eq('id', id).select();
+  }
+
+  async deleteContact(contact: { id: number; auth_user_id?: string | null }) {
+    if (!contact.auth_user_id) {
+      await this.deleteData(contact.id);
+      return;
+    }
+
+    const { data, error } = await this.supabase.functions.invoke('delete-contact', {
+      body: { contactId: contact.id },
+    });
+
+    if (error) {
+      console.error('Error deleting contact auth user:', error);
+      throw error;
+    }
+
+    if (data?.error) {
+      throw new Error(data.error);
+    }
   }
 
   selectUser(user: any | null) {

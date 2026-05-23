@@ -40,11 +40,15 @@ export class ContactsEdit implements OnInit {
     if (!this.user?.id || this.isDeleting) return;
     this.isDeleting = true;
 
-    await this.demoDB.deleteData(this.user.id);
-    await this.demoDB.getDemoData();
-
-    this.isDeleting = false;
-    this.close();
+    try {
+      await this.demoDB.deleteContact(this.user);
+      await this.demoDB.getDemoData();
+      this.close();
+    } catch (error) {
+      console.error('Error deleting contact:', error);
+    } finally {
+      this.isDeleting = false;
+    }
   }
 
   async saveContact() {

@@ -71,9 +71,15 @@ export class ContactForm implements OnInit {
   async deleteContact() {
     if (this.user?.id) {
       this.isLoading = true;
-      await this.supabase.deleteData(this.user.id);
-      this.isLoading = false;
-      this.close(true);
+      try {
+        await this.supabase.deleteContact(this.user);
+        await this.supabase.getDemoData();
+        this.close(true);
+      } catch (error) {
+        console.error('Error deleting contact:', error);
+      } finally {
+        this.isLoading = false;
+      }
     }
   }
 }

@@ -105,10 +105,12 @@
 
   .task-card-wrapper {
     padding-inline: 0;
+    touch-action: pan-x pan-y;
   }
 
   .task-card {
     flex-basis: min(250px, calc(100vw - 32px));
+    touch-action: pan-x pan-y !important;
   }
 
   :host(.mobile-drag-active) .board-header,

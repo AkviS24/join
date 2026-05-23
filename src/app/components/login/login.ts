@@ -198,10 +198,13 @@ export class Login implements OnInit {
     }
 
     try {
+      const email = this.email.trim();
+      const name = this.name.trim();
+
       const { data, error } = await this.supabaseService.supabase.auth.signUp({
-        email: this.email,
+        email,
         password: this.password,
-        options: { data: { name: this.name } },
+        options: { data: { name } },
       });
 
       if (error) {
@@ -209,14 +212,19 @@ export class Login implements OnInit {
         return;
       }
 
-      
+      if (!data.user?.id) {
+        this.errorMessage = 'Registration failed. Please try again.';
+        return;
+      }
+
       await this.supabaseService.setDemoData({
-        name: this.name.trim() || '',
-        email: this.email,
+        auth_user_id: data.user.id,
+        name,
+        email,
         phone: 0,
-        password: this.password,
+        password: '',
       });
-      
+
       await this.supabaseService.getDemoData();
 
       this.successMessage = 'Successfully registered! Please confirm your email, then log in.';

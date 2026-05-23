@@ -1,7 +1,15 @@
 <section class="contacts">
   <div class="contact-list" [class.hidden-mobile]="supaDatabase.selectedUser()">
     <div class="contact-button">
-      <button class="primary-button" (click)="openAddContact()">
+      <button
+        class="primary-button"
+        (click)="handleAddContactButtonClick($event)"
+        (pointerdown)="startAddContactHold($event)"
+        (pointerup)="finishAddContactHold()"
+        (pointerleave)="finishAddContactHold()"
+        (pointercancel)="finishAddContactHold()"
+        (contextmenu)="$event.preventDefault()"
+      >
         <span>Add new contact</span>
         <app-svg-db name="person-add"></app-svg-db>
       </button>
@@ -47,4 +55,50 @@
   <div class="toast-message" [class.show]="showToast()">
     <p>Contact successfully created!</p>
   </div>
+
+  @if (showContactTransfer) {
+  <div class="contact-transfer-overlay" (click)="closeContactTransfer()">
+    <div class="contact-transfer-modal" (click)="$event.stopPropagation()">
+      <div class="contact-transfer-header">
+        <h3>Contacts</h3>
+        <button class="contact-transfer-close" type="button" (click)="closeContactTransfer()">
+          <app-svg-db name="cancel"></app-svg-db>
+        </button>
+      </div>
+
+      <div class="contact-transfer-actions">
+        <button type="button" class="contact-transfer-action" (click)="exportContacts()">
+          <span>Export</span>
+          <img src="icons/img/save.svg" alt="" />
+        </button>
+
+        <button
+          type="button"
+          class="contact-transfer-action primary"
+          (click)="contactImportInput.click()"
+          [disabled]="isImportingContacts"
+        >
+          <span>{{ isImportingContacts ? 'Importing...' : 'Import' }}</span>
+          <app-svg-db name="person-add"></app-svg-db>
+        </button>
+
+        <input
+          #contactImportInput
+          type="file"
+          accept="application/json,.json"
+          (change)="importContacts($event)"
+          hidden
+        />
+      </div>
+
+      @if (contactTransferMessage) {
+      <p class="contact-transfer-status success">{{ contactTransferMessage }}</p>
+      }
+
+      @if (contactTransferError) {
+      <p class="contact-transfer-status error">{{ contactTransferError }}</p>
+      }
+    </div>
+  </div>
+  }
 </section>

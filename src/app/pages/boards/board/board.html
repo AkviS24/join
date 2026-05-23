@@ -2,7 +2,15 @@
   <header class="board-header">
     <div class="header-top-row">
       <h2 class="board-title">Board</h2>
-      <button class="primary-button" (click)="$event.stopPropagation(); openAddTask()">
+      <button
+        class="primary-button"
+        (click)="handleAddTaskButtonClick($event)"
+        (pointerdown)="startAddTaskHold($event)"
+        (pointerup)="finishAddTaskHold()"
+        (pointerleave)="finishAddTaskHold()"
+        (pointercancel)="finishAddTaskHold()"
+        (contextmenu)="$event.preventDefault()"
+      >
         <span class="button-text">Add task</span>
         <app-svg-db name="add"></app-svg-db>
       </button>
@@ -45,6 +53,7 @@
                 class="task-card"
                 cdkDrag
                 [cdkDragData]="task"
+                [cdkDragDisabled]="isMobileWidth()"
                 [attr.data-task-id]="task.id"
                 (click)="openTaskDetails(task.id)"
               >
@@ -142,5 +151,51 @@
         <app-svg-db name="cancel"></app-svg-db>
       </button>
     </app-add-task>
+  </div>
+}
+
+@if (showTaskTransfer) {
+  <div class="dialog-overlay" (click)="closeTaskTransfer()">
+    <div class="task-transfer-modal" (click)="$event.stopPropagation()">
+      <div class="task-transfer-header">
+        <h3>Tasks</h3>
+        <button class="task-transfer-close" type="button" (click)="closeTaskTransfer()">
+          <app-svg-db name="cancel"></app-svg-db>
+        </button>
+      </div>
+
+      <div class="task-transfer-actions">
+        <button type="button" class="task-transfer-action" (click)="exportTasks()">
+          <span>Export</span>
+          <img src="icons/img/save.svg" alt="" />
+        </button>
+
+        <button
+          type="button"
+          class="task-transfer-action primary"
+          (click)="taskImportInput.click()"
+          [disabled]="isImportingTasks"
+        >
+          <span>{{ isImportingTasks ? 'Importing...' : 'Import' }}</span>
+          <app-svg-db name="add"></app-svg-db>
+        </button>
+
+        <input
+          #taskImportInput
+          type="file"
+          accept="application/json,.json"
+          (change)="importTasks($event)"
+          hidden
+        />
+      </div>
+
+      @if (taskTransferMessage) {
+        <p class="task-transfer-status success">{{ taskTransferMessage }}</p>
+      }
+
+      @if (taskTransferError) {
+        <p class="task-transfer-status error">{{ taskTransferError }}</p>
+      }
+    </div>
   </div>
 }

@@ -95,6 +95,18 @@ export class Tasks {
     await this.getTasks();
   }
 
+  async importTasks(tasks: TaskPayload[]) {
+    const { data, error } = await this.supabase.from('tasks').insert(tasks).select();
+
+    if (error) {
+      console.error('Error importing tasks:', error);
+      return { data: null, error };
+    }
+
+    await this.getTasks();
+    return { data, error: null };
+  }
+
   async deleteData(id: number) {
     await this.supabase.from('tasks').delete().eq('id', id).select();
   }

@@ -9,7 +9,7 @@ section {
   min-height: calc(100vh - $header-height);
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .board-header {
@@ -18,7 +18,7 @@ section {
   gap: 16px;
   width: 100%;
   max-width: calc(1440px - $sidebar-width);
-  margin-inline: auto;
+  margin-inline: 0 auto;
 
   .header-top-row {
     display: contents;
@@ -105,13 +105,13 @@ section {
   padding: 10px 0;
   width: 100%;
   max-width: calc(1440px - $sidebar-width);
-  margin-inline: auto;
+  margin-inline: 0 auto;
 }
 
 .board-dnd-area {
   width: 100%;
   max-width: calc(1440px - $sidebar-width);
-  margin-inline: auto;
+  margin-inline: 0 auto;
 }
 
 .column {

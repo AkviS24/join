@@ -7,7 +7,7 @@
   width: 100%;
   background-color: $color-bg;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   overflow: hidden;
 }
 
@@ -32,7 +32,7 @@
   width: 100%;
   max-width: 1116px;
   height: 100%;
-  margin-inline: auto;
+  margin-inline: 0 auto;
   padding: 60px 60px 24px;
   background-color: $color-bg;
   display: flex;
@@ -630,6 +630,7 @@ textarea.form-control {
   .page-container {
     width: min(100%, 600px);
     max-width: none;
+    margin-inline: auto;
     padding: clamp(44px, 5.86vw, 60px) clamp(20px, 5.86vw, 60px)
       clamp(16px, 2.34vw, 24px);
   }

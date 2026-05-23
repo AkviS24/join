@@ -5,7 +5,7 @@ import { UserBadge } from '../../../services/userbadge';
 import { LowerCasePipe } from '@angular/common';
 import { BoardDetails } from '../board-details/board-details';
 import { FormsModule } from '@angular/forms';
-import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, DragDropModule, type DragStartDelay } from '@angular/cdk/drag-drop';
 import { AddTask } from '../../add-task/add-task';
 import { Router } from '@angular/router';
 
@@ -41,8 +41,12 @@ export class Board implements OnInit {
   private addTaskHoldTimeout?: ReturnType<typeof setTimeout>;
   private suppressNextAddTaskClick = false;
   private lastDragReleaseAt = 0;
+  private readonly compactBoardBreakpoint = 1280;
+  private readonly mobileNavigationBreakpoint = 480;
   private readonly mobileDragMoveThreshold = 10;
+  private readonly mobileDragHoldDelay = 320;
   private readonly addTaskHoldDelay = 650;
+  readonly taskDragStartDelay: DragStartDelay = { touch: 260, mouse: 0 };
 
   @HostBinding('class.mobile-drag-active')
   get mobileDragActiveClass() {
@@ -396,7 +400,7 @@ export class Board implements OnInit {
       this.taskClickLocked = true;
       this.draggingTaskId.set(taskId);
       this.mobileDragStartPoint = undefined;
-    }, 180);
+    }, this.mobileDragHoldDelay);
   }
 
   handleMobileTaskTouchMove(event: TouchEvent) {
@@ -526,10 +530,14 @@ export class Board implements OnInit {
   }
 
   getOrientation() {
-    return this.viewportWidth() <= 1280 ? 'horizontal' : 'vertical';
+    return this.usesHorizontalTaskScroller() ? 'horizontal' : 'vertical';
+  }
+
+  usesHorizontalTaskScroller() {
+    return this.viewportWidth() <= this.compactBoardBreakpoint;
   }
 
   isMobileWidth() {
-    return this.viewportWidth() <= 480;
+    return this.viewportWidth() <= this.mobileNavigationBreakpoint;
   }
 }

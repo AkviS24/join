@@ -54,6 +54,7 @@
                 cdkDrag
                 [cdkDragData]="task"
                 [cdkDragDisabled]="isMobileWidth()"
+                [cdkDragStartDelay]="taskDragStartDelay"
                 [attr.data-task-id]="task.id"
                 (click)="openTaskDetails(task.id)"
               >

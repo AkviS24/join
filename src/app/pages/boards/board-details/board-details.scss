@@ -224,7 +224,6 @@
 }
 
 .subtask-section {
-  flex: 0 0 auto;
   margin-top: 20px;
 
   >.label {
@@ -235,8 +234,7 @@
 }
 
 .subtask-list {
-  max-height: 116px;
-  overflow-y: auto;
+  overflow: visible;
   padding-right: 4px;
   display: flex;
   flex-direction: column;
@@ -311,12 +309,13 @@
 
 .subtask-item {
   min-height: 32px;
-  width: fit-content;
+  width: 100%;
+  box-sizing: border-box;
   border-radius: 13px;
   padding: 4px 16px;
   display: flex;
-  align-items: center;
-  gap: 16px;
+  align-items: flex-start;
+  gap: 12px;
   position: relative;
   color: $color-black;
   line-height: 1.2;
@@ -349,6 +348,8 @@
 .custom-checkbox {
   width: 16px;
   height: 16px;
+  flex: 0 0 16px;
+  margin-top: 1px;
   border: 2px solid $color-dark;
   border-radius: 3px;
   box-sizing: border-box;
@@ -370,6 +371,8 @@
 }
 
 .subtask-text {
+  flex: 1 1 auto;
+  min-width: 0;
   overflow-wrap: anywhere;
 }
 
@@ -440,19 +443,59 @@
 
 @media (max-width: $bp-mobile) {
   .detail-card {
-    width: calc(100vw - 32px);
-    height: calc(100vh - 96px);
-    padding: 24px 18px;
+    width: calc(100vw - 24px);
+    height: min(931px, calc(100dvh - 32px));
+    padding: 20px 14px 18px;
     border-radius: 20px;
+  }
+
+  .detail-header {
+    gap: 8px;
   }
 
   .type-badge {
     min-height: 32px;
-    padding-inline: 14px;
-    font-size: 16px;
+    padding-inline: 12px;
+    font-size: 15px;
   }
 
   .detail-content h1 {
-    font-size: 30px;
+    font-size: 28px;
+  }
+
+  .description,
+  .info-row,
+  .assignment-section>.label,
+  .subtask-section>.label {
+    font-size: 16px;
+  }
+
+  .info-row {
+    flex-wrap: wrap;
+    gap: 6px 12px;
+  }
+
+  .user-row {
+    gap: 10px;
+    font-size: 16px;
+  }
+
+  .subtask-item {
+    padding-inline: 8px;
+    gap: 10px;
+  }
+
+  .detail-footer {
+    justify-content: space-between;
+    gap: 6px;
+  }
+
+  .action-btn {
+    gap: 6px;
+    font-size: 14px;
+  }
+
+  .divider {
+    height: 20px;
   }
 }

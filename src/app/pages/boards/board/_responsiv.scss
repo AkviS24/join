@@ -23,9 +23,11 @@
     gap: clamp(12px, 1.25vw, 16px);
     padding: 8px 2px 12px;
     overflow-x: auto;
+    overscroll-behavior-x: contain;
     scroll-snap-type: x mandatory;
     scroll-padding-inline: 2px;
     -webkit-overflow-scrolling: touch;
+    touch-action: pan-x pan-y;
   }
 
   .task-card {
@@ -35,6 +37,7 @@
     max-width: none;
     margin: 0;
     scroll-snap-align: start;
+    touch-action: pan-x pan-y;
   }
 
   .empty-msg {
@@ -45,11 +48,85 @@
   section {
     min-height: calc(100vh - $header-height - $footer-height);
   }
+
+  :host(.mobile-drag-active) section {
+    padding-bottom: 112px;
+  }
+
+  :host(.mobile-drag-active) .board-header,
+  :host(.mobile-drag-active) .board-layout {
+    opacity: 0.55;
+    transition: opacity 120ms ease-out;
+  }
+
+  :host(.mobile-drag-active) .mobile-drag-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 900;
+    display: block;
+    background-color: rgba(42, 54, 71, 0.18);
+    backdrop-filter: blur(1px);
+    pointer-events: none;
+  }
+
+  :host(.mobile-drag-active) .mobile-drop-dock {
+    position: fixed;
+    right: clamp(12px, 3vw, 32px);
+    bottom: 16px;
+    left: clamp(12px, 3vw, 32px);
+    z-index: 1100;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+    max-width: 720px;
+    margin-inline: auto;
+    padding: 8px;
+    border-radius: 18px;
+    background-color: rgba(42, 54, 71, 0.96);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.24);
+    animation: mobileDropDockIn 160ms ease-out;
+  }
+
+  .mobile-drop-zone {
+    min-height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 4px;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 12px;
+    background-color: $color-white;
+    color: $color-dark;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.15;
+    text-align: center;
+    transition:
+      transform 120ms ease-out,
+      background-color 120ms ease-out,
+      color 120ms ease-out,
+      box-shadow 120ms ease-out;
+  }
+
+  .mobile-drop-zone--active {
+    transform: translateY(-4px);
+    background-color: $color-primary;
+    color: $color-white;
+    box-shadow: 0 8px 18px rgba(41, 171, 226, 0.32);
+  }
 }
 
 @media (max-width: 960px) {
   section {
     margin-bottom: $footer-height;
+  }
+
+  :host(.mobile-drag-active) section {
+    padding-bottom: calc($footer-height + 112px);
+  }
+
+  :host(.mobile-drag-active) .mobile-drop-dock {
+    bottom: calc($footer-height + 12px);
   }
 }
 
@@ -91,10 +168,6 @@
     padding: clamp(16px, 6.67vw, 32px);
   }
 
-  :host(.mobile-drag-active) section {
-    padding-bottom: calc($footer-height + 112px);
-  }
-
   .search-wrapper {
     max-width: none;
   }
@@ -110,67 +183,6 @@
 
   .task-card {
     flex-basis: min(250px, calc(100vw - 32px));
-    touch-action: pan-x pan-y !important;
-  }
-
-  :host(.mobile-drag-active) .board-header,
-  :host(.mobile-drag-active) .board-layout {
-    opacity: 0.55;
-    transition: opacity 120ms ease-out;
-  }
-
-  :host(.mobile-drag-active) .mobile-drag-backdrop {
-    position: fixed;
-    inset: 0;
-    z-index: 900;
-    display: block;
-    background-color: rgba(42, 54, 71, 0.18);
-    backdrop-filter: blur(1px);
-    pointer-events: none;
-  }
-
-  :host(.mobile-drag-active) .mobile-drop-dock {
-    position: fixed;
-    right: 12px;
-    bottom: calc($footer-height + 12px);
-    left: 12px;
-    z-index: 1100;
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 8px;
-    padding: 8px;
-    border-radius: 18px;
-    background-color: rgba(42, 54, 71, 0.96);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.24);
-    animation: mobileDropDockIn 160ms ease-out;
-  }
-
-  .mobile-drop-zone {
-    min-height: 64px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 8px 4px;
-    border: 1px solid rgba(255, 255, 255, 0.22);
-    border-radius: 12px;
-    background-color: $color-white;
-    color: $color-dark;
-    font-size: 12px;
-    font-weight: 700;
-    line-height: 1.15;
-    text-align: center;
-    transition:
-      transform 120ms ease-out,
-      background-color 120ms ease-out,
-      color 120ms ease-out,
-      box-shadow 120ms ease-out;
-  }
-
-  .mobile-drop-zone--active {
-    transform: translateY(-4px);
-    background-color: $color-primary;
-    color: $color-white;
-    box-shadow: 0 8px 18px rgba(41, 171, 226, 0.32);
   }
 }
 

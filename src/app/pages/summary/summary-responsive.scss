@@ -21,6 +21,19 @@
     gap: 0;
   }
 
+  .dashboard-header {
+    width: 100%;
+  }
+
+  .header-divider {
+    display: block;
+    flex: 0 0 3px;
+    width: 3px;
+    min-width: 3px;
+    height: 59px;
+    background-color: #29abe2;
+  }
+
   .greeting-section {
     display: none;
   }

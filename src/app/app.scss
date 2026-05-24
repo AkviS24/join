@@ -1,7 +1,9 @@
 @use '../styles/abstracts/variables' as *;
 
 .app-layout {
-  margin-left: 232px;
+  margin-left: $sidebar-width;
+  width: calc(100% - $sidebar-width);
+  max-width: calc($bp-desktop - $sidebar-width);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -12,13 +14,14 @@
   background: $color-bg;
   width: 100%;
   max-width: 100%;
-  
 }
 
 @media (max-width: 960px) {
   .app-layout {
     margin-left: 0;
     width: 100%;
+    max-width: none;
+    min-height: 100vh;
     overflow-x: hidden;
   }
 

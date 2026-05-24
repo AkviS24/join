@@ -5,14 +5,18 @@
   height: $header-height;
   background: $color-white;
   box-shadow: 0 4px 4px rgba($color-black, 0.08);
-  position: relative;
-  z-index: 10;
+  position: fixed;
+  top: 0;
+  left: $sidebar-width;
+  right: auto;
+  width: calc(100% - $sidebar-width);
+  max-width: calc($bp-desktop - $sidebar-width);
+  z-index: 1000;
 }
 
 .header__inner {
   height: 100%;
   width: 100%;
-  max-width: 1200px;
   padding-inline: 140px 0;
   @include flex-between;
 }
@@ -51,6 +55,9 @@
 
 @media (max-width: 960px) {
   .header {
+    left: 0px;
+    width: 100%;
+    max-width: none;
     height: $header-height-mobile;
   }
 

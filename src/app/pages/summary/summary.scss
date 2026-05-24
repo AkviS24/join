@@ -1,11 +1,14 @@
 #dashboard-section {
+  --summary-padding-x: clamp(16px, calc(7.88vw - 17.5px), 96px);
+  --summary-padding-top: clamp(128px, calc(7.68vw + 95.34px), 206px);
+
+  display: block;
   position: relative;
   width: 100%;
-  min-height: 100%;
-  display: flex;
-  align-items: flex-start;
-  padding: 110px 60px 60px 96px;
+  height: calc(100vh - 96px);
+  padding: var(--summary-padding-top) 60px 60px var(--summary-padding-x);
   box-sizing: border-box;
+  margin: 0;
 }
 
 .dashboard-container {

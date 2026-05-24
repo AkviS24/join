@@ -195,4 +195,10 @@
     <div class="privacyPolicy" routerLink="/info/privacy"><span>Privacy Policy</span></div>
     <div class="legalNotice" routerLink="/info/legal"><span>Legal notice</span></div>
   </div>
+
+  @if (showSignUpSuccessMessage) {
+    <div class="signup-success-message" role="status" aria-live="polite">
+      <img src="icons/img/signup-success.svg" alt="You signed up successfully" />
+    </div>
+  }
 </div>

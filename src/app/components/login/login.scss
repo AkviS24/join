@@ -269,6 +269,34 @@
   box-shadow: 0px 4px 4px 0px #00000040;
 }
 
+.signup-success-message {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  pointer-events: none;
+
+  img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: min(320px, calc(100vw - 32px));
+    height: auto;
+    animation: signUpSuccessSlideUp 650ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+}
+
+@keyframes signUpSuccessSlideUp {
+  from {
+    opacity: 0;
+    transform: translate(-50%, calc(50vh + 120px)) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
 .loginFooter {
   position: fixed;
   bottom: 26px;

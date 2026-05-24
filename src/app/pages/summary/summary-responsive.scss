@@ -73,7 +73,7 @@
 
 @media (max-width: 960px) {
   #dashboard-section {
-    --dashboard-inline-padding: clamp(20px, calc(7.14vw - 8.57px), 60px);
+    --dashboard-inline-padding: var(--summary-padding-x);
     --dashboard-fluid-width: clamp(330px, calc(41.07vw + 165.71px), 560px);
     --dashboard-row-gap: clamp(12px, 2.92vw, 28px);
     --dashboard-card-gap: clamp(10px, 2.92vw, 28px);
@@ -81,7 +81,7 @@
     --dashboard-radius: clamp(18px, 3.13vw, 30px);
 
     justify-content: center;
-    padding: clamp(60px, calc(8.93vw + 24.29px), 110px) var(--dashboard-inline-padding)
+    padding: var(--summary-padding-top) var(--dashboard-inline-padding)
       clamp(20px, calc(7.14vw - 8.57px), 60px);
   }
 

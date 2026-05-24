@@ -18,6 +18,7 @@ export class Login implements OnInit {
   confirmPassword = '';
   errorMessage = '';
   successMessage = '';
+  showSignUpSuccessMessage = false;
   showOverlay = true;
   rememberMe = false;
   isSignUpMode = false;
@@ -29,6 +30,7 @@ export class Login implements OnInit {
   private readonly passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
   private failedLoginEmail = '';
   private failedLoginPassword = '';
+  private signUpSuccessTimeout?: ReturnType<typeof setTimeout>;
 
   constructor(
     private router: Router,
@@ -68,6 +70,7 @@ export class Login implements OnInit {
     this.loginSubmitted = false;
     this.errorMessage = '';
     this.successMessage = '';
+    this.hideSignUpSuccessMessage();
     this.clearFailedLogin();
   }
 
@@ -96,6 +99,7 @@ export class Login implements OnInit {
     this.loginSubmitted = false;
     this.errorMessage = '';
     this.successMessage = '';
+    this.hideSignUpSuccessMessage();
     this.clearFailedLogin();
     this.name = '';
     this.confirmPassword = '';
@@ -182,6 +186,7 @@ export class Login implements OnInit {
   async registerUser(): Promise<void> {
     this.errorMessage = '';
     this.successMessage = '';
+    this.hideSignUpSuccessMessage();
     this.loginSubmitted = false;
     this.clearFailedLogin();
 
@@ -227,12 +232,12 @@ export class Login implements OnInit {
 
       await this.supabaseService.getDemoData();
 
-      this.successMessage = 'Successfully registered! Please confirm your email, then log in.';
       this.isSignUpMode = false;
       this.name = '';
       this.confirmPassword = '';
       this.acceptTerms = false;
       this.password = '';
+      this.showSignUpSuccessAnimation();
     } catch (e: any) {
       this.errorMessage = 'An unexpected error occurred: ' + (e.message || e);
       console.error('Registration error', e);
@@ -243,6 +248,7 @@ export class Login implements OnInit {
     this.loginSubmitted = true;
     this.errorMessage = '';
     this.successMessage = '';
+    this.hideSignUpSuccessMessage();
     this.clearFailedLogin();
 
     const email = this.email.trim();
@@ -298,6 +304,7 @@ export class Login implements OnInit {
   async guestLogin(): Promise<void> {
     this.errorMessage = '';
     this.successMessage = '';
+    this.hideSignUpSuccessMessage();
     this.loginSubmitted = false;
     this.clearFailedLogin();
 
@@ -359,6 +366,25 @@ export class Login implements OnInit {
   private clearFailedLogin() {
     this.failedLoginEmail = '';
     this.failedLoginPassword = '';
+  }
+
+  private showSignUpSuccessAnimation() {
+    this.hideSignUpSuccessMessage();
+    this.showSignUpSuccessMessage = true;
+
+    this.signUpSuccessTimeout = setTimeout(() => {
+      this.showSignUpSuccessMessage = false;
+      this.signUpSuccessTimeout = undefined;
+    }, 1500);
+  }
+
+  private hideSignUpSuccessMessage() {
+    if (this.signUpSuccessTimeout) {
+      clearTimeout(this.signUpSuccessTimeout);
+      this.signUpSuccessTimeout = undefined;
+    }
+
+    this.showSignUpSuccessMessage = false;
   }
 
   private hasFailedLogin() {

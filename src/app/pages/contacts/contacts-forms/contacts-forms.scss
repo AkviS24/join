@@ -365,7 +365,7 @@
     .right-panel {
         height: 62%;
         align-items: flex-start;
-        padding: 68px 24px 24px;
+        padding: 68px 24px 104px;
         position: static;
     }
 
@@ -402,6 +402,14 @@
     // }
 
     .form-actions {
+        position: fixed;
+        left: 50%;
+        bottom: $footer-height;
+        z-index: 1000;
+        width: min(calc(100vw - 40px), 520px);
+        padding: 12px 0;
+        background-color: $color-white;
+        transform: translateX(-50%);
         justify-content: center;
         gap: 16px;
     }
@@ -440,7 +448,7 @@
 
     .right-panel {
         height: 64%;
-        padding: 64px 20px 20px;
+        padding: 64px 20px 104px;
     }
 
     .avatar-container {

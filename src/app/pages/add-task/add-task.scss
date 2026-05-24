@@ -3,6 +3,9 @@
 @use '../../../styles/abstracts/keyframes' as *;
 
 .add-task-page {
+  --add-task-padding-x: clamp(16px, calc(7.88vw - 17.5px), 96px);
+  --add-task-padding-top: clamp(128px, calc(7.68vw + 95.34px), 206px);
+
   height: calc(100dvh - $header-height);
   width: 100%;
   background-color: $color-bg;
@@ -33,7 +36,7 @@
   max-width: 1116px;
   height: 100%;
   margin-inline: 0 auto;
-  padding: 60px 60px 24px;
+  padding: var(--add-task-padding-top) 60px 24px var(--add-task-padding-x);
   background-color: $color-bg;
   display: flex;
   flex-direction: column;
@@ -43,7 +46,6 @@
   flex-shrink: 0;
   margin-bottom: 32px;
   background-color: $color-bg;
-
 }
 
 .page-header h2 {
@@ -495,7 +497,10 @@ textarea.form-control {
   background-color: $color-gray;
 }
 
-.required-note {
+.required-note-a {
+  display: none;
+}
+.required-note-b {
   display: flex;
   align-items: flex-start;
   align-self: flex-start;
@@ -506,11 +511,13 @@ textarea.form-control {
 }
 
 .page-footer {
+  position: sticky;
+  bottom: 5px;
   flex-shrink: 0;
   height: 72px;
   z-index: 20;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
   background-color: $color-bg;
 }
@@ -623,16 +630,28 @@ textarea.form-control {
 }
 
 @media (max-width: 1024px) {
+  .required-note-b {
+    display: none;
+  }
+  .required-note-a {
+    display: flex;
+    align-items: flex-start;
+    align-self: flex-start;
+    font-size: 16px;
+    color: $color-black;
+    line-height: 1;
+    margin-top: 32px;
+  }
+
   .add-task-page {
     height: calc(100dvh - $header-height-mobile - $footer-height);
   }
 
   .page-container {
-    width: min(100%, 600px);
+    width: 100%;
     max-width: none;
-    margin-inline: auto;
-    padding: clamp(44px, 5.86vw, 60px) clamp(20px, 5.86vw, 60px)
-      clamp(16px, 2.34vw, 24px);
+    margin-inline: 0;
+    padding: var(--add-task-padding-top) var(--add-task-padding-x) clamp(16px, 2.34vw, 24px);
   }
 
   .page-header {
@@ -675,6 +694,7 @@ textarea.form-control {
   }
 
   .page-footer {
+    justify-content: flex-end;
     height: 72px;
   }
 
@@ -695,6 +715,21 @@ textarea.form-control {
 
   .btn-create {
     padding-inline: clamp(18px, 2.34vw, 24px);
+  }
+}
+
+@media (max-width: 960px) {
+  .page-footer {
+    position: fixed;
+    right: var(--add-task-padding-x);
+    bottom: $footer-height;
+    left: var(--add-task-padding-x);
+    height: 72px;
+    padding-inline: 0;
+  }
+
+  .page-scroll {
+    padding-bottom: calc(72px + 24px);
   }
 }
 

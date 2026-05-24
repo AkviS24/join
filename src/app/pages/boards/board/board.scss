@@ -4,8 +4,12 @@
 @use 'responsiv';
 @use 'drag-and-drop';
 $header-height: 96px;
+$board-content-left: 64px;
+$board-content-top: 175.5px;
+
 section {
-  padding: clamp(32px, 4.44vw, 64px) clamp(32px, 4.44vw, 64px) clamp(24px, 2.22vw, 32px);
+  padding: $board-content-top clamp(32px, 4.44vw, 64px) clamp(24px, 2.22vw, 32px)
+    $board-content-left;
   min-height: calc(100vh - $header-height);
   display: flex;
   flex-direction: column;
@@ -19,6 +23,7 @@ section {
   width: 100%;
   max-width: calc(1440px - $sidebar-width);
   margin-inline: 0 auto;
+  background-color: $color-bg;
 
   .header-top-row {
     display: contents;

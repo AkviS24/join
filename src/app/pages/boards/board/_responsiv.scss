@@ -165,7 +165,7 @@
 
 @media (max-width: $bp-mobile) {
   section {
-    padding: clamp(16px, 6.67vw, 32px);
+    padding: 128px 16px clamp(16px, 6.67vw, 32px);
   }
 
   .search-wrapper {

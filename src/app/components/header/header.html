@@ -1,12 +1,14 @@
 <header class="header">
   <div class="header__inner">
-    <img class="header__logo" src="images/join-header.png" alt="Join Logo" />
+    <app-svg-db class="header__logo" name="header-logo" role="img" aria-label="Join Logo"></app-svg-db>
 
     <p class="header__title">Kanban Project Management Tool</p>
 
     @if (isLoggedIn) {
       <div class="header__actions">
-        <img class="header__help" src="icons/help.png" alt="Help" routerLink="/info/help" />
+        <button class="header__help-link" type="button" aria-label="Help" routerLink="/info/help">
+          <app-svg-db class="header__help" name="header-help" aria-hidden="true"></app-svg-db>
+        </button>
         <app-user-avatar></app-user-avatar>
       </div>
     }

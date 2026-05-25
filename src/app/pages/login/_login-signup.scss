@@ -1,0 +1,108 @@
+@use '../../../styles/abstracts/variables' as *;
+
+.signUpField {
+  height: fit-content;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 35px;
+}
+
+.signUpField span {
+  font-size: 23px;
+  font-weight: 400;
+}
+
+.signUpField-mobile {
+  display: none;
+}
+
+.login-box.signup-box {
+  width: min(620px, calc(100vw - var(--login-page-gutter) - var(--login-page-gutter)));
+  height: min(630px, calc(100vh - 120px));
+  max-width: 620px;
+  max-height: 600px;
+  justify-content: center;
+  gap: clamp(12px, 1.67vw, 16px);
+  margin-top: clamp(48px, 10.42vw, 100px);
+}
+
+.login-box.signup-box .loginInputField {
+  width: min(476px, 100%);
+  max-width: 476px;
+}
+
+.login-box.signup-box .login-alert-message,
+.login-box.signup-box .signup-hint {
+  max-width: 476px;
+}
+
+.back-arrow {
+  position: absolute;
+  top: clamp(24px, 7.74cqw, 48px);
+  left: clamp(16px, 7.74cqw, 48px);
+  width: 37px;
+  height: 37px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    border-radius: 50%;
+    transform: scale(1.1);
+    background-color: #005eff0f;
+  }
+}
+
+.signUpButton {
+  color: #fff;
+  font-size: 16px;
+  background-color: #2a3647;
+  gap: 10px;
+}
+
+.signUpButton:hover,
+.signUpButton:active {
+  background-color: $color-primary;
+  color: $color-white;
+  box-shadow: 0px 4px 4px 0px #00000040;
+}
+
+.accept-the-terms {
+  margin-top: 0;
+  height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 10px;
+}
+
+.pp-inbox-link {
+  text-decoration: none;
+  color: #29abe2;
+}
+
+.pp-inbox-link:hover {
+  text-decoration: underline;
+}
+
+.checkbox {
+  cursor: pointer;
+  height: 19px;
+  width: 19px;
+}
+
+.message-placeholder {
+  min-height: 22px;
+  margin-top: 0;
+  text-align: center;
+  width: 100%;
+}
+
+.signup-hint {
+  color: #ff3333;
+  font-size: 13px;
+  text-align: center;
+  max-width: 422px;
+  line-height: 1.2;
+  min-height: 32px;
+}

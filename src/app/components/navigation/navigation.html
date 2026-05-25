@@ -1,5 +1,5 @@
 <nav class="navigation">
-  <img class="navigation__logo" src="images/join-sidebar.png" alt="Join Logo" />
+  <app-svg-db class="navigation__logo" name="navigation-logo" role="img" aria-label="Join Logo"></app-svg-db>
   
 
   <div class="navigation__links">
@@ -10,7 +10,7 @@
         routerLinkActive="navigation__link--active"
         (click)="requestSummaryIntro()"
       >
-        <img src="icons/summary.png" alt="Summary" />
+        <app-svg-db name="summary"></app-svg-db>
         <span>Summary</span>
       </a>
 
@@ -19,12 +19,12 @@
         routerLink="/add-task"
         routerLinkActive="navigation__link--active"
       >
-        <img src="icons/task.png" alt="Add Task" />
+        <app-svg-db name="add-task"></app-svg-db>
         <span>Add Task</span>
       </a>
 
       <a class="navigation__link" routerLink="/board" routerLinkActive="navigation__link--active">
-        <img src="icons/board.png" alt="Board" />
+        <app-svg-db name="board"></app-svg-db>
         <span>Board</span>
       </a>
 
@@ -32,13 +32,12 @@
         class="navigation__link"
         routerLink="/contacts"
         routerLinkActive="navigation__link--active"
-      >
-        <img src="icons/contacts.png" alt="Contacts" />
+      > <app-svg-db name="contacts"></app-svg-db>
         <span>Contacts</span>
       </a>
     } @else {
       <a class="navigation__link" routerLink="/login" routerLinkActive="navigation__link--active" [routerLinkActiveOptions]="{ exact: true }">
-        <img src="icons/img/login.svg" alt="Login" />
+        <app-svg-db name="login"></app-svg-db>
         <span>Log in</span>
       </a>
 

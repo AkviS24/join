@@ -3,6 +3,8 @@
     <div class="contact-button">
       <button
         class="primary-button"
+        type="button"
+        aria-label="Add new contact"
         (click)="handleAddContactButtonClick($event)"
         (pointerdown)="startAddContactHold($event)"
         (pointerup)="finishAddContactHold()"
@@ -61,7 +63,12 @@
     <div class="contact-transfer-modal" (click)="$event.stopPropagation()">
       <div class="contact-transfer-header">
         <h3>Contacts</h3>
-        <button class="contact-transfer-close" type="button" (click)="closeContactTransfer()">
+        <button
+          class="contact-transfer-close"
+          type="button"
+          aria-label="Close contact transfer"
+          (click)="closeContactTransfer()"
+        >
           <app-svg-db name="cancel"></app-svg-db>
         </button>
       </div>
@@ -69,7 +76,7 @@
       <div class="contact-transfer-actions">
         <button type="button" class="contact-transfer-action" (click)="exportContacts()">
           <span>Export</span>
-          <img src="icons/img/save.svg" alt="" />
+          <app-svg-db name="save" aria-hidden="true"></app-svg-db>
         </button>
 
         <button

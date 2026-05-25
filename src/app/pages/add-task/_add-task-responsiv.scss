@@ -1,0 +1,118 @@
+@use '../../../styles/abstracts/variables' as *;
+@media (max-width: 1024px) {
+  .required-note-b {
+    display: none;
+  }
+  .required-note-a {
+    display: flex;
+    align-items: flex-start;
+    align-self: flex-start;
+    font-size: 16px;
+    color: $color-black;
+    line-height: 1;
+    margin-top: 32px;
+  }
+
+  .add-task-page {
+    height: calc(100dvh - $header-height-mobile - $footer-height);
+  }
+
+  .page-container {
+    width: 100%;
+    max-width: none;
+    margin-inline: 0;
+    padding: var(--add-task-padding-top) var(--add-task-padding-x) clamp(16px, 2.34vw, 24px);
+  }
+
+  .page-header {
+    margin-bottom: clamp(24px, 3.13vw, 32px);
+  }
+
+  .page-header h2 {
+    font-size: clamp(40px, 5.96vw, 61px);
+  }
+
+  .page-body {
+    flex-direction: column;
+    gap: clamp(24px, 3.13vw, 32px);
+  }
+
+  .divider {
+    display: none;
+  }
+
+  .column {
+    max-width: 100%;
+  }
+
+  .left-column {
+    gap: clamp(12px, 1.56vw, 16px);
+  }
+
+  .right-column {
+    gap: clamp(16px, 2.34vw, 24px);
+  }
+
+  .priority-buttons {
+    gap: clamp(8px, 1.56vw, 16px);
+  }
+
+  .btn-priority {
+    gap: clamp(4px, 0.83vw, 8px);
+    padding: clamp(12px, 1.37vw, 14px) clamp(4px, 0.98vw, 10px);
+    font-size: clamp(12px, 1.56vw, 16px);
+  }
+
+  .page-footer {
+    justify-content: flex-end;
+    height: 72px;
+  }
+
+  .actions {
+    gap: clamp(8px, 1.56vw, 16px);
+  }
+
+  .btn-cancel,
+  .btn-create {
+    width: auto;
+    height: clamp(48px, 5.47vw, 56px);
+    font-size: clamp(16px, 1.95vw, 20px);
+  }
+
+  .btn-cancel {
+    padding-inline: clamp(14px, 1.95vw, 20px);
+  }
+
+  .btn-create {
+    padding-inline: clamp(18px, 2.34vw, 24px);
+  }
+}
+
+@media (max-width: 960px) {
+  .page-footer {
+    position: fixed;
+    right: var(--add-task-padding-x);
+    bottom: $footer-height;
+    left: var(--add-task-padding-x);
+    height: 72px;
+    padding-inline: 0;
+  }
+
+  .page-scroll {
+    padding-bottom: calc(72px + 24px);
+  }
+}
+
+@media (max-width: 480px) {
+  .btn-cancel,
+  .btn-create {
+    min-width: 0;
+  }
+}
+
+@media (max-width: 375px) {
+  .btn-cancel,
+  .btn-create {
+    flex-shrink: 1;
+  }
+}

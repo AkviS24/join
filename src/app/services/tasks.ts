@@ -23,6 +23,7 @@ export class Tasks {
   private readonly supabaseService = inject(Supabase);
   supabase = this.supabaseService.supabase;
   private channel?: RealtimeChannel | undefined;
+  readonly isLoading = signal(true);
 
   constructor() {
     this.getTasks();
@@ -77,11 +78,15 @@ export class Tasks {
 
     if (error) {
       console.error('Error loading tasks:', error);
+      this.isLoading.set(false);
       return;
     }
 
-    if (!tasks) return;
-    this.demoTasks.set(tasks);
+    if (tasks) {
+      this.demoTasks.set(tasks);
+    }
+
+    this.isLoading.set(false);
   }
 
   async setTasks(demoData: TaskPayload) {

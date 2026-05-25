@@ -1,0 +1,169 @@
+@use '../../../../styles/abstracts/variables' as *;
+@use '../../../../styles/abstracts/mixins' as *;
+@use '../../../../styles/abstracts/keyframes' as *;
+
+.dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  @include flex-center;
+  z-index: 999;
+  animation: fadeInBackdrop 0.2s ease-out forwards;
+
+  &.closing {
+    animation: fadeOutBackdrop 0.2s ease-out forwards;
+    pointer-events: none;
+  }
+}
+
+app-add-task {
+  position: relative;
+
+  app-svg-db {
+    &:hover {
+      color: $color-dark;
+    }
+  }
+}
+
+.subtask-preview {
+  margin: 16px 0;
+}
+
+.progress-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.progress-bar {
+  flex: 1;
+  height: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background-color: #f4f4f4;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  background-color: #4589ff;
+}
+
+.mobile-drag-backdrop,
+.mobile-drop-dock {
+  display: none;
+}
+
+.task-transfer-modal {
+  width: min(100% - 32px, 420px);
+  padding: 24px;
+  border-radius: 8px;
+  background-color: $color-white;
+  box-shadow: 0 16px 40px rgba($color-black, 0.22);
+}
+
+.task-transfer-header {
+  @include flex-between;
+  gap: 16px;
+  margin-bottom: 20px;
+
+  h3 {
+    margin: 0;
+    font-size: 27px;
+  }
+}
+
+.task-transfer-close {
+  @include flex-center;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 50%;
+  background-color: transparent;
+  color: $color-dark;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $color-bg;
+  }
+}
+
+.task-transfer-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.task-transfer-action {
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid $color-dark;
+  border-radius: 8px;
+  background-color: $color-white;
+  color: $color-dark;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+
+  img,
+  app-svg-db {
+    --svg-db-width: 20px;
+    --svg-db-height: 20px;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+  }
+
+  &:hover:not(:disabled) {
+    border-color: $color-primary;
+    color: $color-primary;
+  }
+
+  &.primary {
+    border-color: $color-dark;
+    background-color: $color-dark;
+    color: $color-white;
+
+    &:hover:not(:disabled) {
+      border-color: $color-primary;
+      background-color: $color-primary;
+      color: $color-white;
+    }
+  }
+
+  &:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+  }
+}
+
+.task-transfer-status {
+  margin: 16px 0 0;
+  font-size: 14px;
+  font-weight: 600;
+
+  &.success {
+    color: $color-mint;
+  }
+
+  &.error {
+    color: $color-urgent;
+  }
+}
+
+@media (max-width: $bp-mobile) {
+  .task-transfer-modal {
+    padding: 20px;
+  }
+
+  .task-transfer-actions {
+    grid-template-columns: 1fr;
+  }
+}

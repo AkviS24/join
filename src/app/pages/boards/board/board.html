@@ -4,6 +4,8 @@
       <h2 class="board-title">Board</h2>
       <button
         class="primary-button"
+        type="button"
+        aria-label="Add task"
         (click)="handleAddTaskButtonClick($event)"
         (pointerdown)="startAddTaskHold($event)"
         (pointerup)="finishAddTaskHold()"
@@ -18,12 +20,13 @@
     <div class="search-wrapper">
       <input
         type="text"
+        aria-label="Find task"
         placeholder="Find Task"
         [ngModel]="searchQuery()"
         (ngModelChange)="searchQuery.set($event)"
       />
       <div class="divider"></div>
-      <button class="search-btn">
+      <button class="search-btn" type="button" aria-label="Search tasks">
         <app-svg-db name="search"></app-svg-db>
       </button>
     </div>
@@ -36,7 +39,11 @@
           <div class="column-header">
             <h3>{{ section.label }}</h3>
             @if (section.id !== 'done') {
-              <button (click)="$event.stopPropagation(); openAddTask(section.id)">
+              <button
+                type="button"
+                [attr.aria-label]="'Add task to ' + section.label"
+                (click)="$event.stopPropagation(); openAddTask(section.id)"
+              >
                 <app-svg-db name="plus-button"></app-svg-db>
               </button>
             }
@@ -48,66 +55,72 @@
             (cdkDropListDropped)="drop($event, section.id)"
             [cdkDropListOrientation]="getOrientation()"
           >
-            @for (task of section.tasks; track task.id) {
-              <div
-                class="task-card"
-                cdkDrag
-                [cdkDragData]="task"
-                [cdkDragDisabled]="isMobileWidth()"
-                [cdkDragStartDelay]="taskDragStartDelay"
-                [attr.data-task-id]="task.id"
-                (click)="openTaskDetails(task.id)"
-              >
-                <div class="drag-placeholder" *cdkDragPlaceholder></div>
+            @if (taskService.isLoading()) {
+              <div class="task-card task-card--skeleton" aria-hidden="true"></div>
+            } @else {
+              @for (task of section.tasks; track task.id) {
+                <div
+                  class="task-card"
+                  cdkDrag
+                  [cdkDragData]="task"
+                  [cdkDragDisabled]="isMobileWidth()"
+                  [cdkDragStartDelay]="taskDragStartDelay"
+                  [attr.data-task-id]="task.id"
+                  (click)="openTaskDetails(task.id)"
+                >
+                  <div class="drag-placeholder" *cdkDragPlaceholder></div>
 
-                <p [class]="'type-badge ' + getTaskTypeClass(task.type)">
-                  {{ task.type }}
-                </p>
-                <p class="task-title">{{ task.title }}</p>
-                <p class="task-description">{{ task.description }}</p>
+                  <p [class]="'type-badge ' + getTaskTypeClass(task.type)">
+                    {{ task.type }}
+                  </p>
+                  <p class="task-title">{{ task.title }}</p>
+                  <p class="task-description">{{ task.description }}</p>
 
-                @if (task.subtasks && task.subtasks.length > 0) {
-                  <div class="subtask-preview">
-                    <div class="progress-row">
-                      <div class="progress-bar">
-                        <div
-                          class="progress-fill"
-                          [style.width.%]="
-                            (getDoneSubtasksCount(task) / task.subtasks.length) * 100
-                          "
-                        ></div>
+                  @if (task.subtasks && task.subtasks.length > 0) {
+                    <div class="subtask-preview">
+                      <div class="progress-row">
+                        <div class="progress-bar">
+                          <div
+                            class="progress-fill"
+                            [style.width.%]="
+                              (getDoneSubtasksCount(task) / task.subtasks.length) * 100
+                            "
+                          ></div>
+                        </div>
+                        <span>
+                          {{ getDoneSubtasksCount(task) }}/{{ task.subtasks.length }} Subtasks
+                        </span>
                       </div>
-                      <span>
-                        {{ getDoneSubtasksCount(task) }}/{{ task.subtasks.length }} Subtasks
-                      </span>
                     </div>
-                  </div>
-                }
+                  }
 
-                <div class="task-assignment">
-                  <div class="avatar-stack">
-                    @for (user of task.assignedToNames.slice(0, 3); track $index) {
-                      <div
-                        class="badge"
-                        [style.background-color]="
-                          userBadgeService.getColor(task.assignedTo[$index])
-                        "
-                      >
-                        {{ userBadgeService.getInitials(user) }}
-                      </div>
-                    }
-                    @if (task.assignedToNames.length > 3) {
-                      <div class="badge more-badge">+{{ task.assignedToNames.length - 3 }}</div>
-                    }
-                  </div>
+                  <div class="task-assignment">
+                    <div class="avatar-stack">
+                      @for (user of task.assignedToNames.slice(0, 3); track $index) {
+                        <div
+                          class="badge"
+                          [style.background-color]="
+                            userBadgeService.getColor(task.assignedTo[$index])
+                          "
+                        >
+                          {{ userBadgeService.getInitials(user) }}
+                        </div>
+                      }
+                      @if (task.assignedToNames.length > 3) {
+                        <div class="badge more-badge">+{{ task.assignedToNames.length - 3 }}</div>
+                      }
+                    </div>
 
-                  <app-svg-db name="cappa-{{ task.priority }}"></app-svg-db>
+                    <app-svg-db name="cappa-{{ task.priority }}"></app-svg-db>
+                  </div>
                 </div>
-              </div>
-            } @empty {
-              <p class="empty-msg">
-                {{ searchQuery() ? 'No matches found' : 'No Tasks ' + (section.label | lowercase) }}
-              </p>
+              } @empty {
+                <p class="empty-msg">
+                  {{
+                    searchQuery() ? 'No matches found' : 'No Tasks ' + (section.label | lowercase)
+                  }}
+                </p>
+              }
             }
           </div>
         </div>
@@ -132,27 +145,31 @@
   </div>
 </section>
 
-@if (showDetails) {
-  <div [class.closing]="isClosingDetails" class="dialog-overlay" (click)="closeDetails()">
-    <app-board-details (click)="$event.stopPropagation()"> </app-board-details>
-  </div>
+@defer (when showDetails) {
+  @if (showDetails) {
+    <div [class.closing]="isClosingDetails" class="dialog-overlay" (click)="closeDetails()">
+      <app-board-details (click)="$event.stopPropagation()"> </app-board-details>
+    </div>
+  }
 }
 
-@if (addingTask) {
-  <div class="dialog-overlay" [class.closing]="isClosingAddTask" (click)="closeAddTask()">
-    <app-add-task
-      [initialStatus]="currentAddTaskStatus"
-      [addingTaskInBoard]="addingTask"
-      [asOverlay]="true"
-      [editTask]="editingTask()"
-      (click)="$event.stopPropagation()"
-      (close)="closeAddTask()"
-    >
-      <button class="close-btn" (click)="closeAddTask()">
-        <app-svg-db name="cancel"></app-svg-db>
-      </button>
-    </app-add-task>
-  </div>
+@defer (when addingTask) {
+  @if (addingTask) {
+    <div class="dialog-overlay" [class.closing]="isClosingAddTask" (click)="closeAddTask()">
+      <app-add-task
+        [initialStatus]="currentAddTaskStatus"
+        [addingTaskInBoard]="addingTask"
+        [asOverlay]="true"
+        [editTask]="editingTask()"
+        (click)="$event.stopPropagation()"
+        (close)="closeAddTask()"
+      >
+        <button class="close-btn" type="button" aria-label="Close add task" (click)="closeAddTask()">
+          <app-svg-db name="cancel"></app-svg-db>
+        </button>
+      </app-add-task>
+    </div>
+  }
 }
 
 @if (showTaskTransfer) {
@@ -160,24 +177,29 @@
     <div class="task-transfer-modal" (click)="$event.stopPropagation()">
       <div class="task-transfer-header">
         <h3>Tasks</h3>
-        <button class="task-transfer-close" type="button" (click)="closeTaskTransfer()">
+        <button
+          class="task-transfer-close"
+          type="button"
+          aria-label="Close task transfer"
+          (click)="closeTaskTransfer()"
+        >
           <app-svg-db name="cancel"></app-svg-db>
         </button>
       </div>
 
       <div class="task-transfer-actions">
-        <button type="button" class="task-transfer-action" (click)="exportTasks()">
+        <button type="button" class="task-transfer-action" (click)="taskTransfer.exportTasks()">
           <span>Export</span>
-          <img src="icons/img/save.svg" alt="" />
+          <app-svg-db name="save" aria-hidden="true"></app-svg-db>
         </button>
 
         <button
           type="button"
           class="task-transfer-action primary"
           (click)="taskImportInput.click()"
-          [disabled]="isImportingTasks"
+          [disabled]="taskTransfer.isImportingTasks()"
         >
-          <span>{{ isImportingTasks ? 'Importing...' : 'Import' }}</span>
+          <span>{{ taskTransfer.isImportingTasks() ? 'Importing...' : 'Import' }}</span>
           <app-svg-db name="add"></app-svg-db>
         </button>
 
@@ -185,17 +207,17 @@
           #taskImportInput
           type="file"
           accept="application/json,.json"
-          (change)="importTasks($event)"
+          (change)="taskTransfer.importTasks($event)"
           hidden
         />
       </div>
 
-      @if (taskTransferMessage) {
-        <p class="task-transfer-status success">{{ taskTransferMessage }}</p>
+      @if (taskTransfer.message()) {
+        <p class="task-transfer-status success">{{ taskTransfer.message() }}</p>
       }
 
-      @if (taskTransferError) {
-        <p class="task-transfer-status error">{{ taskTransferError }}</p>
+      @if (taskTransfer.error()) {
+        <p class="task-transfer-status error">{{ taskTransfer.error() }}</p>
       }
     </div>
   </div>

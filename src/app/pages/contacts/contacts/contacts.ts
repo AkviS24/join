@@ -211,11 +211,5 @@ export class Contacts {
     this.supaDatabase.selectedUser.set(null);
   }
 
-  // async deleteContact() {
-  //   if (this.selectedUser?.id) {
-  //     await this.supaDatabase.deleteData(this.selectedUser.id);
-  //     await this.supaDatabase.getDemoData();
-  //     this.selectedUser = null;
-  //   }
-  // }
+
 }

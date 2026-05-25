@@ -44,7 +44,7 @@
             <div class="input-with-icon">
               <input id="task-due-date" type="date" class="form-control" [(ngModel)]="dueDate" [min]="minDate"
                 [class.has-value]="dueDate" [class.error]="isSubmitted && !dueDate" />
-              <img src="icons/img/calendar.svg" alt="Calendar" />
+              <app-svg-db name="task-calendar" aria-hidden="true"></app-svg-db>
             </div>
 
             @if (isSubmitted && !dueDate) {
@@ -63,19 +63,19 @@
               <button type="button" class="btn-priority urgent" [class.active]="selectedPriority === 'urgent'"
                 (click)="selectPriority('urgent')">
                 Urgent
-                <img src="icons/img/high2.svg" alt="Urgent" />
+                <app-svg-db name="task-priority-urgent" aria-hidden="true"></app-svg-db>
               </button>
 
               <button type="button" class="btn-priority medium" [class.active]="selectedPriority === 'medium'"
                 (click)="selectPriority('medium')">
                 Medium
-                <img src="icons/img/medium.svg" alt="Medium" />
+                <app-svg-db name="task-priority-medium" aria-hidden="true"></app-svg-db>
               </button>
 
               <button type="button" class="btn-priority low" [class.active]="selectedPriority === 'low'"
                 (click)="selectPriority('low')">
                 Low
-                <img src="icons/img/low2.svg" alt="Low" />
+                <app-svg-db name="task-priority-low" aria-hidden="true"></app-svg-db>
               </button>
             </div>
           </div>
@@ -88,7 +88,7 @@
                 <span>Select contacts to assign</span>
 
                 <div class="arrow-btn">
-                  <img src="icons/img/pic.svg" alt="Dropdown" [class.rotated]="dropdownOpen" />
+                  <app-svg-db name="task-dropdown" [class.rotated]="dropdownOpen" aria-hidden="true"></app-svg-db>
                 </div>
               </div>
 
@@ -111,11 +111,11 @@
                   </div>
 
                   <div class="checkbox-btn">
-                    <img [src]="
-                            isSelected(contact)
-                              ? 'icons/img/cb1.svg'
-                              : 'icons/img/cb0.svg'
-                          " alt="Checkbox" class="custom-checkbox-icon" />
+                    <app-svg-db
+                      [name]="isSelected(contact) ? 'task-checkbox-checked' : 'task-checkbox-empty'"
+                      class="custom-checkbox-icon"
+                      aria-hidden="true"
+                    ></app-svg-db>
                   </div>
                 </div>
                 }
@@ -151,7 +151,7 @@
                 </span>
 
                 <div class="arrow-btn">
-                  <img src="icons/img/pic.svg" alt="Dropdown" [class.rotated]="categoryDropdownOpen" />
+                  <app-svg-db name="task-dropdown" [class.rotated]="categoryDropdownOpen" aria-hidden="true"></app-svg-db>
                 </div>
               </div>
 
@@ -182,13 +182,13 @@
 
               <div class="subtask-actions">
                 <div class="subtask-btn" (click)="clearSubtaskInput()">
-                  <img src="icons/img/close.svg" alt="Clear" />
+                  <app-svg-db name="task-clear" aria-hidden="true"></app-svg-db>
                 </div>
 
                 <div class="action-divider"></div>
 
                 <div class="subtask-btn" (click)="addSubtask()">
-                  <img src="icons/img/check.svg" alt="Add" class="check-icon" />
+                  <app-svg-db name="task-check" class="check-icon" aria-hidden="true"></app-svg-db>
                 </div>
               </div>
             </div>
@@ -205,13 +205,13 @@
 
                 <div class="subtask-actions saved-subtask-actions">
                   <div class="subtask-btn" (click)="editNewSubtask($index, subtaskInput)">
-                    <img src="icons/img/pen.svg" alt="Edit" />
+                    <app-svg-db name="task-edit" aria-hidden="true"></app-svg-db>
                   </div>
 
                   <div class="icon-divider-small"></div>
 
                   <div class="subtask-btn" (click)="removeNewSubtask($index)">
-                    <img src="icons/img/delete.svg" alt="Delete" />
+                    <app-svg-db name="task-delete" aria-hidden="true"></app-svg-db>
                   </div>
                 </div>
               </div>
@@ -248,7 +248,7 @@
 
         <button type="button" class="btn-create" (click)="submitTask()">
           {{ isEditMode ? 'OK' : 'Create Task' }}
-          <img src="icons/img/check.svg" alt="Create" />
+          <app-svg-db name="task-check" aria-hidden="true"></app-svg-db>
         </button>
       </div>
     </footer>
@@ -256,7 +256,7 @@
 
   @if (showSuccessMessage) {
   <div class="success-message">
-    <img src="icons/img/tasksucces.svg" alt="Task successfully created" />
+    <app-svg-db name="task-success" role="img" aria-label="Task successfully created"></app-svg-db>
   </div>
   }
 </section>

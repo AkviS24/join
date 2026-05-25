@@ -1,12 +1,13 @@
 import { Component, OnInit, OnDestroy, HostListener, inject, computed, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { Tasks } from '../../services/tasks';
+import { SvgDb } from '../../shared/svg-db/svg-db';
 
 @Component({
   selector: 'app-summary',
-  imports: [RouterModule],
+  imports: [RouterModule, SvgDb],
   templateUrl: './summary.html',
-  styleUrls: ['./summary.scss', './summary-responsive.scss'],
+  styleUrl: './summary.scss',
 })
 export class Summary implements OnInit, OnDestroy {
   taskService = inject(Tasks);

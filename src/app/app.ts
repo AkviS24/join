@@ -2,14 +2,13 @@ import { Component, signal, inject } from '@angular/core';
 import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs';
 import { Supabase } from './services/supabase';
-import { FormsModule } from '@angular/forms';
 import { Header } from './components/header/header';
 import { Navigation } from './components/navigation/navigation';
 import { Tasks } from './services/tasks';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, FormsModule, Header, Navigation],
+  imports: [RouterOutlet, Header, Navigation],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })

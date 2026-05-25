@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterLink, RouterLinkActive, Router, NavigationEnd } from '@angular/router';
+import { SvgDb } from "../../shared/svg-db/svg-db";
 
 @Component({
   selector: 'app-navigation',
-  imports: [RouterLink, RouterLinkActive],
+  imports: [RouterLink, RouterLinkActive, SvgDb],
   templateUrl: './navigation.html',
   styleUrl: './navigation.scss',
 })

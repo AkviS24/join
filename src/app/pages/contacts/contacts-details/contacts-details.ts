@@ -14,8 +14,7 @@ export class ContactsDetails {
   @ViewChild('moreOptions') moreOptions!: ElementRef;
   @Input() user: any;
   @Output() editRequest = new EventEmitter<void>();
-  @Output() deleteRequest = new EventEmitter<void>(); // Add delete event.
-
+  @Output() deleteRequest = new EventEmitter<void>(); 
   userBadgeService = inject(UserBadge);
   showMoreOptions = false;
 

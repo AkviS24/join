@@ -21,12 +21,8 @@
           <div class="metrics-row">
             <div class="metric-card rect-card" routerLink="/board">
               <div class="icon-wrapper">
-                <img
-                  src="icons/img/grey-circle.svg"
-                  alt="Background Circle"
-                  class="icon-base"
-                />
-                <img src="icons/img/penw.svg" alt="Edit Icon" class="icon-overlay" />
+                <app-svg-db name="summary-grey-circle" class="icon-base" aria-hidden="true"></app-svg-db>
+                <app-svg-db name="summary-edit" class="icon-overlay" aria-hidden="true"></app-svg-db>
               </div>
               <div class="metric-info">
                 <span class="metric-value">{{ tasksToDo() }}</span>
@@ -35,12 +31,8 @@
             </div>
             <div class="metric-card rect-card" routerLink="/board">
               <div class="icon-wrapper">
-                <img
-                  src="icons/img/grey-circle.svg"
-                  alt="Background Circle"
-                  class="icon-base"
-                />
-                <img src="icons/img/checkw.svg" alt="Done Icon" class="icon-overlay" />
+                <app-svg-db name="summary-grey-circle" class="icon-base" aria-hidden="true"></app-svg-db>
+                <app-svg-db name="summary-done" class="icon-overlay" aria-hidden="true"></app-svg-db>
               </div>
               <div class="metric-info">
                 <span class="metric-value">{{ tasksDone() }}</span>
@@ -53,12 +45,8 @@
             <div class="metric-card wide-card" routerLink="/board">
               <div class="urgent-left">
                 <div class="icon-wrapper urgent-icon">
-                  <img
-                    src="icons/img/red-circle.svg"
-                    alt="Background Circle"
-                    class="icon-base"
-                  />
-                  <img src="icons/img/defcon2.svg" alt="Urgent Icon" class="icon-overlay" />
+                  <app-svg-db name="summary-red-circle" class="icon-base" aria-hidden="true"></app-svg-db>
+                  <app-svg-db name="summary-urgent" class="icon-overlay" aria-hidden="true"></app-svg-db>
                 </div>
                 <div class="metric-info">
                   <span class="metric-value">{{ tasksUrgent() }}</span>

@@ -4,7 +4,7 @@
     <p [class]="'type-badge ' + getTaskTypeClass(task.type)">
       {{ task.type }}
     </p>
-    <button class="close-btn" type="button" (click)="boardTS.closeDetails()">
+    <button class="close-btn" type="button" aria-label="Close task details" (click)="boardTS.closeDetails()">
       <app-svg-db name="cancel"></app-svg-db>
     </button>
   </div>

@@ -5,13 +5,19 @@
             <div class="blue-dash"></div>
         <p class="slogan">Better with a team</p>
         </div>
-        <button class="back-arrow-mobile" (click)="goBack()">
+        <button class="back-arrow-mobile" type="button" aria-label="Back to contacts" (click)="goBack()">
             <app-svg-db name="arrow-left"></app-svg-db>
         </button>
 
     </div>
     <div class="more-options-container">
-        <button [class.dis-none]="showMoreOptions" class="more-options-mobile" (click)="toggleMoreOptions(); $event.stopPropagation()">
+        <button
+            [class.dis-none]="showMoreOptions"
+            class="more-options-mobile"
+            type="button"
+            aria-label="Contact actions"
+            (click)="toggleMoreOptions(); $event.stopPropagation()"
+        >
             <app-svg-db name="more-vertical"></app-svg-db>
         </button>
         @if (showMoreOptions) {

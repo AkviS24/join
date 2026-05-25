@@ -1,0 +1,92 @@
+<div class="overlay-backdrop" (click)="close()">
+  <div class="overlay-container" (click)="$event.stopPropagation()">
+    <div class="left-panel">
+      <app-svg-db name="logo-white" role="img" aria-label="Join Logo" class="logo"></app-svg-db>
+
+      <div class="title-group">
+        <h1>Add contact</h1>
+        <h2>Tasks are better with a team!</h2>
+        <app-svg-db name="underline" class="underline" aria-hidden="true"></app-svg-db>
+      </div>
+    </div>
+
+    <div class="right-panel">
+      <button class="close-btn" type="button" aria-label="Close" (click)="close()">
+        <app-svg-db name="close" aria-hidden="true"></app-svg-db>
+      </button>
+
+      <div class="content-wrapper">
+        <div class="avatar-container">
+          <app-svg-db name="avatar-new" role="img" aria-label="Avatar Background" class="avatar-bg"></app-svg-db>
+          <span class="avatar-text">{{ initials }}</span>
+        </div>
+
+        <form class="contact-form" #contactForm="ngForm" autocomplete="off" novalidate
+          (ngSubmit)="submitContact(contactForm)">
+          <div class="input-group">
+            <input type="text" [(ngModel)]="contactName" name="contact-name" placeholder="Name" required
+              autocomplete="off" pattern="^[a-zA-ZäöüÄÖÜß\s\-]+$" #nameCtrl="ngModel" />
+            <app-svg-db name="contact-person" class="input-icon" aria-hidden="true"></app-svg-db>
+          </div>
+
+          @if (nameCtrl.invalid && (nameCtrl.dirty || nameCtrl.touched)) {
+          <div class="error-msg">
+            @if (nameCtrl.errors?.['required']) {
+            <span>Name is required.</span>
+            }
+            @if (nameCtrl.errors?.['pattern']) {
+            <span>The name must not contain numbers.</span>
+            }
+          </div>
+          }
+
+          <div class="input-group">
+            <input type="email" [(ngModel)]="contactEmail" name="contact-email" placeholder="Email" required
+              autocomplete="off" pattern="^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$" #emailCtrl="ngModel" />
+            <app-svg-db name="email" class="input-icon" aria-hidden="true"></app-svg-db>
+          </div>
+
+          @if (emailCtrl.invalid && (emailCtrl.dirty || emailCtrl.touched)) {
+          <div class="error-msg">
+            @if (emailCtrl.errors?.['required']) {
+            <span>Email is required.</span>
+            }
+            @if (emailCtrl.errors?.['pattern']) {
+            <span>Please enter a valid email address.</span>
+            }
+          </div>
+          }
+
+          <div class="input-group">
+            <input type="tel" [(ngModel)]="contactPhone" name="contact-phone" placeholder="Phone" required
+              autocomplete="off" pattern="^\+?[0-9\s]+$" #phoneCtrl="ngModel" />
+            <app-svg-db name="phone" class="input-icon" aria-hidden="true"></app-svg-db>
+          </div>
+
+          @if (phoneCtrl.invalid && (phoneCtrl.dirty || phoneCtrl.touched)) {
+          <div class="error-msg">
+            @if (phoneCtrl.errors?.['required']) {
+            <span>Phone number is required.</span>
+            }
+            @if (phoneCtrl.errors?.['pattern']) {
+            <span>Use numbers only, with an optional '+' at the beginning.</span>
+            }
+          </div>
+          }
+
+          <div class="form-actions">
+            <button type="button" class="btn-delete" (click)="close()">
+              Cancel
+              <app-svg-db name="close" aria-hidden="true"></app-svg-db>
+            </button>
+
+            <button type="submit" class="primary-button btn-save" [disabled]="isLoading">
+              {{ isLoading ? 'Creating...' : 'Create contact' }}
+              <app-svg-db name="save" aria-hidden="true"></app-svg-db>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

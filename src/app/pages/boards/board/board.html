@@ -44,6 +44,7 @@
               <div
                 class="task-card"
                 cdkDrag
+                [cdkDragStartDelay]="300"
                 [cdkDragData]="task"
                 [attr.data-task-id]="task.id"
                 (click)="openTaskDetails(task.id)"

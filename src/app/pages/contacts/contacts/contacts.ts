@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { UserBadge } from '../../../services/userbadge';
 import { Supabase } from '../../../services/supabase';
 import { ContactsDetails } from '../contacts-details/contacts-details';
@@ -17,7 +17,7 @@ import { SvgDb } from '../../../shared/svg-db/svg-db';
   `],
   styleUrl: './contacts.scss',
 })
-export class Contacts {
+export class Contacts implements OnInit {
   supaDatabase = inject(Supabase);
   userBadgeService = inject(UserBadge);
   showAddContact = false;
@@ -30,6 +30,10 @@ export class Contacts {
   private addContactHoldTimeout?: ReturnType<typeof setTimeout>;
   private suppressNextAddContactClick = false;
   private readonly addContactHoldDelay = 650;
+
+  async ngOnInit() {
+    await this.supaDatabase.getDemoData();
+  }
 
   showDetails(user: { id: any }) {
     this.supaDatabase.selectUser(user);

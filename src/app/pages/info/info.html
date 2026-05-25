@@ -1,7 +1,7 @@
 @if (active === 'legal') {
   <div class="privacypolicy">
     <div class="headline">
-      <h2>Legal Notice</h2>
+      <h1 class="page-title">Legal Notice</h1>
       <br />
       <br />
       <button class="back-link" type="button" (click)="goBack()" aria-label="Back to previous page">
@@ -10,7 +10,7 @@
     </div>
     <div class="content-container">
       <br />
-      <h4 class="imprint-title">Imprint</h4>
+      <h2 class="section-title imprint-title">Imprint</h2>
       <br />
       <div>
         <ul>
@@ -22,10 +22,10 @@
         </ul>
       </div>
       <br />
-      <h5>Exploring the Board</h5>
+      <h2 class="subsection-title">Exploring the Board</h2>
       <p>Email: info@svenhaase.de</p>
       <br />
-      <h5>Acceptance of Terms</h5>
+      <h2 class="subsection-title">Acceptance of Terms</h2>
       <p>
         By accessing and using <span class="highlight-text">Join (Product)</span>, you acknowledge
         and agree to the following terms and conditions, and any policies, guidelines, or amendments
@@ -33,7 +33,7 @@
         or change the terms and conditions from time to time without notice.
       </p>
       <br />
-      <h5>Scope and ownership of the product</h5>
+      <h2 class="subsection-title">Scope and ownership of the product</h2>
       <p>
         <span class="highlight-text">Join</span> has been developed as part of a student group
         project in a web development bootcamp at the
@@ -49,7 +49,7 @@
         process your request. It will not be passed on to third parties.
       </p>
       <br />
-      <h5>Proprietary rights</h5>
+      <h2 class="subsection-title">Proprietary rights</h2>
       <p>
         Aside from the design owned by <span class="highlight-text">Developer Akademie GmbH</span>,
         we, the listed students, retain all proprietary rights in
@@ -57,7 +57,7 @@
         trademarks, and other proprietary information.
       </p>
       <br />
-      <h5>Use of the product</h5>
+      <h2 class="subsection-title">Use of the product</h2>
       <p>
         <span class="highlight-text">Join</span> is intended to be used for lawful purposes only, in
         accordance with all applicable laws and regulations. Any use of
@@ -66,7 +66,7 @@
         for your interactions with other users of <span class="highlight-text">Join</span>.
       </p>
       <br />
-      <h5>Disclaimer of warranties and limitation of liability</h5>
+      <h2 class="subsection-title">Disclaimer of warranties and limitation of liability</h2>
       <p>
         <span class="highlight-text">Join</span> is provided "as is" without warranty of any kind,
         whether express or implied, including but not limited to the implied warranties of
@@ -79,7 +79,7 @@
         <span class="highlight-text">Join</span>.
       </p>
       <br />
-      <h5>Indemnity</h5>
+      <h2 class="subsection-title">Indemnity</h2>
       <p id="mediaquerry_margin">
         You agree to indemnify, defend and hold harmless us, the listed students, the
         <span class="highlight-text">Developer Akademie</span>, and our affiliates, partners,
@@ -101,7 +101,7 @@
 } @else if (active === 'privacy') {
   <div class="privacypolicy">
     <div class="headline">
-      <h2>Privacy Policy</h2>
+      <h1 class="page-title">Privacy Policy</h1>
       <br />
       <br />
       <button class="back-link" type="button" (click)="goBack()" aria-label="Back to previous page">
@@ -109,22 +109,22 @@
       </button>
     </div>
     <div class="content-container">
-      <span style="padding-bottom: 30px">
-        <h4>Data protection</h4>
+      <div class="policy-copy">
+        <h2 class="section-title">Data protection</h2>
         <br />
         Welcome to our website! We attach great importance to protecting your personal data. Below
         we will inform you about what data is collected during your visit to our website and how it
         is used. <br />
 
         <br />
-        <h4>Collection of personal data</h4>
+        <h2 class="section-title">Collection of personal data</h2>
         <br />
         We deliberately refrain from using cookies or other tracking technologies on our website.
         Therefore, no personal data is automatically collected during your visit.
 
         <br />
         <br />
-        <h4>Contact</h4>
+        <h2 class="section-title">Contact</h2>
         <br />
         If you contact us using the contact options provided on the website, the personal data you
         provide will only be used to process your request. It will not be passed on to third
@@ -134,7 +134,7 @@
 
         <br />
         <br />
-        <h4>Data security</h4>
+        <h2 class="section-title">Data security</h2>
         <br />
         We use technical and organizational measures to protect your data from unauthorized access,
         loss or misuse. Our security measures are continuously improved in line with technological
@@ -142,7 +142,7 @@
 
         <br />
         <br />
-        <h4>Right of providing information</h4>
+        <h2 class="section-title">Right of providing information</h2>
         <br />
         You have the right to receive information about the personal data we store. If necessary or
         if you have any questions about the processing of your data, please contact us using the
@@ -150,19 +150,19 @@
 
         <br />
         <br />
-        <h4>Changes to the privacy policy</h4>
+        <h2 class="section-title">Changes to the privacy policy</h2>
         <br />
         We reserve the right to update this privacy policy if necessary to adapt it to legal
         requirements or to implement changes to our services. You can find the current version on
         our website. As of: Mai 01, 2026 Thank you for your trust and your visit to our website!
-      </span>
+      </div>
     </div>
   </div>
 
 } @else if (active === 'help') {
   <div class="privacypolicy">
     <div class="headline">
-      <h2>Help</h2>
+      <h1 class="page-title">Help</h1>
       <br />
       <br />
       <button class="back-link" type="button" (click)="goBack()" aria-label="Back to previous page">
@@ -175,7 +175,7 @@
         our kanban project management tool. Here, we'll provide an overview of what
         <span class="highlight-text">Join</span> is, how it can benefit you, and how to use it.
       </p>
-      <h4>What is Join?</h4>
+      <h2 class="section-title">What is Join?</h2>
       <p>
         <span class="highlight-text">Join</span> is a kanban-based project management tool designed
         and built by a group of dedicated students as part of their web development bootcamp at the
@@ -195,12 +195,12 @@
         reliability, accuracy, or other aspects of quality regarding
         <span class="highlight-text">Join</span>.
       </p>
-      <h4>How to use it</h4>
+      <h2 class="section-title">How to use it</h2>
       <p>Here is a step-by-step guide on how to use <span class="highlight-text">Join</span>:</p>
       <div class="list">
-        <h4>1.</h4>
+        <div class="step-number" aria-hidden="true">1.</div>
         <div>
-          <h5>Exploring the Board</h5>
+          <h3 class="subsection-title">Exploring the Board</h3>
           <p>
             When you log in to <span class="highlight-text">Join</span>, you'll find a default
             board. This board represents your project and contains four default lists: "To Do", "In
@@ -209,9 +209,9 @@
         </div>
       </div>
       <div class="list">
-        <h4>2.</h4>
+        <div class="step-number" aria-hidden="true">2.</div>
         <div>
-          <h5>Creating Contacts</h5>
+          <h3 class="subsection-title">Creating Contacts</h3>
           <p>
             In <span class="highlight-text">Join</span>, you can add contacts to collaborate on your
             projects. Go to the "Contacts" section, click on "New contact", and fill in the required
@@ -221,9 +221,9 @@
         </div>
       </div>
       <div class="list">
-        <h4>3.</h4>
+        <div class="step-number" aria-hidden="true">3.</div>
         <div>
-          <h5>Adding Cards</h5>
+          <h3 class="subsection-title">Adding Cards</h3>
           <p>
             Now that you've added your contacts, you can start adding cards. Cards represent
             individual tasks. Click the "+" button under the appropriate list to create a new card.
@@ -233,9 +233,9 @@
         </div>
       </div>
       <div class="list">
-        <h4>4.</h4>
+        <div class="step-number" aria-hidden="true">4.</div>
         <div>
-          <h5>Moving Cards</h5>
+          <h3 class="subsection-title">Moving Cards</h3>
           <p>
             As the task moves from one stage to another, you can reflect that on the board by
             dragging and dropping the card from one list to another.
@@ -243,9 +243,9 @@
         </div>
       </div>
       <div class="list">
-        <h4>5.</h4>
+        <div class="step-number" aria-hidden="true">5.</div>
         <div>
-          <h5>Deleting Cards</h5>
+          <h3 class="subsection-title">Deleting Cards</h3>
           <p>
             Once a task is completed, you can either move it to the "Done" list or delete it.
             Deleting a card will permanently remove it from the board. Please exercise caution when
@@ -262,7 +262,7 @@
           </p>
         </div>
       </div>
-      <h4>Enjoy using Join!</h4>
+      <h2 class="section-title">Enjoy using Join!</h2>
     </div>
   </div>
 }

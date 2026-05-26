@@ -125,24 +125,20 @@ export class Board {
   private filterTasks(status: string) {
     const query = this.searchQuery().toLowerCase().trim();
 
-    const filteredTasks = this.taskService.demoTasks().filter((t) => {
+    return this.taskService.demoTasks().filter((t) => {
       const matchesStatus = t.status === status;
       const matchesSearch =
         t.title.toLowerCase().includes(query) || t.description.toLowerCase().includes(query);
 
       return matchesStatus && matchesSearch;
     });
-
-    return this.sortTasksByDueDate(filteredTasks);
   }
 
   async drop(event: CdkDragDrop<any[]>, newStatus: string) {
     const task = event.item.data;
     this.setActiveMobileDropStatus(null);
 
-    if (event.previousContainer !== event.container && task.status !== newStatus) {
-      await this.taskService.updateTasksStatus(task.id, newStatus);
-    }
+    await this.taskService.moveTask(task.id, newStatus, event.currentIndex, event.container.data);
   }
 
   startAddTaskHold(event: PointerEvent) {
@@ -189,25 +185,6 @@ export class Board {
     if (this.taskTransfer.isImportingTasks()) return;
     this.showTaskTransfer = false;
     this.taskTransfer.clearStatus();
-  }
-
-  private sortTasksByDueDate<T extends { due_date?: string; dueDate?: string; id?: number }>(
-    tasks: T[],
-  ): T[] {
-    return [...tasks].sort((a, b) => {
-      const dueDateDiff = this.getDueDateTime(a) - this.getDueDateTime(b);
-
-      if (dueDateDiff !== 0) return dueDateDiff;
-
-      return (a.id ?? 0) - (b.id ?? 0);
-    });
-  }
-
-  private getDueDateTime(task: { due_date?: string; dueDate?: string }): number {
-    const dueDate = task.due_date || task.dueDate;
-    const dueDateTime = dueDate ? new Date(dueDate).getTime() : Number.POSITIVE_INFINITY;
-
-    return Number.isNaN(dueDateTime) ? Number.POSITIVE_INFINITY : dueDateTime;
   }
 
   getTaskTypeClass(type: string): string {
@@ -288,7 +265,7 @@ export class Board {
     const task = this.taskService.demoTasks().find((taskItem) => taskItem.id === taskId);
 
     if (task && task.status !== targetStatus) {
-      await this.taskService.updateTasksStatus(task.id, targetStatus);
+      await this.taskService.moveTask(task.id, targetStatus, Number.MAX_SAFE_INTEGER, []);
     }
   }
 

@@ -43,35 +43,20 @@
     color 125ms ease-in-out,
     font-weight 125ms ease-in-out;
 
-  img {
-    width: auto;
-    height: 30px;
-    transition:
-      filter 125ms ease-in-out,
-      opacity 125ms ease-in-out;
-
-    opacity: 0.8;
+  app-svg-db {
+    --svg-db-width: 30px;
+    --svg-db-height: 30px;
   }
 
-  &:not(.navigation__link--active):hover {
+  &:hover {
     background-color: rgba($color-white, 0.07);
+    color: $color-white;
     font-weight: 500;
-
-    img {
-      opacity: 1;
-    }
   }
 
   &--active {
     background-color: $color-secondary;
-    color: $color-white;
     font-weight: 500;
-    pointer-events: none;
-
-    img {
-      filter: brightness(0) invert(1);
-      opacity: 1;
-    }
   }
 }
 
@@ -155,18 +140,18 @@
     background-color: transparent;
     border-radius: 0;
 
-    img,
+    app-svg-db,
     span {
       position: relative;
       z-index: 2;
     }
 
-    img {
-      width: auto;
-      height: 24px;
+    app-svg-db {
+      --svg-db-width: 24px;
+      --svg-db-height: 24px;
     }
 
-    &:not(.navigation__link--active):hover {
+    &:hover {
       background-color: transparent;
     }
 
@@ -180,18 +165,9 @@
       transition: background-color 125ms ease-in-out;
     }
 
-    &:not(.navigation__link--active):hover::before,
+    &:hover::before,
     &--active::before {
       background-color: rgba($color-black, 0.24);
     }
-
-    &--active {
-      pointer-events: none;
-    }
   }
-}
-
-.navigation__link.navigation__link--summary.navigation__link--active {
-  cursor: pointer;
-  pointer-events: auto;
 }

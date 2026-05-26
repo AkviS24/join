@@ -26,6 +26,7 @@ create table if not exists public.tasks (
   "assignedTo" bigint[] not null default '{}',
   "assignedToNames" text[] not null default '{}',
   subtasks jsonb not null default '[]'::jsonb,
+  board_order integer,
   status text not null default 'todo'
     check (status in ('todo', 'inProgress', 'awaitFeedback', 'done'))
 );
@@ -51,6 +52,7 @@ alter table public.tasks
   add column if not exists "assignedTo" bigint[] not null default '{}',
   add column if not exists "assignedToNames" text[] not null default '{}',
   add column if not exists subtasks jsonb not null default '[]'::jsonb,
+  add column if not exists board_order integer,
   add column if not exists status text not null default 'todo';
 
 create index if not exists demoDB_name_idx on public."demoDB" (name);
@@ -61,6 +63,7 @@ create unique index if not exists demoDB_auth_user_id_unique_idx
 
 create index if not exists tasks_status_idx on public.tasks (status);
 create index if not exists tasks_due_date_idx on public.tasks (due_date);
+create index if not exists tasks_status_board_order_idx on public.tasks (status, board_order);
 
 alter table public."demoDB" enable row level security;
 alter table public.tasks enable row level security;

@@ -40,6 +40,20 @@ Deno.serve(async (req) => {
         persistSession: false,
       },
     });
+    const accessToken = req.headers.get('Authorization')?.replace(/^Bearer\s+/i, '');
+
+    if (!accessToken) {
+      return json({ error: 'Authentication required' }, 401);
+    }
+
+    const {
+      data: { user },
+      error: userError,
+    } = await adminClient.auth.getUser(accessToken);
+
+    if (userError || !user) {
+      return json({ error: 'Authentication required' }, 401);
+    }
 
     const { data: contact, error: contactError } = await adminClient
       .from('demoDB')
@@ -55,17 +69,8 @@ Deno.serve(async (req) => {
       return json({ error: 'Contact not found' }, 404);
     }
 
-    if (!contact.auth_user_id) {
-      const { error: deleteContactError } = await adminClient
-        .from('demoDB')
-        .delete()
-        .eq('id', contact.id);
-
-      if (deleteContactError) {
-        return json({ error: deleteContactError.message }, 500);
-      }
-
-      return json({ success: true });
+    if (!contact.auth_user_id || contact.auth_user_id !== user.id) {
+      return json({ error: 'You can only delete your own account.' }, 403);
     }
 
     const { error: deleteUserError } = await adminClient.auth.admin.deleteUser(contact.auth_user_id);
@@ -74,7 +79,14 @@ Deno.serve(async (req) => {
       return json({ error: deleteUserError.message }, 500);
     }
 
-    await adminClient.from('demoDB').delete().eq('id', contact.id);
+    const { error: deleteContactError } = await adminClient
+      .from('demoDB')
+      .delete()
+      .eq('id', contact.id);
+
+    if (deleteContactError) {
+      return json({ error: deleteContactError.message }, 500);
+    }
 
     return json({ success: true });
   } catch (error) {

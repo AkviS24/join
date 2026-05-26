@@ -1,4 +1,5 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { UserBadge } from '../../../services/userbadge';
 import { Supabase } from '../../../services/supabase';
 import { ContactsDetails } from '../contacts-details/contacts-details';
@@ -20,10 +21,13 @@ import { SvgDb } from '../../../shared/svg-db/svg-db';
 export class Contacts implements OnInit {
   supaDatabase = inject(Supabase);
   userBadgeService = inject(UserBadge);
+  router = inject(Router);
   showAddContact = false;
   showEditContact = false;
   showContactTransfer = false;
   isImportingContacts = false;
+  isDeletingContact = false;
+  contactDeleteError = '';
   contactTransferMessage = '';
   contactTransferError = '';
   showToast = signal(false);
@@ -36,6 +40,7 @@ export class Contacts implements OnInit {
   }
 
   showDetails(user: { id: any }) {
+    this.contactDeleteError = '';
     this.supaDatabase.selectUser(user);
   }
 
@@ -184,6 +189,7 @@ export class Contacts implements OnInit {
   }
 
   openEditContact() {
+    this.contactDeleteError = '';
     this.showEditContact = true;
   }
 
@@ -204,14 +210,53 @@ export class Contacts implements OnInit {
 
   async deleteContact() {
     const current = this.supaDatabase.selectedUser();
-    if (current?.id) {
-      await this.supaDatabase.deleteContact(current);
+    if (!current?.id || this.isDeletingContact) return;
+
+    this.isDeletingContact = true;
+    this.contactDeleteError = '';
+
+    try {
+      const deletedOwnAccount = await this.supaDatabase.deleteContact(current);
+
+      if (deletedOwnAccount) {
+        await this.completeAccountDeletion();
+        return;
+      }
+
       this.supaDatabase.selectUser(null);
       await this.supaDatabase.getDemoData();
+    } catch (error) {
+      this.contactDeleteError = this.getDeleteErrorMessage(current, error);
+      console.error('Error deleting contact:', error);
+    } finally {
+      this.isDeletingContact = false;
     }
   }
 
+  async completeAccountDeletion() {
+    await this.supaDatabase.supabase.auth.signOut({ scope: 'local' });
+    localStorage.removeItem('rememberedEmail');
+    localStorage.removeItem('userName');
+    localStorage.removeItem('userInitial');
+    localStorage.removeItem('joinIsGuest');
+    await this.router.navigate(['/login'], { queryParams: { deleted: 'true' } });
+  }
+
+  private getDeleteErrorMessage(
+    contact: { auth_user_id?: string | null },
+    error: unknown
+  ): string {
+    if (error instanceof Error && error.message === 'Only your own registered account can be deleted.') {
+      return 'Registered users can delete only their own account.';
+    }
+
+    return contact.auth_user_id
+      ? 'Your account could not be deleted. Please try again.'
+      : 'The contact could not be deleted. Please try again.';
+  }
+
   backToMain() {
+    this.contactDeleteError = '';
     this.supaDatabase.selectedUser.set(null);
   }
 

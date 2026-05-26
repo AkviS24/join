@@ -37,7 +37,8 @@
     </div>
     }
   </div>
-  <app-contacts-details [user]="supaDatabase.selectedUser()" (editRequest)="openEditContact()"
+  <app-contacts-details [user]="supaDatabase.selectedUser()" [actionError]="contactDeleteError"
+    [isDeleting]="isDeletingContact" (editRequest)="openEditContact()"
     (deleteRequest)="deleteContact()" [class.visible-mobile]="supaDatabase.selectedUser()"
     (backToMain)="backToMain()"></app-contacts-details>
 
@@ -52,7 +53,8 @@
   <app-contact-form (closeEdit)="closeAddContact($event)"></app-contact-form>
   }
   @if (showEditContact) {
-  <app-contact-form [user]="supaDatabase.selectedUser()" (closeEdit)="closeEditContact($event)"></app-contact-form>
+  <app-contact-form [user]="supaDatabase.selectedUser()" (closeEdit)="closeEditContact($event)"
+    (accountDeleted)="completeAccountDeletion()"></app-contact-form>
   }
   <div class="toast-message" [class.show]="showToast()">
     <p>Contact successfully created!</p>

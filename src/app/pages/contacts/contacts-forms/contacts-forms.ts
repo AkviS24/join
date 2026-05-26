@@ -14,6 +14,7 @@ import { SvgDb } from "../../../shared/svg-db/svg-db";
 export class ContactForm implements OnInit {
   @Input() user: any = null;
   @Output() closeEdit = new EventEmitter<boolean>();
+  @Output() accountDeleted = new EventEmitter<void>();
 
   supabase = inject(Supabase);
   userBadgeService = inject(UserBadge);
@@ -22,6 +23,7 @@ export class ContactForm implements OnInit {
   contactEmail = '';
   contactPhone = '';
   isLoading = false;
+  deleteError = '';
 
   ngOnInit() {
     if (this.user) {
@@ -71,11 +73,25 @@ export class ContactForm implements OnInit {
   async deleteContact() {
     if (this.user?.id) {
       this.isLoading = true;
+      this.deleteError = '';
       try {
-        await this.supabase.deleteContact(this.user);
+        const deletedOwnAccount = await this.supabase.deleteContact(this.user);
+
+        if (deletedOwnAccount) {
+          this.accountDeleted.emit();
+          return;
+        }
+
         await this.supabase.getDemoData();
         this.close(true);
       } catch (error) {
+        this.deleteError =
+          error instanceof Error &&
+          error.message === 'Only your own registered account can be deleted.'
+            ? 'Registered users can delete only their own account.'
+            : this.user.auth_user_id
+              ? 'Your account could not be deleted. Please try again.'
+              : 'The contact could not be deleted. Please try again.';
         console.error('Error deleting contact:', error);
       } finally {
         this.isLoading = false;

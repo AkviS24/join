@@ -51,6 +51,10 @@
             <p class="error-text">Please insert a valid number</p>
           </div>
 
+          @if (deleteError) {
+          <p class="delete-error" role="alert">{{ deleteError }}</p>
+          }
+
           <div class="form-actions">
             @if (isEditMode) {
             <button type="button" class="btn-delete" (click)="deleteContact()" [disabled]="isLoading">

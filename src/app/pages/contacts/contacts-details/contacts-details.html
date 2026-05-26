@@ -28,7 +28,7 @@
             </div>
             <div class="dis-flex" (click)="onDeleteClick()">
                 <app-svg-db name="delete"></app-svg-db>
-                <p>Delete</p>
+                <p>{{ isDeleting ? 'Deleting...' : 'Delete' }}</p>
             </div>
         </div>
         }
@@ -48,11 +48,14 @@
             </div>
             <div class="edit-options" (click)="onDeleteClick()">
               <app-svg-db name="delete"></app-svg-db>
-              <p>Delete</p>
+              <p>{{ isDeleting ? 'Deleting...' : 'Delete' }}</p>
             </div>
           </div>
         </div>
       </div>
+      @if (actionError) {
+        <p class="delete-error" role="alert">{{ actionError }}</p>
+      }
       <p class="details-contact-info">Contact Information</p>
       <div class="contact-info-sub">
         <div class="dis-flex-column">

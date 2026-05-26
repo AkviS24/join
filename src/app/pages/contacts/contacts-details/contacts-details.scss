@@ -140,6 +140,12 @@
     animation: slideInRight 0.3s ease-out forwards;
 }
 
+.delete-error {
+    margin: 0 16px 8px;
+    color: $color-urgent;
+    font-size: 16px;
+}
+
 .details-contact-info {
     font-size: 20px;
     padding: 16px;

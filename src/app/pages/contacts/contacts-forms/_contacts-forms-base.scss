@@ -244,6 +244,12 @@
     white-space: nowrap;
 }
 
+.delete-error {
+    margin: -12px 0 0;
+    color: $color-urgent;
+    font-size: 14px;
+}
+
 .form-actions {
     display: flex;
     justify-content: flex-start;

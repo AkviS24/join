@@ -142,13 +142,30 @@ export class Supabase {
   }
 
   async deleteData(id: number) {
-    await this.supabase.from('demoDB').delete().eq('id', id).select();
+    const { error } = await this.supabase.from('demoDB').delete().eq('id', id).select();
+
+    if (error) {
+      throw error;
+    }
   }
 
-  async deleteContact(contact: { id: number; auth_user_id?: string | null }) {
+  async deleteContact(contact: { id: number; auth_user_id?: string | null }): Promise<boolean> {
     if (!contact.auth_user_id) {
       await this.deleteData(contact.id);
-      return;
+      return false;
+    }
+
+    const {
+      data: { user },
+      error: authError,
+    } = await this.supabase.auth.getUser();
+
+    if (authError) {
+      throw authError;
+    }
+
+    if (!user || user.id !== contact.auth_user_id) {
+      throw new Error('Only your own registered account can be deleted.');
     }
 
     const { data, error } = await this.supabase.functions.invoke('delete-contact', {
@@ -163,6 +180,8 @@ export class Supabase {
     if (data?.error) {
       throw new Error(data.error);
     }
+
+    return true;
   }
 
   selectUser(user: any | null) {

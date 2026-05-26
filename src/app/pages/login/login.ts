@@ -47,11 +47,15 @@ export class Login implements OnInit {
     }
 
     this.route.queryParams.subscribe((params) => {
-      if (!params['logout']) return;
+      if (params['deleted']) {
+        this.successMessage = 'Your account has been deleted.';
+      }
+
+      if (!params['logout'] && !params['deleted']) return;
 
       this.router.navigate([], {
         relativeTo: this.route,
-        queryParams: { logout: null },
+        queryParams: { logout: null, deleted: null },
         queryParamsHandling: 'merge',
         replaceUrl: true,
       });

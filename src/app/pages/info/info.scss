@@ -1,9 +1,8 @@
 :host {
   display: block;
   position: relative;
-  top: 206px;
   width: 100%;
-  padding: 0px 96px;
+  padding: 206px 96px 24px;
   box-sizing: border-box;
   margin: 0;
 }
@@ -103,8 +102,7 @@ p {
 }
 @media (max-width: 960px) {
   :host {
-    top: 128px;
-    padding: 0px 16px 96px;
+    padding: 128px 16px 96px;
   }
 }
 @media (max-width: 760px) {

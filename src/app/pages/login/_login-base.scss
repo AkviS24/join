@@ -17,7 +17,7 @@
   --login-button-height: clamp(44px, 7.36cqw, 48px);
   --login-mobile-button-width: clamp(130px, 29.58vw, 180px);
   --login-mobile-signup-gap: clamp(8px, 4.17vw, 32px);
-  --login-mobile-signup-margin: clamp(40px, 10.42vw, 80px);
+  --login-mobile-signup-margin: clamp(24px, 8vw, 80px);
   --login-mobile-logo-top: clamp(30px, 10vw, 48px);
   --login-mobile-logo-left: clamp(20px, 5vw, 38px);
   --login-mobile-logo-width: clamp(50px, 13.33vw, 64px);
@@ -299,7 +299,7 @@
 
 .loginFooter {
   position: fixed;
-  bottom: 26px;
+  bottom: 18px;
   left: 50%;
   width: var(--login-stage-width);
   height: 35px;

@@ -52,11 +52,6 @@ app-add-task {
   background-color: #4589ff;
 }
 
-.mobile-drag-backdrop,
-.mobile-drop-dock {
-  display: none;
-}
-
 .task-transfer-modal {
   width: min(100% - 32px, 420px);
   padding: 24px;

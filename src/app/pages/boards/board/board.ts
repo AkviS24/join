@@ -14,7 +14,7 @@ import { BoardTaskTransfer } from './board-task-transfer';
   selector: 'app-board',
   standalone: true,
   imports: [SvgDb, LowerCasePipe, BoardDetails, FormsModule, DragDropModule, AddTask],
-  providers: [BoardTaskTransfer],
+  providers: [BoardTaskTransfer,],
   templateUrl: './board.html',
   styleUrl: './board.scss',
 })
@@ -31,26 +31,18 @@ export class Board {
   selectedTaskId = signal<number | null>(null);
   editingTask = signal<any | null>(null);
   searchQuery = signal('');
-  draggingTaskId = signal<number | null>(null);
-  activeMobileDropStatus = signal<string | null>(null);
   private viewportWidth = signal(typeof window === 'undefined' ? 1024 : window.innerWidth);
   currentAddTaskStatus = 'todo';
-  private taskClickLocked = false;
-  private dragHoldTimeout?: ReturnType<typeof setTimeout>;
-  private mobileDragStartPoint?: { x: number; y: number };
   private addTaskHoldTimeout?: ReturnType<typeof setTimeout>;
   private suppressNextAddTaskClick = false;
-  private lastDragReleaseAt = 0;
   private readonly compactBoardBreakpoint = 1280;
   private readonly mobileNavigationBreakpoint = 480;
-  private readonly mobileDragMoveThreshold = 10;
-  private readonly mobileDragHoldDelay = 320;
+  // private readonly mobileDragMoveThreshold = 10;
+  // private readonly mobileDragHoldDelay = 320;
   private readonly addTaskHoldDelay = 650;
-  readonly taskDragStartDelay: DragStartDelay = { touch: 260, mouse: 0 };
 
-  @HostBinding('class.mobile-drag-active')
-  get mobileDragActiveClass() {
-    return this.mobileDragDockVisible();
+  get taskDragStartDelay(): number {
+    return this.usesHorizontalTaskScroller() ? 200 : 0;
   }
 
   @HostListener('document:click', ['$event'])
@@ -63,48 +55,9 @@ export class Board {
     }
   }
 
-  @HostListener('document:touchstart', ['$event'])
-  onDocumentTouchStart(event: TouchEvent) {
-    this.prepareMobileTaskDrag(event);
-  }
-
-  @HostListener('document:touchmove', ['$event'])
-  onDocumentTouchMove(event: TouchEvent) {
-    this.handleMobileTaskTouchMove(event);
-  }
-
-  @HostListener('document:touchend')
-  onDocumentTouchEnd() {
-    void this.finishTaskDrag();
-  }
-
-  @HostListener('document:touchcancel')
-  onDocumentTouchCancel() {
-    this.resetMobileDragState();
-  }
-
-  @HostListener('document:pointermove', ['$event'])
-  onDocumentPointerMove(event: PointerEvent) {
-    this.updateActiveMobileDropStatus(event.clientX, event.clientY);
-  }
-
-  @HostListener('document:pointerup')
-  onDocumentPointerRelease() {
-    void this.finishTaskDrag();
-  }
-
-  @HostListener('document:pointercancel')
-  onDocumentPointerCancel() {
-    this.resetMobileDragState();
-  }
-
   @HostListener('window:resize')
   onWindowResize() {
     this.viewportWidth.set(window.innerWidth);
-
-    if (!this.isMobileWidth()) {
-      this.resetMobileDragState();
-    }
   }
 
   boardSections = computed(() => [
@@ -136,14 +89,11 @@ export class Board {
 
   async drop(event: CdkDragDrop<any[]>, newStatus: string) {
     const task = event.item.data;
-    this.setActiveMobileDropStatus(null);
-
     await this.taskService.moveTask(task.id, newStatus, event.currentIndex, event.container.data);
   }
 
   startAddTaskHold(event: PointerEvent) {
     if (event.pointerType === 'mouse' && event.button !== 0) return;
-
     this.clearAddTaskHoldTimeout();
     this.addTaskHoldTimeout = setTimeout(() => {
       this.suppressNextAddTaskClick = true;
@@ -157,19 +107,16 @@ export class Board {
 
   handleAddTaskButtonClick(event: Event) {
     event.stopPropagation();
-
     if (this.suppressNextAddTaskClick) {
       event.preventDefault();
       this.suppressNextAddTaskClick = false;
       return;
     }
-
     this.openAddTask();
   }
 
   private clearAddTaskHoldTimeout() {
     if (!this.addTaskHoldTimeout) return;
-
     clearTimeout(this.addTaskHoldTimeout);
     this.addTaskHoldTimeout = undefined;
   }
@@ -200,120 +147,8 @@ export class Board {
   }
 
   openTaskDetails(id: number) {
-    if (this.taskClickLocked || Date.now() - this.lastDragReleaseAt < 250) return;
-
     this.selectedTaskId.set(id);
     this.showDetails = true;
-  }
-
-  prepareMobileTaskDrag(event: TouchEvent) {
-    if (!this.isMobileWidth()) return;
-
-    const touch = event.touches[0];
-    const target = event.target;
-    const taskCard = target instanceof HTMLElement ? target.closest<HTMLElement>('.task-card') : null;
-    const taskId = Number(taskCard?.dataset['taskId']);
-
-    if (!touch || !taskId) return;
-
-    this.clearDragHoldTimeout();
-    this.mobileDragStartPoint = { x: touch.clientX, y: touch.clientY };
-    this.dragHoldTimeout = setTimeout(() => {
-      this.taskClickLocked = true;
-      this.draggingTaskId.set(taskId);
-      this.mobileDragStartPoint = undefined;
-    }, this.mobileDragHoldDelay);
-  }
-
-  handleMobileTaskTouchMove(event: TouchEvent) {
-    if (!this.isMobileWidth()) return;
-
-    const touch = event.touches[0];
-
-    if (!touch) return;
-
-    if (this.mobileDragDockVisible()) {
-      event.preventDefault();
-      this.updateActiveMobileDropStatus(touch.clientX, touch.clientY);
-      return;
-    }
-
-    if (!this.dragHoldTimeout || !this.mobileDragStartPoint) return;
-
-    const movedX = Math.abs(touch.clientX - this.mobileDragStartPoint.x);
-    const movedY = Math.abs(touch.clientY - this.mobileDragStartPoint.y);
-
-    if (Math.max(movedX, movedY) > this.mobileDragMoveThreshold) {
-      this.clearDragHoldTimeout();
-      this.mobileDragStartPoint = undefined;
-    }
-  }
-
-  async finishTaskDrag() {
-    this.clearDragHoldTimeout();
-    const taskId = this.draggingTaskId();
-    const targetStatus = this.activeMobileDropStatus();
-
-    if (this.draggingTaskId() !== null || this.taskClickLocked) {
-      this.lastDragReleaseAt = Date.now();
-    }
-
-    this.resetMobileDragState();
-
-    if (taskId === null || !targetStatus) return;
-
-    const task = this.taskService.demoTasks().find((taskItem) => taskItem.id === taskId);
-
-    if (task && task.status !== targetStatus) {
-      await this.taskService.moveTask(task.id, targetStatus, Number.MAX_SAFE_INTEGER, []);
-    }
-  }
-
-  resetMobileDragState() {
-    this.clearDragHoldTimeout();
-    this.mobileDragStartPoint = undefined;
-    this.draggingTaskId.set(null);
-    this.setActiveMobileDropStatus(null);
-
-    setTimeout(() => {
-      this.taskClickLocked = false;
-    }, 250);
-  }
-
-  clearDragHoldTimeout() {
-    if (!this.dragHoldTimeout) return;
-
-    clearTimeout(this.dragHoldTimeout);
-    this.dragHoldTimeout = undefined;
-  }
-
-  mobileDragDockVisible() {
-    return this.draggingTaskId() !== null && this.isMobileWidth();
-  }
-
-  updateActiveMobileDropStatus(x: number, y: number) {
-    if (!this.mobileDragDockVisible()) return;
-
-    this.setActiveMobileDropStatus(this.getMobileDropStatusAtPoint(x, y));
-  }
-
-  private setActiveMobileDropStatus(status: string | null) {
-    this.activeMobileDropStatus.set(status);
-
-    document.querySelectorAll<HTMLElement>('.mobile-drop-zone').forEach((zone) => {
-      zone.classList.toggle('mobile-drop-zone--active', zone.dataset['status'] === status);
-    });
-  }
-
-  private getMobileDropStatusAtPoint(x: number, y: number): string | null {
-    const dropZones = Array.from(document.querySelectorAll<HTMLElement>('.mobile-drop-zone'));
-    const targetZone = dropZones.find((zone) => {
-      const rect = zone.getBoundingClientRect();
-
-      return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
-    });
-
-    return targetZone?.dataset['status'] ?? null;
   }
 
   openEditTask(task: any) {

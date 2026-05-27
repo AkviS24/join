@@ -13,9 +13,10 @@ import { SvgDb } from '../../../shared/svg-db/svg-db';
 export class ContactsDetails {
   @ViewChild('moreOptions') moreOptions!: ElementRef;
   @Input() user: any;
+  @Input() actionError = '';
+  @Input() isDeleting = false;
   @Output() editRequest = new EventEmitter<void>();
-  @Output() deleteRequest = new EventEmitter<void>(); // Add delete event.
-
+  @Output() deleteRequest = new EventEmitter<void>(); 
   userBadgeService = inject(UserBadge);
   showMoreOptions = false;
 
@@ -44,6 +45,8 @@ export class ContactsDetails {
   }
 
   onDeleteClick() {
+    if (this.isDeleting) return;
+
     this.deleteRequest.emit();
   }
 }

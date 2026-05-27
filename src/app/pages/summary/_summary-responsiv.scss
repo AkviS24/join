@@ -1,0 +1,214 @@
+// Responsive dashboard states and compact layouts.
+@media (max-width: 1250px) {
+  #dashboard-section {
+    min-height: calc(100vh - 96px);
+  }
+
+  .dashboard-container {
+    width: min(560px, 100%);
+    max-width: 560px;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .dashboard-container.dashboard-container--visible {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .dashboard-main {
+    gap: 0;
+  }
+
+  .dashboard-header {
+    width: 100%;
+  }
+
+  .header-divider {
+    display: block;
+    flex: 0 0 3px;
+    width: 3px;
+    min-width: 3px;
+    height: 59px;
+    background-color: #29abe2;
+  }
+
+  .greeting-section {
+    display: none;
+  }
+
+  .summary-intro-active .summary-greeting-intro {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    background-color: #f6f7f8;
+    pointer-events: none;
+    animation: summaryGreetingIntro 1800ms ease-in-out forwards;
+  }
+
+  .summary-greeting-intro__text {
+    font-size: clamp(32px, 4vw, 47px);
+    font-weight: 400;
+    line-height: 1.2;
+    color: #2a3647;
+    margin: 0;
+    text-align: center;
+  }
+
+  .summary-greeting-intro__name {
+    font-size: clamp(40px, 6vw, 64px);
+    font-weight: 700;
+    line-height: 1.1;
+    color: #29abe2;
+    margin: 0;
+    text-align: center;
+  }
+}
+
+@media (max-width: 960px) {
+  #dashboard-section {
+    --dashboard-inline-padding: var(--summary-padding-x);
+    --dashboard-fluid-width: clamp(330px, calc(41.07vw + 165.71px), 560px);
+    --dashboard-row-gap: clamp(12px, 2.92vw, 28px);
+    --dashboard-card-gap: clamp(10px, 2.92vw, 28px);
+    --dashboard-card-height: clamp(94px, calc(13.21vw + 41.14px), 168px);
+    --dashboard-radius: clamp(18px, 3.13vw, 30px);
+
+    justify-content: center;
+    padding: var(--summary-padding-top) var(--dashboard-inline-padding)
+      clamp(20px, calc(7.14vw - 8.57px), 60px);
+  }
+
+  .dashboard-container {
+    width: min(
+      var(--dashboard-fluid-width),
+      calc(100vw - var(--dashboard-inline-padding) - var(--dashboard-inline-padding))
+    );
+    max-width: none;
+    margin-inline: auto;
+    align-items: flex-start;
+  }
+
+  .dashboard-main,
+  .metrics-grid {
+    width: 100%;
+    align-items: stretch;
+  }
+
+  .dashboard-header {
+    width: 100%;
+    gap: clamp(16px, 3.13vw, 30px);
+  }
+
+  .brand-title {
+    font-size: clamp(40px, 5.63vw, 54px);
+  }
+
+  .header-subtitle {
+    font-size: clamp(16px, 2.5vw, 24px);
+  }
+
+  .metrics-grid {
+    gap: var(--dashboard-row-gap);
+  }
+
+  .metrics-row {
+    width: 100%;
+    max-width: none;
+    justify-content: flex-start;
+    gap: var(--dashboard-card-gap);
+  }
+
+  .rect-card {
+    flex: 1 1 0;
+    width: auto;
+    height: var(--dashboard-card-height);
+    gap: clamp(10px, 1.88vw, 18px);
+    border-radius: var(--dashboard-radius);
+  }
+
+  .wide-card {
+    width: 100%;
+    height: var(--dashboard-card-height);
+    padding-inline: clamp(16px, 5vw, 48px);
+    border-radius: var(--dashboard-radius);
+  }
+
+  .square-card {
+    flex: 1 1 0;
+    width: auto;
+    min-width: 0;
+    height: auto;
+    aspect-ratio: 1;
+    gap: clamp(6px, 1.35vw, 13px);
+    border-radius: var(--dashboard-radius);
+  }
+
+  .card-divider {
+    height: clamp(48px, 10.63vw, 102px);
+  }
+
+  .metric-value {
+    font-size: clamp(30px, 6.67vw, 64px);
+  }
+
+  .metric-label {
+    font-size: clamp(12px, 2.08vw, 20px);
+  }
+
+  .deadline-date {
+    font-size: clamp(14px, 2.08vw, 20px);
+  }
+
+  .deadline-label {
+    font-size: clamp(12px, 1.67vw, 16px);
+  }
+
+  .icon-wrapper {
+    width: clamp(36px, 7.19vw, 69px);
+    height: clamp(36px, 7.19vw, 69px);
+  }
+
+  .icon-wrapper.urgent-icon {
+    width: clamp(32px, 6.25vw, 60px);
+    height: clamp(32px, 6.25vw, 60px);
+  }
+
+  .urgent-left {
+    gap: clamp(12px, 1.88vw, 18px);
+  }
+}
+
+@media (max-width: 768px) {
+  @media (max-width: 768px) {
+    .dashboard-container {
+      align-items: flex-start;
+    }
+
+    .dashboard-main,
+    .metrics-grid {
+      align-items: flex-start;
+    }
+    .dashboard-header {
+      width: 100%;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: clamp(10px, 2.08vw, 16px);
+      text-align: left;
+      width: 100%;
+    }
+
+    .header-divider {
+      width: 90px;
+      height: 3px;
+      order: 3;
+    }
+  }
+}

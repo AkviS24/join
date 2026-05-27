@@ -36,6 +36,18 @@ ng build
 
 This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
 
+## Supabase account deletion
+
+Regular contacts are removed from `demoDB` directly. A registered user can delete their own account only through the Supabase Edge Function, because deleting an Auth user requires server-side privileges.
+
+After applying `supabase/schema.sql`, deploy the function to the Supabase project used in `src/environments/environment.ts`:
+
+```bash
+supabase functions deploy delete-contact --project-ref <project-ref>
+```
+
+Hosted Supabase functions expose `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` automatically. The deployed function accepts only an authenticated request to delete that requester's own linked account.
+
 ## Running unit tests
 
 To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:

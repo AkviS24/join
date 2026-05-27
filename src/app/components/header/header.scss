@@ -5,22 +5,28 @@
   height: $header-height;
   background: $color-white;
   box-shadow: 0 4px 4px rgba($color-black, 0.08);
-  position: relative;
+  position: fixed;
+  top: 0;
+  left: $sidebar-width;
+  right: auto;
+  width: calc(100% - $sidebar-width);
+  max-width: calc($bp-desktop - $sidebar-width);
   z-index: 10;
 }
 
 .header__inner {
   height: 100%;
   width: 100%;
-  max-width: 1200px;
   padding-inline: 140px 0;
   @include flex-between;
 }
 
 .header__logo {
+  --svg-db-width: 32px;
+  --svg-db-height: 40px;
   display: none;
   width: 32px;
-  height: auto;
+  height: 40px;
 }
 
 .header__title {
@@ -37,7 +43,13 @@
   padding-right: 20px;
 }
 
+.header__help-link {
+  @include flex-center;
+}
+
 .header__help {
+  --svg-db-width: 20px;
+  --svg-db-height: 20px;
   @include icon-size(20px);
   cursor: pointer;
   transition: transform 125ms ease-in-out;
@@ -51,6 +63,9 @@
 
 @media (max-width: 960px) {
   .header {
+    left: 0px;
+    width: 100%;
+    max-width: none;
     height: $header-height-mobile;
   }
 
@@ -67,7 +82,7 @@
   }
 
   .header__title,
-  .header__help {
+  .header__help-link {
     display: none;
   }
 }

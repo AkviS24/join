@@ -3,10 +3,11 @@ import { CommonModule } from '@angular/common';
 import { Router, NavigationEnd, RouterModule } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { UserAvatar } from '../user-avatar/user-avatar';
+import { SvgDb } from '../../shared/svg-db/svg-db';
 
 @Component({
   selector: 'app-header',
-  imports: [UserAvatar, CommonModule, RouterModule],
+  imports: [UserAvatar, CommonModule, RouterModule, SvgDb],
   templateUrl: './header.html',
   styleUrl: './header.scss',
 })

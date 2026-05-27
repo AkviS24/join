@@ -4,7 +4,7 @@
     <p [class]="'type-badge ' + getTaskTypeClass(task.type)">
       {{ task.type }}
     </p>
-    <button class="close-btn" type="button" (click)="boardTS.closeDetails()">
+    <button class="close-btn" type="button" aria-label="Close task details" (click)="boardTS.closeDetails()">
       <app-svg-db name="cancel"></app-svg-db>
     </button>
   </div>
@@ -43,21 +43,21 @@
         }
       </div>
     </div>
-  </div>
 
-  <div class="subtask-section">
-    <p class="label">Subtasks</p>
+    <div class="subtask-section">
+      <p class="label">Subtasks</p>
 
-    <div class="subtask-list">
-      @for (subtask of task.subtasks; track $index) {
-      <label class="subtask-item" [class.completed]="isSubtaskCompleted(subtask)">
-        <input type="checkbox" [checked]="isSubtaskCompleted(subtask)" (change)="toggleSubtask(task, $index, $event)" />
-        <span class="custom-checkbox"></span>
-        <span class="subtask-text">{{ getSubtaskText(subtask) }}</span>
-      </label>
-      } @empty {
-      <p class="empty-text">No subtasks</p>
-      }
+      <div class="subtask-list">
+        @for (subtask of task.subtasks; track $index) {
+        <label class="subtask-item" [class.completed]="isSubtaskCompleted(subtask)">
+          <input type="checkbox" [checked]="isSubtaskCompleted(subtask)" (change)="toggleSubtask(task, $index, $event)" />
+          <span class="custom-checkbox"></span>
+          <span class="subtask-text">{{ getSubtaskText(subtask) }}</span>
+        </label>
+        } @empty {
+        <p class="empty-text">No subtasks</p>
+        }
+      </div>
     </div>
   </div>
 

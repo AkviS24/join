@@ -1,5 +1,11 @@
-*{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+:host {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+svg {
+  display: block;
+  width: var(--svg-db-width, auto);
+  height: var(--svg-db-height, auto);
 }

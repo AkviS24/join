@@ -1,13 +1,14 @@
 import { Component, inject } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
+import { SvgDb } from '../../shared/svg-db/svg-db';
 
 type InfoView = 'legal' | 'privacy' | 'help';
 
 @Component({
   selector: 'app-info',
   standalone: true,
-  imports: [],
+  imports: [SvgDb],
   templateUrl: './info.html',
   styleUrls: ['./info.scss']
 })

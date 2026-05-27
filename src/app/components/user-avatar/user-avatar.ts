@@ -1,6 +1,5 @@
-import { Component, HostListener, OnInit, inject } from '@angular/core';
+import { Component, HostListener, Injector, OnInit, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { Supabase } from '../../services/supabase';
 
 @Component({
   selector: 'app-user-avatar',
@@ -10,7 +9,7 @@ import { Supabase } from '../../services/supabase';
 })
 export class UserAvatar implements OnInit {
   isMenuOpen = false;
-  demoDB = inject(Supabase);
+  private injector = inject(Injector);
   router = inject(Router);
   userInitial: string = '';
 
@@ -31,7 +30,10 @@ export class UserAvatar implements OnInit {
   }
 
   async logout() {
-    await this.demoDB.supabase.auth.signOut();
+    const { Supabase } = await import('../../services/supabase');
+    const supabaseService = this.injector.get(Supabase);
+
+    await supabaseService.supabase.auth.signOut();
     localStorage.clear();
     this.router.navigate(['/login']);
   }

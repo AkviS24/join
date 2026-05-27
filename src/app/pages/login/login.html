@@ -1,0 +1,202 @@
+<div id="loginMainContainer" class="loginMainContainer" [class.bg-blue]="isSignUpMode">
+  @if (showOverlay) {
+    <div class="blue-overlay" id="blue-overlay">
+      <div class="joinLogoWhite logo-animation" id="logo" (animationend)="hideOverlay()">
+        <app-svg-db name="login-logo" role="img" aria-label="Join Logo"></app-svg-db>
+      </div>
+      <app-svg-db
+        class="mobile-start-animation"
+        name="navigation-logo"
+        role="img"
+        aria-label="Join Logo"
+        (animationend)="hideOverlay()"
+      ></app-svg-db>
+    </div>
+  }
+  <header class="loginHeader">
+    <div class="joinLogoBlue">
+      <app-svg-db name="login-logo-mobile" role="img" aria-label="Join Logo"></app-svg-db>
+    </div>
+    <div class="signUpField" [class.fade-out]="isSignUpMode">
+      <span>Not a Join user?</span>
+      <button class="loginButtons signUpButton" (click)="toggleSignUpMode()">Sign up</button>
+    </div>
+  </header>
+  <div class="login-page">
+    <div class="login-box" [class.signup-box]="isSignUpMode">
+      @if (isSignUpMode) {
+        <app-svg-db
+          class="back-arrow"
+          name="back-arrow"
+          role="img"
+          aria-label="Back to login"
+          (click)="backToLogin()"
+        ></app-svg-db>
+      }
+      <div class="h1LoginBox">
+        <h1 class="loginH1">{{ isSignUpMode ? 'Sign up' : 'Log in' }}</h1>
+        <div class="horizontalH1Underline"></div>
+      </div>
+      <form autocomplete="off" (ngSubmit)="isSignUpMode ? registerUser() : loginUser()">
+        @if (isSignUpMode) {
+          <div class="loginNameBox loginInputField" [ngClass]="getInputState('name')">
+            <input
+              type="text"
+              id="sign_up_name"
+              name="name"
+              [(ngModel)]="name"
+              placeholder="Name"
+              autocomplete="off"
+              readonly
+              (focus)="disableAutofill($event)"
+              required
+            />
+            <div class="mailIcon"><app-svg-db name="person" aria-hidden="true"></app-svg-db></div>
+          </div>
+        }
+        <div class="loginEmailBox loginInputField" [ngClass]="getInputState('email')">
+          <input
+            type="email"
+            id="loginEmailInput"
+            name="email"
+            [ngModel]="email"
+            (ngModelChange)="updateEmail($event)"
+            placeholder="Email"
+            autocomplete="off"
+            readonly
+            (focus)="disableAutofill($event)"
+            required
+          />
+          <div class="mailIcon"><app-svg-db name="mail" aria-hidden="true"></app-svg-db></div>
+        </div>
+
+        <div class="loginPasswordBox loginInputField" [ngClass]="getInputState('password')">
+          <input
+            [type]="isPasswordVisible ? 'text' : 'password'"
+            id="loginPasswordInput"
+            name="password"
+            [ngModel]="password"
+            (ngModelChange)="updatePassword($event)"
+            placeholder="Password"
+            autocomplete="new-password"
+            readonly
+            (focus)="disableAutofill($event)"
+            required
+          />
+          <div class="mailIcon">
+            @if (password.length > 0) {
+              <app-svg-db
+                [name]="isPasswordVisible ? 'visibility' : 'visibility-off'"
+                role="img"
+                aria-label="Toggle password visibility"
+                (click)="togglePasswordVisibility()"
+                style="cursor: pointer"
+              ></app-svg-db>
+            } @else {
+              <app-svg-db name="lock" aria-hidden="true"></app-svg-db>
+            }
+          </div>
+        </div>
+
+        @if (isSignUpMode) {
+          <div
+            class="loginConfirmPasswordBox loginInputField"
+            [ngClass]="getInputState('confirmPassword')"
+          >
+            <input
+              [type]="isConfirmPasswordVisible ? 'text' : 'password'"
+              id="loginConfirmPasswordInput"
+              name="confirmPassword"
+              [(ngModel)]="confirmPassword"
+              placeholder="Confirm Password"
+              autocomplete="new-password"
+              readonly
+              (focus)="disableAutofill($event)"
+              required
+            />
+            <div class="mailIcon">
+              @if (confirmPassword.length > 0) {
+                <app-svg-db
+                  [name]="isConfirmPasswordVisible ? 'visibility' : 'visibility-off'"
+                  role="img"
+                  aria-label="Toggle confirm password visibility"
+                  (click)="toggleConfirmPasswordVisibility()"
+                  style="cursor: pointer"
+                ></app-svg-db>
+              } @else {
+                <app-svg-db name="lock" aria-hidden="true"></app-svg-db>
+              }
+            </div>
+          </div>
+
+          <div class="accept-the-terms">
+            <input
+              class="checkbox"
+              type="checkbox"
+              name="acceptTerms"
+              [(ngModel)]="acceptTerms"
+              id="accept_terms"
+            />
+            <label for="accept_terms"
+              >I accept the
+              <a class="pp-inbox-link" routerLink="/info/privacy">Privacy Policy</a></label
+            >
+          </div>
+
+          <div class="signup-hint">
+            {{ getSignUpHint() }}
+          </div>
+        }
+
+        <div class="login-alert-slot">
+          @if (errorMessage) {
+            <div
+              class="login-alert-message login-alert-message--error"
+              role="alert"
+              aria-live="polite"
+            >
+              {{ errorMessage }}
+            </div>
+          }
+
+          @if (successMessage) {
+            <div class="login-alert-message login-alert-message--success">
+              {{ successMessage }}
+            </div>
+          }
+        </div>
+
+        <div class="loginButtonsBox">
+          @if (isSignUpMode) {
+            <button class="loginButtons loginButtonUser" type="submit" [disabled]="!isFormValid()">
+              Sign up
+            </button>
+          } @else {
+            <button class="loginButtons loginButtonUser" type="submit" formnovalidate>
+              Log in
+            </button>
+            <button class="loginButtons loginButtonGuest" type="button" (click)="guestLogin()">
+              Guest log in
+            </button>
+          }
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="signUpField-mobile" [class.fade-out]="isSignUpMode">
+    <span>Not a join user?</span>
+    <button class="loginButtons signUpButton signUpButton-mobile" (click)="toggleSignUpMode()">
+      Sign up
+    </button>
+  </div>
+  <div class="loginFooter">
+    <div class="privacyPolicy" routerLink="/info/privacy"><span>Privacy Policy</span></div>
+    <div class="legalNotice" routerLink="/info/legal"><span>Legal notice</span></div>
+  </div>
+
+  @if (showSignUpSuccessMessage) {
+    <div class="signup-success-message" role="status" aria-live="polite">
+      <app-svg-db name="signup-success" role="img" aria-label="You signed up successfully"></app-svg-db>
+    </div>
+  }
+</div>

@@ -5,13 +5,19 @@
             <div class="blue-dash"></div>
         <p class="slogan">Better with a team</p>
         </div>
-        <button class="back-arrow-mobile" (click)="goBack()">
+        <button class="back-arrow-mobile" type="button" aria-label="Back to contacts" (click)="goBack()">
             <app-svg-db name="arrow-left"></app-svg-db>
         </button>
 
     </div>
     <div class="more-options-container">
-        <button [class.dis-none]="showMoreOptions" class="more-options-mobile" (click)="toggleMoreOptions(); $event.stopPropagation()">
+        <button
+            [class.dis-none]="showMoreOptions"
+            class="more-options-mobile"
+            type="button"
+            aria-label="Contact actions"
+            (click)="toggleMoreOptions(); $event.stopPropagation()"
+        >
             <app-svg-db name="more-vertical"></app-svg-db>
         </button>
         @if (showMoreOptions) {
@@ -22,7 +28,7 @@
             </div>
             <div class="dis-flex" (click)="onDeleteClick()">
                 <app-svg-db name="delete"></app-svg-db>
-                <p>Delete</p>
+                <p>{{ isDeleting ? 'Deleting...' : 'Delete' }}</p>
             </div>
         </div>
         }
@@ -42,11 +48,14 @@
             </div>
             <div class="edit-options" (click)="onDeleteClick()">
               <app-svg-db name="delete"></app-svg-db>
-              <p>Delete</p>
+              <p>{{ isDeleting ? 'Deleting...' : 'Delete' }}</p>
             </div>
           </div>
         </div>
       </div>
+      @if (actionError) {
+        <p class="delete-error" role="alert">{{ actionError }}</p>
+      }
       <p class="details-contact-info">Contact Information</p>
       <div class="contact-info-sub">
         <div class="dis-flex-column">

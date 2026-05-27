@@ -1,7 +1,17 @@
 <section class="contacts">
   <div class="contact-list" [class.hidden-mobile]="supaDatabase.selectedUser()">
     <div class="contact-button">
-      <button class="primary-button" (click)="openAddContact()">
+      <button
+        class="primary-button"
+        type="button"
+        aria-label="Add new contact"
+        (click)="handleAddContactButtonClick($event)"
+        (pointerdown)="startAddContactHold($event)"
+        (pointerup)="finishAddContactHold()"
+        (pointerleave)="finishAddContactHold()"
+        (pointercancel)="finishAddContactHold()"
+        (contextmenu)="$event.preventDefault()"
+      >
         <span>Add new contact</span>
         <app-svg-db name="person-add"></app-svg-db>
       </button>
@@ -27,7 +37,8 @@
     </div>
     }
   </div>
-  <app-contacts-details [user]="supaDatabase.selectedUser()" (editRequest)="openEditContact()"
+  <app-contacts-details [user]="supaDatabase.selectedUser()" [actionError]="contactDeleteError"
+    [isDeleting]="isDeletingContact" (editRequest)="openEditContact()"
     (deleteRequest)="deleteContact()" [class.visible-mobile]="supaDatabase.selectedUser()"
     (backToMain)="backToMain()"></app-contacts-details>
 
@@ -42,9 +53,61 @@
   <app-contact-form (closeEdit)="closeAddContact($event)"></app-contact-form>
   }
   @if (showEditContact) {
-  <app-contact-form [user]="supaDatabase.selectedUser()" (closeEdit)="closeEditContact($event)"></app-contact-form>
+  <app-contact-form [user]="supaDatabase.selectedUser()" (closeEdit)="closeEditContact($event)"
+    (accountDeleted)="completeAccountDeletion()"></app-contact-form>
   }
   <div class="toast-message" [class.show]="showToast()">
     <p>Contact successfully created!</p>
   </div>
+
+  @if (showContactTransfer) {
+  <div class="contact-transfer-overlay" (click)="closeContactTransfer()">
+    <div class="contact-transfer-modal" (click)="$event.stopPropagation()">
+      <div class="contact-transfer-header">
+        <h3>Contacts</h3>
+        <button
+          class="contact-transfer-close"
+          type="button"
+          aria-label="Close contact transfer"
+          (click)="closeContactTransfer()"
+        >
+          <app-svg-db name="cancel"></app-svg-db>
+        </button>
+      </div>
+
+      <div class="contact-transfer-actions">
+        <button type="button" class="contact-transfer-action" (click)="exportContacts()">
+          <span>Export</span>
+          <app-svg-db name="save" aria-hidden="true"></app-svg-db>
+        </button>
+
+        <button
+          type="button"
+          class="contact-transfer-action primary"
+          (click)="contactImportInput.click()"
+          [disabled]="isImportingContacts"
+        >
+          <span>{{ isImportingContacts ? 'Importing...' : 'Import' }}</span>
+          <app-svg-db name="person-add"></app-svg-db>
+        </button>
+
+        <input
+          #contactImportInput
+          type="file"
+          accept="application/json,.json"
+          (change)="importContacts($event)"
+          hidden
+        />
+      </div>
+
+      @if (contactTransferMessage) {
+      <p class="contact-transfer-status success">{{ contactTransferMessage }}</p>
+      }
+
+      @if (contactTransferError) {
+      <p class="contact-transfer-status error">{{ contactTransferError }}</p>
+      }
+    </div>
+  </div>
+  }
 </section>

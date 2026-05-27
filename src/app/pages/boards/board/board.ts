@@ -1,46 +1,48 @@
-import { Component, inject, computed, signal, HostBinding, HostListener, OnInit } from '@angular/core';
+import { Component, inject, computed, signal, HostBinding, HostListener } from '@angular/core';
 import { Tasks } from '../../../services/tasks';
 import { SvgDb } from '../../../shared/svg-db/svg-db';
 import { UserBadge } from '../../../services/userbadge';
 import { LowerCasePipe } from '@angular/common';
 import { BoardDetails } from '../board-details/board-details';
 import { FormsModule } from '@angular/forms';
-import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, DragDropModule, type DragStartDelay } from '@angular/cdk/drag-drop';
 import { AddTask } from '../../add-task/add-task';
 import { Router } from '@angular/router';
+import { BoardTaskTransfer } from './board-task-transfer';
 
 @Component({
   selector: 'app-board',
   standalone: true,
   imports: [SvgDb, LowerCasePipe, BoardDetails, FormsModule, DragDropModule, AddTask],
+  providers: [BoardTaskTransfer,],
   templateUrl: './board.html',
   styleUrl: './board.scss',
 })
-export class Board implements OnInit {
+export class Board {
   taskService = inject(Tasks);
   userBadgeService = inject(UserBadge);
   router = inject(Router);
+  taskTransfer = inject(BoardTaskTransfer);
   showDetails = false;
   addingTask = false;
+  showTaskTransfer = false;
   isClosingDetails = false;
   isClosingAddTask = false;
   selectedTaskId = signal<number | null>(null);
   editingTask = signal<any | null>(null);
   searchQuery = signal('');
-  draggingTaskId = signal<number | null>(null);
-  activeMobileDropStatus = signal<string | null>(null);
+  private viewportWidth = signal(typeof window === 'undefined' ? 1024 : window.innerWidth);
   currentAddTaskStatus = 'todo';
-  private taskClickLocked = false;
-  private dragHoldTimeout?: ReturnType<typeof setTimeout>;
-  private lastDragReleaseAt = 0;
+  private addTaskHoldTimeout?: ReturnType<typeof setTimeout>;
+  private suppressNextAddTaskClick = false;
+  private readonly compactBoardBreakpoint = 1280;
+  private readonly mobileNavigationBreakpoint = 480;
+  // private readonly mobileDragMoveThreshold = 10;
+  // private readonly mobileDragHoldDelay = 320;
+  private readonly addTaskHoldDelay = 650;
 
-  @HostBinding('class.mobile-drag-active')
-  get mobileDragActiveClass() {
-    return this.mobileDragDockVisible();
-  }
-
-  async ngOnInit() {
-    await this.taskService.getTasks();
+  get taskDragStartDelay(): number {
+    return this.usesHorizontalTaskScroller() ? 200 : 0;
   }
 
   @HostListener('document:click', ['$event'])
@@ -53,34 +55,9 @@ export class Board implements OnInit {
     }
   }
 
-  @HostListener('document:touchstart', ['$event'])
-  onDocumentTouchStart(event: TouchEvent) {
-    this.prepareMobileTaskDrag(event.target);
-  }
-
-  @HostListener('document:touchend')
-  onDocumentTouchEnd() {
-    void this.finishTaskDrag();
-  }
-
-  @HostListener('document:touchcancel')
-  onDocumentTouchCancel() {
-    this.resetMobileDragState();
-  }
-
-  @HostListener('document:pointermove', ['$event'])
-  onDocumentPointerMove(event: PointerEvent) {
-    this.updateActiveMobileDropStatus(event.clientX, event.clientY);
-  }
-
-  @HostListener('document:pointerup')
-  onDocumentPointerRelease() {
-    void this.finishTaskDrag();
-  }
-
-  @HostListener('document:pointercancel')
-  onDocumentPointerCancel() {
-    this.resetMobileDragState();
+  @HostListener('window:resize')
+  onWindowResize() {
+    this.viewportWidth.set(window.innerWidth);
   }
 
   boardSections = computed(() => [
@@ -101,43 +78,60 @@ export class Board implements OnInit {
   private filterTasks(status: string) {
     const query = this.searchQuery().toLowerCase().trim();
 
-    const filteredTasks = this.taskService.demoTasks().filter((t) => {
+    return this.taskService.demoTasks().filter((t) => {
       const matchesStatus = t.status === status;
       const matchesSearch =
         t.title.toLowerCase().includes(query) || t.description.toLowerCase().includes(query);
 
       return matchesStatus && matchesSearch;
     });
-
-    return this.sortTasksByDueDate(filteredTasks);
   }
 
   async drop(event: CdkDragDrop<any[]>, newStatus: string) {
     const task = event.item.data;
-    this.setActiveMobileDropStatus(null);
+    await this.taskService.moveTask(task.id, newStatus, event.currentIndex, event.container.data);
+  }
 
-    if (event.previousContainer !== event.container && task.status !== newStatus) {
-      await this.taskService.updateTasksStatus(task.id, newStatus);
+  startAddTaskHold(event: PointerEvent) {
+    if (event.pointerType === 'mouse' && event.button !== 0) return;
+    this.clearAddTaskHoldTimeout();
+    this.addTaskHoldTimeout = setTimeout(() => {
+      this.suppressNextAddTaskClick = true;
+      this.openTaskTransfer();
+    }, this.addTaskHoldDelay);
+  }
+
+  finishAddTaskHold() {
+    this.clearAddTaskHoldTimeout();
+  }
+
+  handleAddTaskButtonClick(event: Event) {
+    event.stopPropagation();
+    if (this.suppressNextAddTaskClick) {
+      event.preventDefault();
+      this.suppressNextAddTaskClick = false;
+      return;
     }
+    this.openAddTask();
   }
 
-  private sortTasksByDueDate<T extends { due_date?: string; dueDate?: string; id?: number }>(
-    tasks: T[],
-  ): T[] {
-    return [...tasks].sort((a, b) => {
-      const dueDateDiff = this.getDueDateTime(a) - this.getDueDateTime(b);
-
-      if (dueDateDiff !== 0) return dueDateDiff;
-
-      return (a.id ?? 0) - (b.id ?? 0);
-    });
+  private clearAddTaskHoldTimeout() {
+    if (!this.addTaskHoldTimeout) return;
+    clearTimeout(this.addTaskHoldTimeout);
+    this.addTaskHoldTimeout = undefined;
   }
 
-  private getDueDateTime(task: { due_date?: string; dueDate?: string }): number {
-    const dueDate = task.due_date || task.dueDate;
-    const dueDateTime = dueDate ? new Date(dueDate).getTime() : Number.POSITIVE_INFINITY;
+  openTaskTransfer() {
+    this.closeDetails();
+    this.closeAddTask();
+    this.taskTransfer.clearStatus();
+    this.showTaskTransfer = true;
+  }
 
-    return Number.isNaN(dueDateTime) ? Number.POSITIVE_INFINITY : dueDateTime;
+  closeTaskTransfer() {
+    if (this.taskTransfer.isImportingTasks()) return;
+    this.showTaskTransfer = false;
+    this.taskTransfer.clearStatus();
   }
 
   getTaskTypeClass(type: string): string {
@@ -153,90 +147,8 @@ export class Board implements OnInit {
   }
 
   openTaskDetails(id: number) {
-    if (this.taskClickLocked || Date.now() - this.lastDragReleaseAt < 250) return;
-
     this.selectedTaskId.set(id);
     this.showDetails = true;
-  }
-
-  prepareMobileTaskDrag(target: EventTarget | null) {
-    if (!this.isMobileWidth()) return;
-
-    const taskCard = target instanceof HTMLElement ? target.closest<HTMLElement>('.task-card') : null;
-    const taskId = Number(taskCard?.dataset['taskId']);
-
-    if (!taskId) return;
-
-    this.clearDragHoldTimeout();
-    this.dragHoldTimeout = setTimeout(() => {
-      this.taskClickLocked = true;
-      this.draggingTaskId.set(taskId);
-    }, 180);
-  }
-
-  async finishTaskDrag() {
-    this.clearDragHoldTimeout();
-    const taskId = this.draggingTaskId();
-    const targetStatus = this.activeMobileDropStatus();
-
-    if (this.draggingTaskId() !== null || this.taskClickLocked) {
-      this.lastDragReleaseAt = Date.now();
-    }
-
-    this.resetMobileDragState();
-
-    if (taskId === null || !targetStatus) return;
-
-    const task = this.taskService.demoTasks().find((taskItem) => taskItem.id === taskId);
-
-    if (task && task.status !== targetStatus) {
-      await this.taskService.updateTasksStatus(task.id, targetStatus);
-    }
-  }
-
-  resetMobileDragState() {
-    this.draggingTaskId.set(null);
-    this.setActiveMobileDropStatus(null);
-
-    setTimeout(() => {
-      this.taskClickLocked = false;
-    }, 250);
-  }
-
-  clearDragHoldTimeout() {
-    if (!this.dragHoldTimeout) return;
-
-    clearTimeout(this.dragHoldTimeout);
-    this.dragHoldTimeout = undefined;
-  }
-
-  mobileDragDockVisible() {
-    return this.draggingTaskId() !== null && this.isMobileWidth();
-  }
-
-  updateActiveMobileDropStatus(x: number, y: number) {
-    if (!this.mobileDragDockVisible()) return;
-
-    this.setActiveMobileDropStatus(this.getMobileDropStatusAtPoint(x, y));
-  }
-
-  private setActiveMobileDropStatus(status: string | null) {
-    this.activeMobileDropStatus.set(status);
-
-    document.querySelectorAll<HTMLElement>('.mobile-drop-zone').forEach((zone) => {
-      zone.classList.toggle('mobile-drop-zone--active', zone.dataset['status'] === status);
-    });
-  }
-
-  private getMobileDropStatusAtPoint(x: number, y: number): string | null {
-    const dropZones = Array.from(document.querySelectorAll<HTMLElement>('.mobile-drop-zone'));
-    const targetZone = dropZones.find((zone) => {
-      const rect = zone.getBoundingClientRect();
-
-      return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
-    });
-
-    return targetZone?.dataset['status'] ?? null;
   }
 
   openEditTask(task: any) {
@@ -275,10 +187,14 @@ export class Board implements OnInit {
   }
 
   getOrientation() {
-    return window.innerWidth <= 1280 ? 'horizontal' : 'vertical';
+    return this.usesHorizontalTaskScroller() ? 'horizontal' : 'vertical';
+  }
+
+  usesHorizontalTaskScroller() {
+    return this.viewportWidth() <= this.compactBoardBreakpoint;
   }
 
   isMobileWidth() {
-    return window.innerWidth <= 480 ? true : false;
+    return this.viewportWidth() <= this.mobileNavigationBreakpoint;
   }
 }

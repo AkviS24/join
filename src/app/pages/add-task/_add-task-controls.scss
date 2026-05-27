@@ -1,0 +1,267 @@
+@use '../../../styles/abstracts/variables' as *;
+@use '../../../styles/abstracts/mixins' as *;
+
+$footer-height-local: 72px;
+
+.priority-buttons {
+  display: flex;
+  gap: 16px;
+}
+
+.btn-priority {
+  @include flex-center;
+  flex: 1;
+  gap: 8px;
+  padding: 14px 10px;
+  border: 0;
+  border-radius: 10px;
+  background-color: $color-white;
+  box-shadow: 0 0 4px rgba($color-black, 0.1);
+  color: $color-black;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 16px;
+
+  &:not(.active):hover {
+    box-shadow: 0 4px 8px rgba($color-black, 0.15);
+  }
+
+  &.active {
+    color: $color-white;
+
+    app-svg-db {
+      filter: brightness(0) invert(1);
+    }
+
+    &.urgent {
+      background-color: $color-urgent;
+    }
+
+    &.medium {
+      background-color: $color-medium;
+    }
+
+    &.low {
+      background-color: $color-low;
+    }
+  }
+}
+
+.subtask-wrapper {
+  display: flex;
+  align-items: center;
+  width: 100%;
+
+  input {
+    width: 100%;
+    padding-right: 70px;
+  }
+}
+
+.subtask-actions {
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  gap: 8px;
+  transform: translateY(-50%);
+
+  .action-divider {
+    width: 1px;
+    height: 24px;
+  }
+}
+
+.subtask-btn {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+
+  app-svg-db {
+    --svg-db-width: 12px;
+    --svg-db-height: 12px;
+    display: block;
+    width: 12px;
+    height: 12px;
+    visibility: visible;
+    opacity: 1;
+    filter: brightness(0);
+  }
+}
+
+.subtask-actions .subtask-btn:last-child app-svg-db,
+.check-icon {
+  visibility: visible !important;
+  opacity: 1 !important;
+  filter: brightness(0) !important;
+}
+
+.new-subtasks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.new-subtask-item {
+  background-color: transparent;
+
+  &.editing .saved-subtask-input {
+    padding-inline: 4px;
+    border-bottom-color: $color-primary;
+    background-color: $color-white;
+    text-overflow: clip;
+  }
+}
+
+.saved-subtask-input {
+  min-width: 2ch;
+  max-width: calc(100% - 82px);
+  padding: 2px 0;
+  overflow: hidden;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  background-color: $color-bg;
+  cursor: default;
+  text-overflow: ellipsis;
+
+  &:focus,
+  &.has-value {
+    border-color: transparent;
+  }
+
+  &:not([readonly]) {
+    cursor: text;
+  }
+}
+
+.required-note-a {
+  display: none;
+}
+
+.required-note-b {
+  display: flex;
+}
+
+.required-note-a,
+.required-note-b {
+  align-items: flex-start;
+  align-self: flex-start;
+  color: $color-black;
+  font-size: 16px;
+  line-height: 1;
+  margin-top: 32px;
+}
+
+.page-footer {
+  position: sticky;
+  bottom: 5px;
+  z-index: 20;
+  @include flex-between;
+  flex-shrink: 0;
+  height: $footer-height-local;
+  background-color: $color-bg;
+}
+
+.actions {
+  justify-content: flex-end;
+  gap: 25px;
+  flex-shrink: 0;
+}
+
+.btn-cancel,
+.btn-create {
+  height: 56px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 20px;
+  white-space: nowrap;
+}
+
+.btn-cancel {
+  @include flex-center;
+  gap: 12px;
+  padding-inline: 20px;
+  border: 1px solid $color-dark;
+  background-color: transparent;
+  color: $color-dark;
+
+  &:hover {
+    border-color: $color-primary;
+    background-color: $color-white;
+    box-shadow: 0 4px 4px rgba($color-black, 0.1);
+    color: $color-primary;
+  }
+}
+
+.btn-create {
+  @include flex-center;
+  gap: 8px;
+  padding-inline: 24px;
+  border: 0;
+  background-color: $color-dark;
+  color: $color-white;
+  font-weight: 700;
+
+  &:hover {
+    background-color: $color-primary;
+    box-shadow: 0 4px 4px rgba($color-black, 0.1);
+  }
+}
+
+.close-btn {
+  position: absolute;
+  top: 32px;
+  right: 32px;
+  z-index: 99;
+  @include flex-center;
+  padding: 8px;
+  border-radius: 50%;
+
+  &:hover {
+    background-color: $color-dark-gray;
+  }
+}
+
+.success-message {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: block;
+  pointer-events: none;
+  background-color: rgba($color-black, 0.15);
+  animation: taskSuccessBackdropIn 180ms ease-out forwards;
+
+  app-svg-db {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: min(326px, calc(100vw - 48px));
+    --svg-db-width: 100%;
+    --svg-db-height: auto;
+    animation: taskSuccessSlideUp 650ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+}
+
+@keyframes taskSuccessBackdropIn {
+  from {
+    background-color: rgba($color-black, 0);
+  }
+
+  to {
+    background-color: rgba($color-black, 0.15);
+  }
+}
+
+@keyframes taskSuccessSlideUp {
+  from {
+    opacity: 0;
+    transform: translate(-50%, calc(50vh + 120px)) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}

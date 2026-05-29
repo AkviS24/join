@@ -2,8 +2,6 @@
 
 .app-layout {
   margin-left: $sidebar-width;
-  width: calc(100% - $sidebar-width);
-  max-width: calc($bp-desktop - $sidebar-width);
   min-height: 100vh;
   display: flex;
   flex-direction: column;

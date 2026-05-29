@@ -19,7 +19,7 @@ section {
   align-items: center;
   gap: 16px;
   width: 100%;
-  max-width: calc(1440px - $sidebar-width);
+  max-width: calc(1440px - $sidebar-width - 64px);
   margin-inline: 0 auto;
   background-color: $color-bg;
 
@@ -115,13 +115,13 @@ section {
   gap: 16px;
   padding: 10px 0;
   width: 100%;
-  max-width: calc(1440px - $sidebar-width);
+  max-width: calc(1440px - $sidebar-width - 64px);
   margin-inline: 0 auto;
 }
 
 .board-dnd-area {
   width: 100%;
-  max-width: calc(1440px - $sidebar-width);
+  max-width: calc(1440px - $sidebar-width - 64px);
   margin-inline: 0 auto;
 }
 

@@ -9,14 +9,14 @@
   top: 0;
   left: $sidebar-width;
   right: auto;
-  width: calc(100% - $sidebar-width);
-  max-width: calc($bp-desktop - $sidebar-width);
   z-index: 10;
+  width: 100%;
 }
 
 .header__inner {
+  width: calc(100% - $sidebar-width);
+  max-width: calc($bp-desktop - $sidebar-width);
   height: 100%;
-  width: 100%;
   padding-inline: 140px 0;
   @include flex-between;
 }
@@ -70,6 +70,7 @@
   }
 
   .header__inner {
+    width: 100%;
     max-width: none;
     padding-inline: 16px 10px;
   }

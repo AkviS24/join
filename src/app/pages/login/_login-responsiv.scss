@@ -131,4 +131,18 @@
   .legalNotice {
     font-size: clamp(14px, 2.9cqw, 16px);
   }
+
+  .signup-hint {
+    font-size: 12px;
+  }
+
+  .accept-the-terms {
+    input {
+      width: 16px;
+      height: 16px;
+    }
+    label{
+      font-size: 14px;
+    }
+  }
 }

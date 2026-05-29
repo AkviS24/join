@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -37,7 +37,8 @@ export class Login implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private supabaseService: Supabase,
-  ) {}
+    private cdr: ChangeDetectorRef
+  ) { }
 
   ngOnInit(): void {
     const savedEmail = localStorage.getItem('rememberedEmail');
@@ -76,7 +77,6 @@ export class Login implements OnInit {
     this.errorMessage = '';
     this.successMessage = '';
     this.hideSignUpSuccessMessage();
-    this.clearFailedLogin();
   }
 
   togglePasswordVisibility() {
@@ -105,7 +105,6 @@ export class Login implements OnInit {
     this.errorMessage = '';
     this.successMessage = '';
     this.hideSignUpSuccessMessage();
-    this.clearFailedLogin();
     this.name = '';
     this.confirmPassword = '';
     this.acceptTerms = false;
@@ -115,8 +114,6 @@ export class Login implements OnInit {
 
   isFormValid(): boolean {
     const email = this.email.trim();
-
-    // At least 8 characters, 1 lowercase letter, 1 uppercase letter, 1 number, 1 special character.
     return (
       this.name.trim().length >= 3 &&
       this.emailPattern.test(email) &&
@@ -153,38 +150,29 @@ export class Login implements OnInit {
     ) {
       return 'has-error';
     }
-    if (!this.isSignUpMode && this.isFailedLoginActive()) {
-      return 'has-error';
-    }
-
     return 'has-value';
   }
 
-  getSignUpHint(): string {
+  getSignUpHint(inputField: 'name' | 'email' | 'password' | 'confirmPassword'): string {
     if (!this.name && !this.email && !this.password && !this.confirmPassword) {
       return '';
     }
 
-    if (this.name.trim().length < 3) {
-      return 'The name must be at least 3 characters long.';
+    if (this.name.trim().length < 3 && (inputField === 'name')) {
+      return 'The name needs at least 3 characters';
     }
 
-    if (!this.emailPattern.test(this.email)) {
-      return 'Please enter a valid email address.';
+    if (!this.emailPattern.test(this.email) && (inputField === 'email')) {
+      return 'Please enter a valid email address';
     }
 
-    if (!this.passwordPattern.test(this.password)) {
-      return 'The password must be at least 8 characters long and include uppercase and lowercase letters, a number, and a special character.';
+    if (!this.passwordPattern.test(this.password) && (inputField === 'password')) {
+      return 'Needs uppercase, number, symbol';
     }
 
-    if (this.password !== this.confirmPassword) {
-      return 'The passwords do not match.';
+    if (this.password !== this.confirmPassword && (inputField === 'confirmPassword')) {
+      return 'The passwords do not match';
     }
-
-    if (!this.acceptTerms) {
-      return 'Please accept the Privacy Policy to continue.';
-    }
-
     return '';
   }
 
@@ -193,12 +181,9 @@ export class Login implements OnInit {
     this.successMessage = '';
     this.hideSignUpSuccessMessage();
     this.loginSubmitted = false;
-    this.clearFailedLogin();
 
     if (!this.isFormValid()) {
-      this.errorMessage =
-        this.getSignUpHint() ||
-        'Please fill in all fields correctly and accept the Privacy Policy.';
+      this.errorMessage ='Please fill in all fields correctly and accept the Privacy Policy.';
       return;
     }
 
@@ -210,7 +195,6 @@ export class Login implements OnInit {
     try {
       const email = this.email.trim();
       const name = this.name.trim();
-
       const { data, error } = await this.supabaseService.supabase.auth.signUp({
         email,
         password: this.password,
@@ -236,7 +220,6 @@ export class Login implements OnInit {
       });
 
       await this.supabaseService.getDemoData();
-
       this.isSignUpMode = false;
       this.name = '';
       this.confirmPassword = '';
@@ -254,8 +237,6 @@ export class Login implements OnInit {
     this.errorMessage = '';
     this.successMessage = '';
     this.hideSignUpSuccessMessage();
-    this.clearFailedLogin();
-
     const email = this.email.trim();
 
     if (!email || !this.password) {
@@ -275,20 +256,19 @@ export class Login implements OnInit {
       });
 
       if (error) {
-        this.setFailedLogin();
-        this.errorMessage = this.getLoginErrorMessage(error.message);
+        this.errorMessage = 'Check your email and password. Please try again';
+        this.cdr.detectChanges();
         return;
       }
 
       if (data.user) {
-    
+
         if (this.rememberMe) {
           localStorage.setItem('rememberedEmail', this.email.trim());
         } else {
           localStorage.removeItem('rememberedEmail');
         }
 
-      
         const metadataName = data.user.user_metadata?.['name'];
         const userName =
           typeof metadataName === 'string' && metadataName.trim() ? metadataName.trim() : 'User';
@@ -300,8 +280,10 @@ export class Login implements OnInit {
 
         this.router.navigate(['/summary'], { queryParams: { name: userName } });
       }
+
     } catch (e) {
       this.errorMessage = 'There was a problem logging in.';
+      this.cdr.detectChanges();
       console.error('Login error', e);
     }
   }
@@ -311,9 +293,6 @@ export class Login implements OnInit {
     this.successMessage = '';
     this.hideSignUpSuccessMessage();
     this.loginSubmitted = false;
-    this.clearFailedLogin();
-
-    
     localStorage.setItem('userInitial', 'G');
     localStorage.setItem('userName', 'Guest');
     localStorage.setItem('joinIsGuest', 'true');
@@ -329,48 +308,6 @@ export class Login implements OnInit {
       .join('');
 
     return initials || 'U';
-  }
-
-  getVisibleErrorMessage(): string {
-    if (!this.errorMessage) return '';
-
-    if (!this.isSignUpMode && this.hasFailedLogin()) {
-      return this.isFailedLoginActive() ? this.errorMessage : '';
-    }
-
-    if (!this.isSignUpMode && this.errorMessage === 'Please enter a valid email address.') {
-      return this.emailPattern.test(this.email.trim()) ? '' : this.errorMessage;
-    }
-
-    if (!this.isSignUpMode && this.errorMessage === 'Please enter email and password.') {
-      return this.email.trim() && this.password ? '' : this.errorMessage;
-    }
-
-    return this.errorMessage;
-  }
-
-  private getLoginErrorMessage(message: string): string {
-    const normalizedMessage = message.toLowerCase();
-
-    if (message === 'Email not confirmed') {
-      return 'Please confirm your email first. Check your inbox!';
-    }
-
-    if (normalizedMessage.includes('invalid login credentials')) {
-      return 'Check your email and password. Please try again.';
-    }
-
-    return 'Login failed: ' + message;
-  }
-
-  private setFailedLogin() {
-    this.failedLoginEmail = this.email.trim();
-    this.failedLoginPassword = this.password;
-  }
-
-  private clearFailedLogin() {
-    this.failedLoginEmail = '';
-    this.failedLoginPassword = '';
   }
 
   private showSignUpSuccessAnimation() {
@@ -390,17 +327,5 @@ export class Login implements OnInit {
     }
 
     this.showSignUpSuccessMessage = false;
-  }
-
-  private hasFailedLogin() {
-    return Boolean(this.failedLoginEmail || this.failedLoginPassword);
-  }
-
-  private isFailedLoginActive() {
-    return (
-      this.hasFailedLogin() &&
-      this.email.trim() === this.failedLoginEmail &&
-      this.password === this.failedLoginPassword
-    );
   }
 }

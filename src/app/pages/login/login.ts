@@ -129,27 +129,11 @@ export class Login implements OnInit {
 
   getInputState(field: 'name' | 'email' | 'password' | 'confirmPassword'): string {
     const value = this[field].trim();
-
-    // if (!this.isSignUpMode) {
-    //   if (field === 'email' && (!value || !this.emailPattern.test(value))) return 'has-error';
-    //   if (field === 'password' && !this.passwordPattern.test(value)) return 'has-error';
-    // }
-
     if (!value) return '';
-
     if (field === 'name' && value.length < 3) return 'has-error';
     if (field === 'email' && !this.emailPattern.test(value)) return 'has-error';
-    if (field === 'password' && !this.passwordPattern.test(value)) {
-      return 'has-error';
-    }
-    if (
-      field === 'confirmPassword' &&
-      this.isSignUpMode &&
-      this.password &&
-      value !== this.password
-    ) {
-      return 'has-error';
-    }
+    if (field === 'password' && !this.passwordPattern.test(value)) return 'has-error';
+    if ( field === 'confirmPassword' && this.password && value !== this.password) return 'has-error';
     return 'has-value';
   }
 

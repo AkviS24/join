@@ -17,7 +17,7 @@
   --login-button-height: clamp(44px, 7.36cqw, 48px);
   --login-mobile-button-width: clamp(130px, 29.58vw, 180px);
   --login-mobile-signup-gap: clamp(8px, 4.17vw, 32px);
-  --login-mobile-signup-margin: clamp(24px, 8vw, 80px);
+  --login-mobile-signup-margin: 16px;
   --login-mobile-logo-top: clamp(30px, 10vw, 48px);
   --login-mobile-logo-left: clamp(20px, 5vw, 38px);
   --login-mobile-logo-width: clamp(50px, 13.33vw, 64px);
@@ -49,7 +49,7 @@
 
 .loginHeader {
   position: fixed;
-  top: 90px;
+  top: 44px;
   right: calc(var(--login-stage-offset) + 86px);
   display: flex;
   justify-content: end;
@@ -59,7 +59,7 @@
 .joinLogoBlue {
   position: fixed;
   left: calc(var(--login-stage-offset) + 77px);
-  top: 80px;
+  top: 44px;
 }
 
 .login-page {
@@ -89,7 +89,7 @@
 }
 
 .login-box:not(.signup-box) {
-  margin-top: 48px;
+  margin-top: 8px;
 }
 
 .login-box input::placeholder {
@@ -226,7 +226,7 @@
 .loginButtons {
   border: none;
   border-radius: 8px;
-  padding: 15px 15px;
+  padding: 10px 32px;
   gap: 10px;
   font-size: var(--login-button-font-size);
   font-weight: bold;

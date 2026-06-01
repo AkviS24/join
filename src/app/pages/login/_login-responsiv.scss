@@ -95,15 +95,13 @@
   }
 
   .signUpField-mobile span {
-    font-size: clamp(14px, 2.6cqw, 20px);
+    font-size: clamp(16px, 2.6cqw, 20px);
     font-weight: 400;
   }
 
   .signUpButton-mobile {
     min-width: 66px;
-    white-space: nowrap;
-    font-size: clamp(12px, 2.1cqw, 16px);
-    padding: clamp(5px, 1.04vw, 8px) clamp(10px, 2.08vw, 16px);
+    font-size: 18px;
   }
 }
 

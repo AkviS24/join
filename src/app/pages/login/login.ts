@@ -151,7 +151,7 @@ export class Login implements OnInit {
     }
 
     if (!this.passwordPattern.test(this.password) && (inputField === 'password')) {
-      return 'Needs uppercase, number, symbol';
+      return 'Must be at least 8 characters and contain an uppercase letter, a number, and a symbol';
     }
 
     if (this.password !== this.confirmPassword && (inputField === 'confirmPassword')) {

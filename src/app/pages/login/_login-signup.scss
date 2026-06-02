@@ -38,6 +38,10 @@
   max-width: 476px;
 }
 
+.login-box.signup-box .loginConfirmPasswordBox {
+  margin-top: 32px;
+}
+
 .back-arrow {
   position: absolute;
   top: clamp(24px, 7.74cqw, 48px);
@@ -106,14 +110,10 @@
 
 .signup-hint {
   position: absolute;
-  bottom: -36px;
+  top: 48px;
   left: 8px;
   color: #ff3333;
   font-size: 14px;
-  text-align: center;
-  max-width: 422px;
-  line-height: 1.2;
-  min-height: 32px;
 
   summary {
     @include text-truncate;

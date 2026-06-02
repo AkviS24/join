@@ -139,8 +139,15 @@
       width: 16px;
       height: 16px;
     }
-    label{
+
+    label {
       font-size: 14px;
     }
+  }
+}
+
+@media (max-width: 380px) {
+  .login-box.signup-box .loginConfirmPasswordBox {
+    margin-top: 48px;
   }
 }

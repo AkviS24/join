@@ -68,7 +68,7 @@
             <app-svg-db name="lock" aria-hidden="true"></app-svg-db>
             }
           </div>
-          @if (sign_up_password.dirty && sign_up_password.touched) {
+          @if (isSignUpMode && sign_up_password.dirty && sign_up_password.touched) {
           <div class="signup-hint">
             {{ getSignUpHint('password') }}
           </div>

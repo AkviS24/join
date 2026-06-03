@@ -132,8 +132,8 @@ export class Login implements OnInit {
     if (!value) return '';
     if (field === 'name' && value.length < 3) return 'has-error';
     if (field === 'email' && !this.emailPattern.test(value)) return 'has-error';
-    if (field === 'password' && !this.passwordPattern.test(value)) return 'has-error';
-    if ( field === 'confirmPassword' && this.password && value !== this.password) return 'has-error';
+    if (field === 'password' && !this.passwordPattern.test(value) && this.isSignUpMode) return 'has-error';
+    if (field === 'confirmPassword' && this.password && value !== this.password) return 'has-error';
     return 'has-value';
   }
 
